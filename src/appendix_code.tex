@@ -1,0 +1,184 @@
+\matlabtitle{Input Impedance}
+
+\begin{par}
+\begin{flushleft}
+Of the equivalent circuit
+\end{flushleft}
+\end{par}
+
+\begin{matlabcode}
+clc; clear; close all
+
+freq = 2.7e9:1e7:12.7e9;
+
+epsilon_0 = 8.854187817e-12 ;% F/m
+mu_0 = pi*4e-7 ;% H/m
+
+Z0 = 377 ;% Free space impedance
+\end{matlabcode}
+
+
+\matlabheading{Air layer and Ground Plane \texorpdfstring{$Z_{\textrm{in}} (d1)$}{Zin (d1)}}
+
+\begin{matlabcode}
+lambda = physconst('LightSpeed')./freq ;% is different on each layer
+
+mu_r1 = 1 ;% μ_r1
+epsilon_r1 = 1 ;% ε_r1
+
+h_1 = 9e-3 ;% 9mm -> air layer height
+\end{matlabcode}
+
+
+\matlabheading{\texorpdfstring{$$\beta_1 =\frac{2\pi \sqrt{\mu_{r1} \epsilon_{r1} }}{\lambda }$$}{beta_1 formula}}
+
+\begin{matlabcode}
+beta_1 = 2*pi*sqrt(mu_r1*epsilon_r1)./lambda ;% β
+\end{matlabcode}
+
+
+\matlabheading{\texorpdfstring{$$jZ_{d1} \tan \beta_1 h_1 =jZ_0 \sqrt{\frac{\mu_{r1} }{\epsilon_{r1} }}\tan \frac{2\pi h_1 \sqrt{\mu_{r1} \epsilon_{r1} }}{\lambda }$$}{jZ_d1 formula}}
+
+\begin{matlabcode}
+Zd1 = Z0*sqrt(mu_r1/epsilon_r1);
+
+Zin_d1 = 1j*Zd1*tan(beta_1*h_1);
+\end{matlabcode}
+
+
+\matlabheading{FR-4 + Air + Backplate $Z_{in} (d2)$}
+
+\begin{matlabcode}
+epsilon_r2 = 4.3 ;% relative permittivity (ε_r2)
+mu_r2 = 1 ;% relative permeability (μ_r2)
+
+epsilon_2 = epsilon_r2*epsilon_0;
+mu_2 = mu_r2*mu_0;
+\end{matlabcode}
+
+
+\matlabheading{$$\tan \delta =\frac{\sigma }{\omega \epsilon }=0.025<<1,\delta =\frac{1}{\alpha },\alpha =\frac{\sigma }{2}\sqrt{\frac{\mu_2 }{\epsilon_2 }}\Rightarrow \alpha =40$$}
+
+\begin{matlabcode}
+alpha = 40;
+\end{matlabcode}
+
+
+\matlabheading{$$\sigma =\sqrt{\frac{\epsilon_0 \epsilon_{r2} 2\alpha }{\mu_0 \mu_{r2} }}$$}
+
+\begin{matlabcode}
+sigma = sqrt(epsilon_2*(2*alpha)^2/(mu_2)) ;% σ
+\end{matlabcode}
+
+
+\matlabheading{$$\beta_2 =\omega \sqrt{\frac{\mu_{r2} \mu_0 \epsilon_{r2} \epsilon_0 }{2}}{\left\lbrack \sqrt{1+{\left(\frac{\sigma }{\omega \epsilon_{r2} \epsilon_0 }\right)}^2 }+1\right\rbrack }^{\frac{1}{2}} ,\omega =2\pi f$$}
+
+\begin{matlabcode}
+omega = 2*pi*freq;
+
+beta_2 = omega*sqrt(mu_2*epsilon_2/2).*sqrt(sqrt(1+(sigma./(omega*epsilon_2)).^2)+1);
+
+lambda = 2*pi./beta_2 ;% λ = 2π/β
+
+% vita_2 = 2*pi*sqrt(mu_r2*epsilon_r2)./lambda ;% β
+
+h_2 = 2e-4 ;% 0.2mm -> FR-4 layer height
+\end{matlabcode}
+
+
+\matlabheading{$$Z_{d2} =Z_0 \sqrt{\frac{\mu_{r2} }{\epsilon_{r2} }}$$}
+
+\begin{matlabcode}
+Zd2 = Z0*sqrt(mu_r2/epsilon_r2);
+\end{matlabcode}
+
+
+\matlabheading{$$Z_{in} (d2)=Z_{d2} \frac{Z_{in} (d_1 )+jZ_{d2} \tan \beta_2 h_2 }{Z_{d2} +jZ_{in} (d_1 )\tan \beta_2 h_2 }$$}
+
+\begin{matlabcode}
+Zin_d2 = Zd2*(Zin_d1 + 1j*Zd2.*tan(beta_2*h_2))./(Zd2 + 1j*Zin_d1.*tan(beta_2*h_2));
+\end{matlabcode}
+
+
+\matlabheading{$$z=\sqrt{\frac{(1+S_{11} )^2 -S_{21}^2 }{(1-S_{11} )^2 +S_{21}^2 }}$$}
+
+\begin{matlabcode}
+% S parameters are imported in dB
+S_11 = importSparams("data/Optimized_s11_linear_complex.txt", [2, Inf]); S_11 = S_11'; 
+S_21 = importSparams("data/Optimized_s21_linear_complex.txt", [2, Inf]); S_21 = S_21';
+
+z = sqrt(((1+S_11).^2 - S_21)./((1-S_11).^2 + S_21));
+\end{matlabcode}
+
+
+\matlabheading{$$n=\frac{1}{kd}\arccos \left\lbrack \frac{1}{2S_{21} }(1-S_{11}^2 +S_{21}^2 )\right\rbrack$$}
+
+\begin{matlabcode}
+d = h_1 + h_2; 
+
+k = 2*pi./lambda ;% wave number in FR-4
+% k = omega * sqrt(mu_2*epsilon_2);
+% k = 2*omega*sqrt(mu_0*epsilon_0) + omega*sqrt(epsilon_2*mu_2);
+
+n = 1./(k*d) .* acos(1./(2*S_21).*(1 - S_11.^2 + S_21.^2));
+\end{matlabcode}
+
+
+\matlabheading{$$VSWR=\frac{1+|\Gamma |}{1-|\Gamma |}$$}
+
+\begin{matlabcode}
+syms Gamma(Zpatch)
+
+VSWR = importSparams("data/VSWR.txt", [2, Inf]); VSWR = VSWR';
+
+% eq1 = VSWR == (1+abs(Gamma(Zpatch)))./(1-abs(Gamma(Zpatch)));
+eq1 = z*Z0 == (1+Gamma(Zpatch))/(1-Gamma(Zpatch));
+\end{matlabcode}
+
+
+\matlabheading{$$\Gamma =\frac{Z_{patch} ||Z_{in} (d_2 )-Z_0 }{Z_{patch} ||Z_{in} (d_2 )+Z_0 }=\frac{\frac{Z_{in} (d_2 )+Z_{patch} }{Z_{in} (d_2 )Z_{patch} }-Z_0 }{\frac{Z_{in} (d_2 )+Z_{patch} }{Z_{in} (d_2 )Z_{patch} }+Z_0 }$$}
+
+\begin{matlabcode}
+eq2 = Gamma(Zpatch) == (((Zin_d2+Zpatch)./(Zin_d2*Zpatch))-Z0)./(((Zin_d2+Zpatch)./(Zin_d2*Zpatch))+Z0);
+
+result = solve([eq1 eq2], Zpatch, ...
+    ReturnConditions=true ... %, IgnoreAnalyticConstraints=true, ...
+);
+\end{matlabcode}
+
+
+\matlabheading{Absorption rate}
+
+\begin{matlabcode}
+A = 1 - abs(S_11).^2 - abs(S_21).^2;
+\end{matlabcode}
+
+
+\matlabheading{Relative permittivity: $\epsilon_{eff} =\frac{n}{z}$ , Relative permeability: $\mu_{eff} =nz$}
+
+\begin{matlabcode}
+epsilon_eff = n./z; mu_eff = n.*z;
+\end{matlabcode}
+
+
+\matlabheading{$$W=\frac{1}{2f\sqrt{\epsilon_0 \mu_0 }}\sqrt{\frac{2}{\epsilon_r +1}}$$}
+
+\begin{matlabcode}
+W = 1./(2*freq*sqrt(epsilon_0*mu_0))*sqrt(2/(epsilon_r2+1));
+\end{matlabcode}
+
+
+\matlabheading{Alternative $\epsilon_{eff} =\frac{\epsilon_r +1}{2}+\frac{\epsilon_r -1}{2}{\left\lbrack 1+12\frac{h}{W}\right\rbrack }^{-\frac{1}{2}}$}
+
+\begin{matlabcode}
+% epsilon_eff = (epsilon_r2 + 1)/2 + (epsilon_r2 - 1)/2 * (1 + 12*d./W).^-1/2;
+\end{matlabcode}
+
+
+\matlabheading{$$A(f)\not= A(\omega )$$}
+
+\begin{matlabcode}
+syms A(f) s
+
+eq = A(f) == ;
+\end{matlabcode}

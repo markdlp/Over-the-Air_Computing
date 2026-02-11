@@ -1,0 +1,199 @@
+{
+    "latex-workshop.latex.recipe.default": "latexmk (lualatexmk)",
+    "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
+    "latex-workshop.latex.autoBuild.run":"onSave",
+    "latex-workshop.message.badbox.show":"both",
+    // "latex-workshop.formatting.latex":"latexindent",
+    "latex-workshop.formatting.tex-fmt.path":"lib/tex-fmt.exe",
+    "latex-workshop.formatting.tex-fmt.args":["--tabsize", "4"],
+    "latex-workshop.formatting.latex":"tex-fmt",
+    "latex-workshop.latex.tools": [
+    
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "lualatexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-lualatex",
+                "-aux-directory=tmp",
+                "-outdir=%OUTDIR%",
+                "%DOCFILE%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "xelatexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-xelatex",
+                "-aux-directory=tmp",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "latexmk_rconly", 
+            "command": "latexmk",
+            "args": [
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "biber",
+            "command": "biber",
+            "args": [
+                "--input-directory=tmp",
+                "--output-directory=tmp",
+                "%DOCFILE%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "bib2gls",
+            "command": "bib2gls",
+            "args": [
+                "-d",
+                "tmp",
+                "%DOCFILE%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "rnw2tex",
+            "command": "Rscript",
+            "args": [
+                "-e",
+                "knitr::opts_knit$set(concordance = TRUE); knitr::knit('%DOCFILE_EXT%')"
+            ],
+            "env": {}
+        },
+        {
+            "name": "jnw2tex",
+            "command": "julia",
+            "args": [
+                "-e",
+                "using Weave; weave(\"%DOC_EXT%\", doctype=\"tex\")"
+            ],
+            "env": {}
+        },
+        {
+            "name": "jnw2texminted",
+            "command": "julia",
+            "args": [
+                "-e",
+                "using Weave; weave(\"%DOC_EXT%\", doctype=\"texminted\")"
+            ],
+            "env": {}
+        },
+        {
+            "name": "pnw2tex",
+            "command": "pweave",
+            "args": [
+                "-f",
+                "tex",
+                "%DOC_EXT%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "pnw2texminted",
+            "command": "pweave",
+            "args": [
+                "-f",
+                "texminted",
+                "%DOC_EXT%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "tectonic",
+            "command": "tectonic",
+            "args": [
+                "--synctex",
+                "--keep-logs",
+                "%DOC%.tex"
+            ],
+            "env": {}
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk (lualatexmk)",
+            "tools": [
+                "lualatexmk",
+                "bib2gls",
+                "lualatexmk",
+            ]
+        }
+    ],
+    "cSpell.language": "en,el",
+    "cSpell.words": [
+        "beamformers",
+        "headheight",
+        "includeheadfoot",
+        "intersymbol",
+        "linspace",
+        "Nomographic",
+        "numbersep",
+        "numberstyle",
+        "precoders",
+        "precoding",
+        "randn",
+        "stylemods",
+        "uncoded",
+        "USRP",
+        "xleftmargin"
+    ],
+    "peacock.color": "#450d9e",
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#5a11cd",
+        "activityBar.background": "#5a11cd",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#ce5a11",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#5a11cd",
+        "statusBar.background": "#450d9e",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#5a11cd",
+        "statusBarItem.remoteBackground": "#450d9e",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#450d9e",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#450d9e99",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "MATLAB.installPath": "\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\MATLAB R2025b\\MATLAB R2025b.lnk\""
+}
