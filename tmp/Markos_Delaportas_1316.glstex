@@ -93,11 +93,12 @@ sort={MSE|}}%
 
 
 \bibglsnewabbreviation{ota}%
-{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{1}},
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{1}\bibglslastDelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{3}},
 sort={OAC|}}%
 {OAC}%
 {Over-the-Air Computation}
 \glsxtrfieldlistadd{ota}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{1}}
+\glsxtrfieldlistadd{ota}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}}
 
 
 \bibglsnewabbreviation{sdr}%

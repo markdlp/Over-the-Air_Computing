@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber tmp/Markos_Delaportas_1316"] 1769394832.47001 "tmp/Markos_Delaportas_1316.bcf" "tmp/Markos_Delaportas_1316.bbl" "tmp/Markos_Delaportas_1316" 1770909253.63299 0
-  "ref.bib" 1769391982 37778 84c687f1bf76e4b1e66d42bac5a9cf16 ""
-  "tmp/Markos_Delaportas_1316.bcf" 1770909250 113732 8154a82852459511eab9e61f4bafc06c "lualatex"
+["biber tmp/Markos_Delaportas_1316"] 1769394832.47001 "tmp/Markos_Delaportas_1316.bcf" "tmp/Markos_Delaportas_1316.bbl" "tmp/Markos_Delaportas_1316" 1773243100.60249 0
+  "ref.bib" 1772560364 37778 84c687f1bf76e4b1e66d42bac5a9cf16 ""
+  "tmp/Markos_Delaportas_1316.bcf" 1773243098 113732 8154a82852459511eab9e61f4bafc06c "lualatex"
   (generated)
   "tmp/Markos_Delaportas_1316.bbl"
   "tmp/Markos_Delaportas_1316.blg"
   (rewritten before read)
-["lualatex"] 1770909217.46248 "Markos_Delaportas_1316.tex" "Markos_Delaportas_1316.pdf" "Markos_Delaportas_1316" 1770909253.63538 0
+["lualatex"] 1773243085.4281 "Markos_Delaportas_1316.tex" "Markos_Delaportas_1316.pdf" "Markos_Delaportas_1316" 1773243100.60517 0
   "C:/Users/marko/.texlive2025/texmf-var/luatex-cache/generic/fonts/hb/0736c7fe8399b429b7d46b99f6924a0c20cf11dc7f936c23a0d2811bd41ee4e7.luc" 1764699604 158696 2eaa55eb4e3f0f3e94d169c0f183e2b6 ""
   "C:/Users/marko/.texlive2025/texmf-var/luatex-cache/generic/fonts/hb/21d80499e2ad7c5d5f79f12a06664b902110b0c8be6e232e1866f5fc85d7751f.luc" 1770769113 171391 4c27b6c63f4d14ce6767cb3b0cc3d16a ""
   "C:/Users/marko/.texlive2025/texmf-var/luatex-cache/generic/fonts/hb/4fee83e0d919dabbe152f69284ddc87f70baa33fa4d0f63c5fbb37a9b4896420.luc" 1764699604 123903 c19d92599aab0f7cad4c34e2328ffb45 ""
@@ -21,9 +21,9 @@
   "C:/Users/marko/.texlive2025/texmf-var/luatex-cache/generic/fonts/hb/fd40e5245e27c47e488778f5f2d70f7cecbe70b23419c31615f31bb3ab795d37.luc" 1764699604 22084 805b52049f200f39eccd5f9c51ae24fe ""
   "C:/Users/marko/.texlive2025/texmf-var/luatex-cache/generic/fonts/otl/lmroman12-bold.luc" 1762986706 128291 d6f515bb1cac4b8e818b88f7217d0542 ""
   "C:/Users/marko/.texlive2025/texmf-var/luatex-cache/generic/fonts/otl/lmroman12-regular.luc" 1762986699 127662 71ecfe29694142cb27d24c266661214b ""
-  "C:/Users/marko/.texlive2025/texmf-var/luatex-cache/generic/names/luaotfload-lookup-cache.luc" 1769437851 9684 5ef7768a9e821f23434e640a74eddda9 ""
+  "C:/Users/marko/.texlive2025/texmf-var/luatex-cache/generic/names/luaotfload-lookup-cache.luc" 1771282706 9919 ccee806b20edf831bb5b469772c140fe ""
   "C:/Users/marko/.texlive2025/texmf-var/luatex-cache/generic/names/luaotfload-names.luc.gz" 1762986699 331325 a2a754e1db50bb1af76ef2e0dc7ab556 ""
-  "Markos_Delaportas_1316.tex" 1770909033 15787 6d21b24f2f40f4a5f30337a0c9f06917 ""
+  "Markos_Delaportas_1316.tex" 1773243036 15590 d6ea6a4e13acb8ceb1096494799f1dfb ""
   "c:/Users/marko/AppData/Local/Microsoft/Windows/Fonts/Atkinson-Hyperlegible-Bold-102.otf" 1727733294 36588 94ee37a022bb32e86f381dd285cafb28 ""
   "c:/Users/marko/AppData/Local/Microsoft/Windows/Fonts/Atkinson-Hyperlegible-Regular-102.otf" 1727733294 34436 6053523c35cde2069cc46274985c6c9f ""
   "c:/Users/marko/AppData/Local/Microsoft/Windows/Fonts/LinLibertine_R.ttf" 1702931285 906980 733c54eca7362b724e375629fbecab95 ""
@@ -393,14 +393,14 @@
   "c:/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1762899402 5574345 9e0538e80e24c9ae9ee679f6f1bbacd7 ""
   "c:/texlive/2025/texmf-var/tex/generic/config/language.dat.lua" 1762899357 18999 f1cc316527d2dafca0a238bc6fc9fb8b ""
   "c:/texlive/2025/texmf-var/web2c/luahbtex/lualatex.fmt" 1762899795 5655022 4387001cdefa52b10e83f53e62c50e2d ""
-  "img/ece.png" 1710544323 76218 fa09f245a1716ae00e55a659d2829ddb ""
-  "img/uowm.png" 1730810414 35737 633e530e143c891b82095185a34c8c80 ""
-  "tmp/Markos_Delaportas_1316.aux" 1770909250 28573 5a8f7b9c9bd5db6defa40aa334722f0a "lualatex"
-  "tmp/Markos_Delaportas_1316.bbl" 1769394972 47775 5d3cc9bc3b0903e6facf064daaa048e7 "biber tmp/Markos_Delaportas_1316"
-  "tmp/Markos_Delaportas_1316.glstex" 1770909214 4436 51121c7e6295bb400b75ad02e351ea4e ""
-  "tmp/Markos_Delaportas_1316.out" 1770909250 7379 e136fb34fde40dbc26de59075773e47d "lualatex"
-  "tmp/Markos_Delaportas_1316.run.xml" 1770909250 2617 412709c47c7e7867eaa0e316ff1e6838 "lualatex"
-  "tmp/Markos_Delaportas_1316.toc" 1770909251 3004 61d30343bb08dc1933aa4fd6fec23c1a "lualatex"
+  "img/ece.png" 1772560364 76218 fa09f245a1716ae00e55a659d2829ddb ""
+  "img/uowm.png" 1772560364 35737 633e530e143c891b82095185a34c8c80 ""
+  "tmp/Markos_Delaportas_1316.aux" 1773243098 28759 f703616affd79b356b4ead5a0edecb96 "lualatex"
+  "tmp/Markos_Delaportas_1316.bbl" 1772560364 46941 5d3cc9bc3b0903e6facf064daaa048e7 "biber tmp/Markos_Delaportas_1316"
+  "tmp/Markos_Delaportas_1316.glstex" 1773243082 4585 7a7253379cf9d0fc61dd6db2a3393520 ""
+  "tmp/Markos_Delaportas_1316.out" 1773243098 7554 db8e9a27438676e6a145190e01e5a02e "lualatex"
+  "tmp/Markos_Delaportas_1316.run.xml" 1773243098 2617 412709c47c7e7867eaa0e316ff1e6838 "lualatex"
+  "tmp/Markos_Delaportas_1316.toc" 1773243098 3101 10b5c48bf69a25f5d966e1aa1bf0f3ec "lualatex"
   (generated)
   "Markos_Delaportas_1316.pdf"
   "tmp/Markos_Delaportas_1316.aux"

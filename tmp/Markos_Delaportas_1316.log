@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.22.0 (TeX Live 2025)  (format=lualatex 2025.11.12)  12 FEB 2026 17:13
+This is LuaHBTeX, Version 1.22.0 (TeX Live 2025)  (format=lualatex 2025.11.12)  11 MAR 2026 17:31
  restricted system commands enabled.
  file:line:error style messages enabled.
 **Markos_Delaportas_1316.tex
@@ -1744,52 +1744,52 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman (
 
 \openout6 = Markos_Delaportas_1316.toc
  [2]
-<img/uowm.png, id=230, 283.1804pt x 48.37665pt>
+<img/uowm.png, id=238, 283.1804pt x 48.37665pt>
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 243.
+Package luatex.def Info: img/uowm.png  used on input line 248.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
-<img/ece.png, id=231, 491.8375pt x 491.8375pt>
+<img/ece.png, id=239, 491.8375pt x 491.8375pt>
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 243.
+Package luatex.def Info: img/ece.png  used on input line 248.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [3
 
 <./img/uowm.png><./img/ece.png>]
 LaTeX Font Info:    Font shape `TU/Consolas(0)/m/n' will be
-(Font)              scaled to size 10.50586pt on input line 255.
+(Font)              scaled to size 10.50586pt on input line 260.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `Consolas' (encoding: TU).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `TU/Consolas(0)/m/n' will be
-(Font)              scaled to size 9.5866pt on input line 255.
+(Font)              scaled to size 9.5866pt on input line 260.
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 303.
+Package luatex.def Info: img/uowm.png  used on input line 308.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 303.
+Package luatex.def Info: img/ece.png  used on input line 308.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [4]
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 347.
+Package luatex.def Info: img/uowm.png  used on input line 352.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 347.
+Package luatex.def Info: img/ece.png  used on input line 352.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [5]
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 349.
+Package luatex.def Info: img/uowm.png  used on input line 354.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 349.
+Package luatex.def Info: img/ece.png  used on input line 354.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [6] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
@@ -1989,26 +1989,26 @@ img/uowm.png
  ***********
 
 Package rerunfilecheck Info: File `Markos_Delaportas_1316.out' has not changed.
-(rerunfilecheck)             Checksum: E136FB34FDE40DBC26DE59075773E47D;7379.
+(rerunfilecheck)             Checksum: DB8E9A27438676E6A145190E01E5A02E;7554.
 Package logreq Info: Writing requests to 'Markos_Delaportas_1316.run.xml'.
 
 \openout1 = Markos_Delaportas_1316.run.xml
 )
 
 Here is how much of LuaTeX's memory you used:
- 61724 strings out of 476081
+ 61726 strings out of 476081
  156327,2848258 words of node,token memory allocated
  793 words of node memory still in use:
    7 hlist, 2 vlist, 2 rule, 1 local_par, 5 glue, 5 kern, 1 penalty, 3 glyph, 17 attribute, 88 glue_spec, 17 attribute_list, 2 write, 4 pdf_action nodes
-   avail lists: 1:9,2:1903,3:719,4:1756,5:1571,6:149,7:10589,8:46,9:3498,10:45,11:655,12:1
- 82786 multiletter control sequences out of 65536+600000
+   avail lists: 1:9,2:1904,3:719,4:1756,5:1570,6:153,7:10589,8:46,9:3498,10:45,11:655,12:1
+ 82787 multiletter control sequences out of 65536+600000
  118 fonts using 36566719 bytes
  102i,15n,124p,5878b,2320s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Windows/Fonts/consola.ttf><c:/Users/marko/AppData/Local/Microsoft/Windows/Fonts/LinLibertine_RI.ttf><c:/Users/marko/AppData/Local/Microsoft/Windows/Fonts/Atkinson-Hyperlegible-Bold-102.otf><c:/Users/marko/AppData/Local/Microsoft/Windows/Fonts/LinLibertine_RB.ttf><c:/Users/marko/AppData/Local/Microsoft/Windows/Fonts/LinLibertine_RBI.ttf><c:/Users/marko/AppData/Local/Microsoft/Windows/Fonts/LinLibertine_R.ttf><c:/Users/marko/AppData/Local/Microsoft/Windows/Fonts/Atkinson-Hyperlegible-Regular-102.otf><c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb>
-Output written on Markos_Delaportas_1316.pdf (6 pages, 216297 bytes).
+Output written on Markos_Delaportas_1316.pdf (6 pages, 216693 bytes).
 
-PDF statistics: 418 PDF objects out of 1000 (max. 8388607)
- 374 compressed objects within 4 object streams
- 61 named destinations out of 1000 (max. 131072)
- 258 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 425 PDF objects out of 1000 (max. 8388607)
+ 381 compressed objects within 4 object streams
+ 62 named destinations out of 1000 (max. 131072)
+ 266 words of extra memory for PDF output out of 10000 (max. 100000000)
 
