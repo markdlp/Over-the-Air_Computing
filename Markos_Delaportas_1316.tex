@@ -1,7 +1,15 @@
 \documentclass[12pt]{article}
 \usepackage{geometry}
-\geometry{ b4paper, total={220mm,320mm}, left=20mm, top=15mm,
-headheight=33pt,includeheadfoot}
+% Adjusted geometry to avoid negative margins
+\geometry{
+    b4paper,
+    left=20mm,
+    right=20mm,
+    top=15mm,
+    bottom=20mm,
+    headheight=33pt,
+    includeheadfoot
+}
 
 \usepackage[parfill]{parskip}  % Activate to begin paragraphs with an
 % empty line rather than an indent
@@ -25,6 +33,8 @@ headheight=33pt,includeheadfoot}
 \usepackage{enumitem}
 \usepackage{amsmath}
 %\usepackage{cleveref}
+\usepackage{mathtools}
+\usepackage[warnings-off={mathtools-common, mathtools-overbracket}]{unicode-math}
 
 \usepackage{fancyhdr, lastpage, setspace}
 \pagestyle{fancy}
@@ -81,16 +91,36 @@ urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
 \graphicspath{ {img} }
 % \addmediapath{vdo}
 
-%\setmainfont[Kerning=On,Ligatures=TeX]{Linux Libertine}
-\setmainfont[Ligatures=TeX,Numbers=Lining]{Linux Libertine}
-\setsansfont[Kerning=On]{Atkinson Hyperlegible}
-\setmonofont[Scale=MatchLowercase]{Consolas}
+\setmainfont{LibertinusSerif}[
+    Path = ./font/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    BoldItalicFont = *-BoldItalic,
+    SemiboldFont = *-SemiBold,
+    SemiboldItalicFont = *-SemiBoldItalic,
+    DisplayFont = *-Display,
+    InitialsFont = *-Initials,
+    % Keyring=On, Fractions=On,
+    Ligatures=TeX, Numbers={Lining, Tabular}
+]
+\setsansfont{LibertinusSans}[
+    Path = ./font/,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    Ligatures=TeX, % Fractions=On,
+    Numbers={Lining, Tabular}
+]
+\setmonofont[]{LibertinusMono-Regular.otf}[Path = ./font/]
 %\setmathsf{Cambria-Math} \setmathtt{Consolas}
+\setmathfont[]{LibertinusMath-Regular.otf}[Path = ./font/]
 
-% Apply sans-serif font to all levels
-\titleformat*{\section}{\Large\bfseries\sffamily}
-\titleformat*{\subsection}{\large\bfseries\sffamily}
-\titleformat*{\subsubsection}{\normalsize\bfseries\sffamily}
+\titleformat*{\section}{\Large\sffamily}
+\titleformat*{\subsection}{\large\sffamily}
+\titleformat*{\subsubsection}{\normalsize\sffamily}
 
 \renewcommand{\thesection}{\arabic{section}}
 \renewcommand{\thesubsection}{\thesection.\alph{subsection}}
@@ -144,7 +174,7 @@ urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
     \textsf{\Large Department of Electrical \& Computer Engineering}\\
     \textsf{\large University of Western Macedonia}
 } \author{\textsf{Markos Delaportas} \footnote{E-mail: ece01316@uowm.gr}}
-\date{\textsf{November 2025}}
+\date{\textsf{April 2026}}
 
 \begin{document}
 
@@ -231,6 +261,9 @@ evgenidis_waveform_2025}.
         synchronization errors, such as those using Orthogonal Signaling
         (FSK/PPM)\cite{sahin_survey_2023,yang_federated_2020}.
 \end{itemize}
+
+    In this section I will demonstrate the Raised Cosine method in order to take advantage of
+    the signal superposition in the \gls{mac}.
 \subsection{Applications Context (e.g., Distributed Consensus)}
     Application choice (e.g., Federated Edge Learning (FEEL) for gradient
     aggregation, or average consensus in (Wireless Sensor Networks (WSNs))

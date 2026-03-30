@@ -1,16 +1,16 @@
-bib2gls 4.6 (2025-07-27)
+bib2gls 4.5 (2025-05-14)
 Default encoding: UTF-8
-Current working directory: c:\Users\marko\OneDrive - uowm.gr\root\School\UoWM\Semesters\17th\OTA_Computing\report
-Reading tmp\Markos_Delaportas_1316.log
+Current working directory: /home/mark/Documents/OTA_Computing/report
+Reading tmp/Markos_Delaportas_1316.log
 Encoding: not set
 Detected package fontspec
-Detected package glossaries-extra 2025/11/03
-Detected package glossaries 2025/11/09
+Detected package glossaries-extra 2025/05/14
+Detected package glossaries 2025/05/14
 Detected package mfirstuc 2025/04/03
 No sentence case protection required now
 Default setting --no-mfirstuc-protection now applied, use --mfirstuc-protection to revert
 Default setting --no-mfirstuc-math-protection now applied, use --mfirstuc-math-protection to revert
-Reading tmp\Markos_Delaportas_1316.aux
+Reading tmp/Markos_Delaportas_1316.aux
 Encoding: UTF-8
 TeX character encoding: UTF-8
 Initialising resource Markos_Delaportas_1316.glstex.
@@ -22,14 +22,15 @@ Encoding: UTF-8
 Cross-resource references allowed.
 Processing resource Markos_Delaportas_1316.glstex.
 Selecting entries for resource Markos_Delaportas_1316.glstex.
-Writing tmp\.\Markos_Delaportas_1316.glstex
+Writing tmp/./Markos_Delaportas_1316.glstex
 Encoding: UTF-8
 awgn
 csi
 isi
+mac
 mimo
 mse
 ota
 sdr
 tdma
-8 entries written to tmp\.\Markos_Delaportas_1316.glstex.
+9 entries written to tmp/./Markos_Delaportas_1316.glstex.

@@ -1,7 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/latex,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=latex,visualstudiocode
 
-tmp
+tmp/
+font/
 
 ### LaTeX ###
 ## Core latex/pdflatex auxiliary files:
