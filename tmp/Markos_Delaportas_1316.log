@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.4.30)  14 MAY 2026 22:22
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.4.30)  14 MAY 2026 23:25
  restricted system commands enabled.
  file:line:error style messages enabled.
 **Markos_Delaportas_1316.tex
@@ -1792,17 +1792,6 @@ Package caption Info: End \AtBeginDocument code.
 
 Package pgfplots notification 'compat/show suggested version=true': document has been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
-
-Package unicode-math Warning: I'm going to overwrite the following commands
-(unicode-math)                from the `mathtools' package: 
-(unicode-math)                 
-(unicode-math)                     \dblcolon, \coloneqq, \Coloneqq, \eqqcolon.
-(unicode-math)                
-(unicode-math)                 
-(unicode-math)                 Note that since I won't overwrite the other
-(unicode-math)                colon-like commands, using them will lead to
-(unicode-math)                inconsistencies.
-
 LaTeX Info: Redefining \microtypecontext on input line 179.
 Package microtype Info: Applying patch `item' on input line 179.
 Package microtype Info: Applying patch `toc' on input line 179.
@@ -2190,7 +2179,7 @@ Here is how much of LuaTeX's memory you used:
    7 hlist, 2 vlist, 2 rule, 1 local_par, 5 glue, 5 kern, 1 penalty, 3 glyph, 17 attribute, 89 glue_spec, 17 attribute_list, 2 write, 4 pdf_action nodes
    avail lists: 1:12,2:1828,3:652,4:1748,5:1423,6:153,7:9478,8:46,9:3475,10:45,11:758
  87087 multiletter control sequences out of 65536+600000
- 125 fonts using 52972715 bytes
+ 125 fonts using 52972839 bytes
  102i,15n,124p,5876b,2304s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <./font/LibertinusMath-Regular.otf><./font/LibertinusMono-Regular.otf><./font/LibertinusSerif-Italic.otf><./font/LibertinusSerif-Bold.otf><./font/LibertinusSerif-BoldItalic.otf><./font/LibertinusSerif-Regular.otf><./font/LibertinusSans-Regular.otf>
 Output written on Markos_Delaportas_1316.pdf (9 pages, 196920 bytes).
