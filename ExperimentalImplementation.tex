@@ -1,0 +1,32 @@
+    \section{Experimental Implementation using SDR and MATLAB}
+    \subsection{Experimental Layout and Network Topology}
+    \begin{itemize}
+        \item \textit{Layout Description}: Presentation of the
+            network structure (e.g., a
+            single-cell OAC scenario or an ad-hoc network) using \gls{sdr}
+            to represent
+            Edge Devices (EDs) and a Fusion Center (FC)\cite{sahin_survey_2023}.
+        \item \textit{Hardware and Software Tools}: Specific mention
+            of the \gls{sdr} and the use of MATLAB for
+            waveform generation, digital signal processing, control loops, and
+            simulation\cite{sahin_survey_2023,xiao_heterogeneous_2025,
+            yang_federated_2020,zhu_one-bit_2021}.
+    \end{itemize}
+    \subsection{Design and Implementation of the OAC Protocol}
+    \subsubsection{Selection of the OAC Scheme for Demonstration}
+    Choice of Target Function (e.g., Arithmetic Mean or Majority Vote):
+    Justification based on practical implementation constraints of
+    \gls{sdr}\cite{sahin_survey_2023}.
+    \subsubsection{Synchronization Mechanisms}
+    Detailed methodology for achieving coarse block synchronization or
+    mitigating synchronization errors (TO/CFO) in the \gls{sdr}/MATLAB
+    environment (e.g., based on trigger signals or custom control
+    loops)\cite{sahin_survey_2023,zhu_one-bit_2021,yang_federated_2020}.
+    \subsubsection{Pre-processing and Channel Compensation Implementation}
+    Implementation of the chosen modulation/encoding scheme and any
+    necessary pre-equalization (e.g., Channel Inversion precoding if a
+        coherent scheme is selected, or non-coherent coding if robustness is
+    prioritized)\cite{sahin_survey_2023,zhu_one-bit_2021}.
+    \subsection{Measurement and Data Collection Methodology}
+    Procedure for varying network parameters (e.g., number of transmitting
+    devices, transmit SNR)\cite{evgenidis_waveform_2025}.

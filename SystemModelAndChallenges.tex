@@ -1,0 +1,49 @@
+    \section{System Model and Practical Challenges in OAC}
+    \subsection{System Architecture and Channel Model}
+    \begin{itemize}
+        \item \textit{Modeling the Network}: Description of Edge Devices (EDs)
+            transmitting to an Edge Server (ES)/Fusion Center (FC), possibly
+            involving multiple antennas
+            (\gls{mimo})\cite{sahin_survey_2023,yang_federated_2020,
+            hellstrom_optimal_2023,cao_optimized_2022,zhu_over--air_2024}.
+        \item \textit{Wireless Channel Model}: Consideration of
+            channel impairments, including
+            fading (e.g., Rayleigh fading), noise (\gls{awgn}), and path
+            loss\cite{zhu_one-bit_2021,evgenidis_waveform_2025,cao_optimized_2022}.
+    \end{itemize}
+    \subsection{Impact of Practical Impairments on OAC Reliability}
+    \subsubsection{Synchronization Errors}
+    \textit{Time, Frequency, and Phase Offsets (TO, CFO, PO)}: The detrimental
+    impact of imperfect time-of-arrivals and phase alignment on signal
+    superposition and computation
+    accuracy\cite{sahin_survey_2023,evgenidis_waveform_2025,hellstrom_optimal_2023}.
+
+    \begin{lstlisting}
+        % This is a comment
+        x = linspace(0, 2*pi, 100);
+        y = sin(x) + 0.5 * randn(size(x)); % Numbers like 0.5 will be in Math Font
+        plot(x, y);
+    \end{lstlisting}
+
+    \subsubsection{Channel State Information (CSI) Imperfection}
+    The need for accurate and fresh \gls{csi} at transmitters or
+    receivers for many precoding/equalization techniques
+    \cite{sahin_survey_2023,yang_federated_2020,evgenidis_waveform_2025}.
+    \subsubsection{Waveform and Filter Design}
+    Addressing time sampling error and intersymbol interference \gls{isi}
+    inherent in digital communication transceivers when applied to OAC
+    \cite{evgenidis_waveform_2025}.
+    \subsection{Optimization Strategies to Enhance OAC Performance}
+    \begin{itemize}
+        \item \textit{Power Management}: Strategies to mitigate
+            aggregation errors, such as
+            optimizing power control policies to minimize Mean Squared Error
+            \gls{mse} or maximize convergence speed
+            \cite{sahin_survey_2023,cao_optimized_2022,evgenidis_waveform_2025}.
+        \item \textit{Transceiver Design}: Joint design of
+            pre-processing functions,
+            precoders/beamformers, and post-processing functions (decoders) to
+            match the channel to the desired function and minimize
+            distortion \cite{goldenbaum_robust_2013,hellstrom_optimal_2023,
+            sahin_survey_2023,yang_federated_2020}.
+    \end{itemize}

@@ -180,7 +180,7 @@ urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
 
 \maketitle
 
-\textbf{ \textit{Abstract} -- Over The Air Computing (\gls{ota}) is an
+\textbf{ \textit{Abstract} -- \gls{ota} is an
     emerging technique that leverages the superposition property of wireless
     channels to perform computations directly during the transmission process.
     This approach has the potential to significantly reduce latency and energy
@@ -200,204 +200,14 @@ scenarios are also presented.}
 %\printglossary[type=\acronymtype, title=List of Abbreviations]
 \clearpage
 
-\section*{Introduction}
-\addcontentsline{toc}{section}{\protect\numberline{}Introduction}
-Over the Air Computing offers a paradigm shift in how distributed 
-computations are performed in wireless networks. By exploiting the 
-inherent properties of the wireless medium, \gls{ota} enables simultaneous 
-transmissions from multiple devices to be combined in a way that directly 
-computes a desired function of the transmitted data. This technique has 
-garnered significant attention due to its potential to enhance efficiency 
-and reduce latency in applications such as federated learning, distributed 
-sensing, and real-time analytics. The motivation behind this thesis is to 
-explore the practical implementation of \gls{ota} using Software Defined 
-Radios \gls{sdr} and MATLAB, addressing the challenges associated with 
-synchronization, channel impairments, and waveform design. The research 
-objectives include designing a prototype \gls{ota} network, validating its 
-performance, and analyzing the impact of various impairments on computation 
-accuracy.
-\subsection{Background and Motivation}
-The increasing need for efficiency in computation-oriented applications
-where the interest lies in a function of local information, rather than
-the information itself \cite{sahin_survey_2023}. The conventional
-approach of separating communication and computation often proves
-suboptimal \cite{sahin_survey_2023,goldenbaum_analyzing_2011,
-goldenbaum_robust_2013}. The potential of Over-the-Air Computation
-(OAC) to achieve significantly higher computation rates by harnessing
-interference through signal superposition in a wireless Multiple Access
-Channel (MAC) \cite{sahin_survey_2023}.
-\subsection{Problem Statement and Research Objectives}
-Focusing on designing and validating a practical OAC network layout
-suitable for implementation in a controllable
-environment\cite{sahin_survey_2023}. The specific role of Software
-Defined Radios (SDRs) and MATLAB/simulation tools for prototype
-validation and addressing practical limitations such as synchronization
-and channel impairments \cite{sahin_survey_2023,xiao_heterogeneous_2025,
-evgenidis_waveform_2025}.
-\subsection{Thesis Contributions and Organization}
-
-\section{Over-the-Air Computation: Foundations and Techniques}
-\subsection{Theoretical Foundations of OAC}
-\begin{itemize}
-    \item \textit{Signal Superposition in the Multiple Access Channel (MAC)}:
-        The distinct feature of OAC where computation is handled by harnessing
-        interference via simultaneous transmissions
-        \cite{sahin_survey_2023,goldenbaum_robust_2013}.
-    \item \textit{Nomographic Functions}: Defining the class of
-        functions computable via
-        OAC, which can be expressed as a post-processed sum of pre-processed
-        sensor readings \cite{sahin_survey_2023,goldenbaum_analyzing_2011,
-        goldenbaum_nomographic_2015,goldenbaum_robust_2013}.
-    \item \textit{Examples of Nomographic Functions}: Arithmetic
-        mean, weighted sum,
-        maximum/minimum value, and modulo-2
-        sum\cite{sahin_survey_2023,evgenidis_waveform_2025,goldenbaum_robust_2013}.
-\end{itemize}
-\subsection{OAC Schemes and Implementation Strategies}
-
-    \subsubsection{Nomographic Functions}
-    The nomographic functions are the functions that depict the behavior of the \gls{ota} schemes.
-    In this thesis project I will focus on how different schemes can be used to compute the arithmetic mean of the transmitted data.
     
-
-\begin{itemize}
-    \item \textit{Analog vs. Digital OAC}: Reviewing uncoded analog
-        transmission (often
-        optimal for simple Gaussian sensor networks) versus digital schemes
-        designed for modern systems (e.g., using QAM or one-bit
-        quantization)\cite{evgenidis_waveform_2025,zhu_one-bit_2021}.
-    \item \textit{Coherent Schemes (CSI Dependent)}: Discussing
-        methods requiring
-        Channel State Information (CSI), such as Truncated Channel
-        Inversion (TCI) or
-        Zero-Forcing (ZF) coordination, for phase and amplitude
-        alignment\cite{sahin_survey_2023,cao_optimized_2022,zhu_one-bit_2021}.
-    \item \textit{Non-Coherent Schemes (CSI Independent)}: Examining
-        techniques robust to
-        synchronization errors, such as those using Orthogonal Signaling
-        (FSK/PPM)\cite{sahin_survey_2023,yang_federated_2020}.
-\end{itemize}
-
-    In this section I will demonstrate the Raised Cosine method in order to take advantage of
-    the signal superposition in the \gls{mac}.
-\subsection{Applications Context (e.g., Distributed Consensus)}
-    Application choice (e.g., Federated Edge Learning (FEEL) for gradient
-    aggregation, or average consensus in (Wireless Sensor Networks (WSNs))
-    
-    \cite{sahin_survey_2023,yang_distributed_2025,yang_federated_2020,
-    cao_optimized_2022,zhu_over--air_2024}.
-    \section{System Model and Practical Challenges in OAC}
-    \subsection{System Architecture and Channel Model}
-    \begin{itemize}
-        \item \textit{Modeling the Network}: Description of Edge Devices (EDs)
-            transmitting to an Edge Server (ES)/Fusion Center (FC), possibly
-            involving multiple antennas
-            (\gls{mimo})\cite{sahin_survey_2023,yang_federated_2020,
-            hellstrom_optimal_2023,cao_optimized_2022,zhu_over--air_2024}.
-        \item \textit{Wireless Channel Model}: Consideration of
-            channel impairments, including
-            fading (e.g., Rayleigh fading), noise (\gls{awgn}), and path
-            loss\cite{zhu_one-bit_2021,evgenidis_waveform_2025,cao_optimized_2022}.
-    \end{itemize}
-    \subsection{Impact of Practical Impairments on OAC Reliability}
-    \subsubsection{Synchronization Errors}
-    \textit{Time, Frequency, and Phase Offsets (TO, CFO, PO)}: The detrimental
-    impact of imperfect time-of-arrivals and phase alignment on signal
-    superposition and computation
-    accuracy\cite{sahin_survey_2023,evgenidis_waveform_2025,hellstrom_optimal_2023}.
-
-    \begin{lstlisting}
-        % This is a comment
-        x = linspace(0, 2*pi, 100);
-        y = sin(x) + 0.5 * randn(size(x)); % Numbers like 0.5 will be in Math Font
-        plot(x, y);
-    \end{lstlisting}
-
-    \subsubsection{Channel State Information (CSI) Imperfection}
-    The need for accurate and fresh \gls{csi} at transmitters or
-    receivers for many precoding/equalization techniques
-    \cite{sahin_survey_2023,yang_federated_2020,evgenidis_waveform_2025}.
-    \subsubsection{Waveform and Filter Design}
-    Addressing time sampling error and intersymbol interference \gls{isi}
-    inherent in digital communication transceivers when applied to OAC
-    \cite{evgenidis_waveform_2025}.
-    \subsection{Optimization Strategies to Enhance OAC Performance}
-    \begin{itemize}
-        \item \textit{Power Management}: Strategies to mitigate
-            aggregation errors, such as
-            optimizing power control policies to minimize Mean Squared Error
-            \gls{mse} or maximize convergence speed
-            \cite{sahin_survey_2023,cao_optimized_2022,evgenidis_waveform_2025}.
-        \item \textit{Transceiver Design}: Joint design of
-            pre-processing functions,
-            precoders/beamformers, and post-processing functions (decoders) to
-            match the channel to the desired function and minimize
-            distortion \cite{goldenbaum_robust_2013,hellstrom_optimal_2023,
-            sahin_survey_2023,yang_federated_2020}.
-    \end{itemize}
-    \section{Experimental Implementation using SDR and MATLAB}
-    \subsection{Experimental Layout and Network Topology}
-    \begin{itemize}
-        \item \textit{Layout Description}: Presentation of the
-            network structure (e.g., a
-            single-cell OAC scenario or an ad-hoc network) using \gls{sdr}
-            to represent
-            Edge Devices (EDs) and a Fusion Center (FC)\cite{sahin_survey_2023}.
-        \item \textit{Hardware and Software Tools}: Specific mention
-            of the \gls{sdr} and the use of MATLAB for
-            waveform generation, digital signal processing, control loops, and
-            simulation\cite{sahin_survey_2023,xiao_heterogeneous_2025,
-            yang_federated_2020,zhu_one-bit_2021}.
-    \end{itemize}
-    \subsection{Design and Implementation of the OAC Protocol}
-    \subsubsection{Selection of the OAC Scheme for Demonstration}
-    Choice of Target Function (e.g., Arithmetic Mean or Majority Vote):
-    Justification based on practical implementation constraints of
-    \gls{sdr}\cite{sahin_survey_2023}.
-    \subsubsection{Synchronization Mechanisms}
-    Detailed methodology for achieving coarse block synchronization or
-    mitigating synchronization errors (TO/CFO) in the \gls{sdr}/MATLAB
-    environment (e.g., based on trigger signals or custom control
-    loops)\cite{sahin_survey_2023,zhu_one-bit_2021,yang_federated_2020}.
-    \subsubsection{Pre-processing and Channel Compensation Implementation}
-    Implementation of the chosen modulation/encoding scheme and any
-    necessary pre-equalization (e.g., Channel Inversion precoding if a
-        coherent scheme is selected, or non-coherent coding if robustness is
-    prioritized)\cite{sahin_survey_2023,zhu_one-bit_2021}.
-    \subsection{Measurement and Data Collection Methodology}
-    Procedure for varying network parameters (e.g., number of transmitting
-    devices, transmit SNR)\cite{evgenidis_waveform_2025}.
-    
-
-    \section{Experimental Results and Discussion}
-    \subsection{Validation of the Implemented OAC Network}
-    Demonstration of successful signal superposition and computation via the
-    SDR platform\cite{sahin_survey_2023,goldenbaum_analyzing_2011}.
-    Comparison of achieved computation result against the ideal theoretical
-    value\cite{sahin_survey_2023,zhu_one-bit_2021}.
-    \subsection{Performance Evaluation under Impairments}
-    Quantifying the performance metrics, such as Mean Squared Error (MSE) or
-    Computation Error Rate (CER), of the implemented
-    scheme\cite{sahin_survey_2023,evgenidis_waveform_2025}. Analysis of the
-    impact of deliberately introduced synchronization errors or varying
-    channel noise (SNR) on the computation
-    accuracy\cite{sahin_survey_2023,evgenidis_waveform_2025}. Comparison
-    with Separation Schemes (Simulated Baseline); Illustrating the resource
-    savings and computation rate achieved by the OAC approach relative to
-    traditional orthogonal access (e.g.,
-    \gls{tdma})\cite{goldenbaum_robust_2013,sahin_survey_2023,goldenbaum_analyzing_2011}.
-    \section{Conclusion and Future Work}
-    \subsection{Summary of Thesis Findings}
-    Recap of the feasibility and performance demonstrated by the SDR-based
-    OAC network.
-    \subsection{Future Research Directions}
-    Exploring more complex OAC architectures, such as multi-antenna systems
-    \gls{mimo} or using Reconfigurable Intelligent Surfaces
-    (RIS)\cite{evgenidis_waveform_2025,zhu_over--air_2024}. Further
-    investigation into standardized OAC protocols for compatibility with
-    modern wireless networks (e.g., LTE/5G
-    protocols)\cite{zhu_one-bit_2021,sahin_survey_2023}.
+    \input{Introduction.tex}
+    \input{otaFoundationsAndTechniques.tex}
+    \input{SystemModelAndChallenges.tex}
+    \input{ExperimentalImplementation.tex}
+    \input{ResultsAndDiscussion.tex}
+    \input{ConclusionAndFutureWork.tex}
 
     \printbibliography
 
-    \end{document}
+\end{document}

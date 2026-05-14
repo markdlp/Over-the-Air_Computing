@@ -8,24 +8,24 @@
 \contentsline {subsection}{\numberline {1.a}Theoretical Foundations of OAC}{3}{subsection.1.1}%
 \contentsline {subsection}{\numberline {1.b}OAC Schemes and Implementation Strategies}{3}{subsection.1.2}%
 \contentsline {subsubsection}{\numberline {1.b.i}Nomographic Functions}{3}{subsubsection.1.2.1}%
-\contentsline {subsection}{\numberline {1.c}Applications Context (e.g., Distributed Consensus)}{4}{subsection.1.3}%
-\contentsline {section}{\numberline {2}System Model and Practical Challenges in OAC}{4}{section.2}%
-\contentsline {subsection}{\numberline {2.a}System Architecture and Channel Model}{4}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.b}Impact of Practical Impairments on OAC Reliability}{4}{subsection.2.2}%
-\contentsline {subsubsection}{\numberline {2.b.i}Synchronization Errors}{4}{subsubsection.2.2.1}%
-\contentsline {subsubsection}{\numberline {2.b.ii}Channel State Information (CSI) Imperfection}{4}{subsubsection.2.2.2}%
-\contentsline {subsubsection}{\numberline {2.b.iii}Waveform and Filter Design}{4}{subsubsection.2.2.3}%
-\contentsline {subsection}{\numberline {2.c}Optimization Strategies to Enhance OAC Performance}{4}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Experimental Implementation using SDR and MATLAB}{5}{section.3}%
-\contentsline {subsection}{\numberline {3.a}Experimental Layout and Network Topology}{5}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.b}Design and Implementation of the OAC Protocol}{5}{subsection.3.2}%
-\contentsline {subsubsection}{\numberline {3.b.i}Selection of the OAC Scheme for Demonstration}{5}{subsubsection.3.2.1}%
-\contentsline {subsubsection}{\numberline {3.b.ii}Synchronization Mechanisms}{5}{subsubsection.3.2.2}%
-\contentsline {subsubsection}{\numberline {3.b.iii}Pre-processing and Channel Compensation Implementation}{5}{subsubsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.c}Measurement and Data Collection Methodology}{5}{subsection.3.3}%
-\contentsline {section}{\numberline {4}Experimental Results and Discussion}{5}{section.4}%
-\contentsline {subsection}{\numberline {4.a}Validation of the Implemented OAC Network}{5}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.b}Performance Evaluation under Impairments}{5}{subsection.4.2}%
-\contentsline {section}{\numberline {5}Conclusion and Future Work}{6}{section.5}%
-\contentsline {subsection}{\numberline {5.a}Summary of Thesis Findings}{6}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.b}Future Research Directions}{6}{subsection.5.2}%
+\contentsline {subsection}{\numberline {1.c}Applications Context (e.g., Distributed Consensus)}{6}{subsection.1.3}%
+\contentsline {section}{\numberline {2}System Model and Practical Challenges in OAC}{6}{section.2}%
+\contentsline {subsection}{\numberline {2.a}System Architecture and Channel Model}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.b}Impact of Practical Impairments on OAC Reliability}{6}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.b.i}Synchronization Errors}{6}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.b.ii}Channel State Information (CSI) Imperfection}{6}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.b.iii}Waveform and Filter Design}{6}{subsubsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.c}Optimization Strategies to Enhance OAC Performance}{6}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Experimental Implementation using SDR and MATLAB}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.a}Experimental Layout and Network Topology}{7}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.b}Design and Implementation of the OAC Protocol}{7}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.b.i}Selection of the OAC Scheme for Demonstration}{7}{subsubsection.3.2.1}%
+\contentsline {subsubsection}{\numberline {3.b.ii}Synchronization Mechanisms}{7}{subsubsection.3.2.2}%
+\contentsline {subsubsection}{\numberline {3.b.iii}Pre-processing and Channel Compensation Implementation}{7}{subsubsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.c}Measurement and Data Collection Methodology}{7}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Experimental Results and Discussion}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.a}Validation of the Implemented OAC Network}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.b}Performance Evaluation under Impairments}{7}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Conclusion and Future Work}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.a}Summary of Thesis Findings}{8}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.b}Future Research Directions}{8}{subsection.5.2}%

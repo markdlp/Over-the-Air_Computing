@@ -1,0 +1,67 @@
+\section{Over-the-Air Computation: Foundations and Techniques}
+\subsection{Theoretical Foundations of OAC}
+\begin{itemize}
+    \item \textit{Signal Superposition in the Multiple Access Channel (MAC)}:
+        The distinct feature of OAC where computation is handled by harnessing
+        interference via simultaneous transmissions
+        \cite{sahin_survey_2023,goldenbaum_robust_2013}.
+    \item \textit{Nomographic Functions}: Defining the class of
+        functions computable via
+        OAC, which can be expressed as a post-processed sum of pre-processed
+        sensor readings \cite{sahin_survey_2023,goldenbaum_analyzing_2011,
+        goldenbaum_nomographic_2015,goldenbaum_robust_2013}.
+    \item \textit{Examples of Nomographic Functions}: Arithmetic
+        mean, weighted sum,
+        maximum/minimum value, and modulo-2
+        sum\cite{sahin_survey_2023,evgenidis_waveform_2025,goldenbaum_robust_2013}.
+\end{itemize}
+\subsection{OAC Schemes and Implementation Strategies}
+
+    \subsubsection{Nomographic Functions}
+    The nomographic functions are the functions that depict the behavior of the \gls{ota} schemes.
+    In this thesis project I will focus on how different schemes can be used to compute the arithmetic mean of the transmitted data.
+    
+
+\begin{itemize}
+    \item \textit{Analog vs. Digital OAC}: Reviewing uncoded analog
+        transmission (often
+        optimal for simple Gaussian sensor networks) versus digital schemes
+        designed for modern systems (e.g., using QAM or one-bit
+        quantization)\cite{evgenidis_waveform_2025,zhu_one-bit_2021}.
+    \item \textit{Coherent Schemes (CSI Dependent)}: Discussing
+        methods requiring
+        Channel State Information (CSI), such as Truncated Channel
+        Inversion (TCI) or
+        Zero-Forcing (ZF) coordination, for phase and amplitude
+        alignment\cite{sahin_survey_2023,cao_optimized_2022,zhu_one-bit_2021}.
+    \item \textit{Non-Coherent Schemes (CSI Independent)}: Examining
+        techniques robust to
+        synchronization errors, such as those using Orthogonal Signaling
+        (FSK/PPM)\cite{sahin_survey_2023,yang_federated_2020}.
+\end{itemize}
+
+    In this section I will demonstrate the Raised Cosine method in order to take advantage of
+    the signal superposition in the \gls{mac}. More specifically I will implement three devices
+    transmitting simultaneously to a fusion center. The transmitted data will be pre-processed 
+    using the Raised Cosine method in order to mitigate the intersymbol interference (ISI) that 
+    is inherent in digital communication transceivers. The flowgraph of the implementation is 
+    shown in Fig. \ref{fig:gnuradio_flowgraph}. In it three devices pick a character from a
+    sequence of charachters, unpack it to separate bytes and perform the mapping to the 
+    constellation points. The resulting symbols are then passed through a Raised Cosine filter 
+    and transmitted simultaneously to the fusion center. The fusion center performs the matched 
+    filtering and the necessary post-processing to compute the desired function of the transmitted 
+    data.
+    \begin{landscape}
+        \begin{figure}[htpb]
+            \centering
+            \includegraphics[width=\linewidth]{ota_isi_matched.pdf}
+            \caption{GNU Radio Companion flowgraph for the OTA implementation including ISI considerations.}
+            \label{fig:gnuradio_flowgraph}
+        \end{figure}
+    \end{landscape}
+\subsection{Applications Context (e.g., Distributed Consensus)}
+    Application choice (e.g., Federated Edge Learning (FEEL) for gradient
+    aggregation, or average consensus in (Wireless Sensor Networks (WSNs))
+    
+    \cite{sahin_survey_2023,yang_distributed_2025,yang_federated_2020,
+    cao_optimized_2022,zhu_over--air_2024}.
