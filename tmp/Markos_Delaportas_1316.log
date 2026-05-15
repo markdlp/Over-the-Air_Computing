@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.4.30)  14 MAY 2026 23:25
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.4.30)  15 MAY 2026 19:16
  restricted system commands enabled.
  file:line:error style messages enabled.
 **Markos_Delaportas_1316.tex
@@ -1704,32 +1704,36 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 119.
  (c:/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+) (c:/texlive/2026/texmf-dist/tex/latex/subfiles/subfiles.sty
+Package: subfiles 2020/11/14 v2.2 Multi-file projects (package)
+ (c:/texlive/2026/texmf-dist/tex/latex/import/import.sty
+Package: import 2020/04/01  v 6.2
+))
 \@quotelevel=\count596
 \@quotereset=\count597
  (./tmp/Markos_Delaportas_1316.aux)
 \openout1 = Markos_Delaportas_1316.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 179.
-LaTeX Font Info:    ... okay on input line 179.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 179.
-LaTeX Font Info:    ... okay on input line 179.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 179.
-LaTeX Font Info:    ... okay on input line 179.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 179.
-LaTeX Font Info:    ... okay on input line 179.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 179.
-LaTeX Font Info:    ... okay on input line 179.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 179.
-LaTeX Font Info:    ... okay on input line 179.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 179.
-LaTeX Font Info:    ... okay on input line 179.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 179.
-LaTeX Font Info:    ... okay on input line 179.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 179.
-LaTeX Font Info:    ... okay on input line 179.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 179.
-LaTeX Font Info:    ... okay on input line 179.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 180.
+LaTeX Font Info:    ... okay on input line 180.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: luatex
@@ -1792,13 +1796,13 @@ Package caption Info: End \AtBeginDocument code.
 
 Package pgfplots notification 'compat/show suggested version=true': document has been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
-LaTeX Info: Redefining \microtypecontext on input line 179.
-Package microtype Info: Applying patch `item' on input line 179.
-Package microtype Info: Applying patch `toc' on input line 179.
-Package microtype Info: Applying patch `eqnum' on input line 179.
-Package microtype Info: Applying patch `footnote' on input line 179.
-Package microtype Info: Applying patch `verbatim' on input line 179.
-LaTeX Info: Redefining \microtypesetup on input line 179.
+LaTeX Info: Redefining \microtypecontext on input line 180.
+Package microtype Info: Applying patch `item' on input line 180.
+Package microtype Info: Applying patch `toc' on input line 180.
+Package microtype Info: Applying patch `eqnum' on input line 180.
+Package microtype Info: Applying patch `footnote' on input line 180.
+Package microtype Info: Applying patch `verbatim' on input line 180.
+LaTeX Info: Redefining \microtypesetup on input line 180.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1813,7 +1817,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LibertinusSerif' (encoding: TU).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-Package hyperref Info: Link coloring ON on input line 179.
+Package hyperref Info: Link coloring ON on input line 180.
 (./tmp/Markos_Delaportas_1316.out) (./tmp/Markos_Delaportas_1316.out)
 \@outlinefile=\write5
 
@@ -1846,8 +1850,8 @@ Package biblatex Info: Data encoding 'utf8' specified.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'Markos_Delaportas_1316.bbl' found.
  (./tmp/Markos_Delaportas_1316.bbl)
-Package biblatex Info: Reference section=0 on input line 179.
-Package biblatex Info: Reference segment=0 on input line 179.
+Package biblatex Info: Reference section=0 on input line 180.
+Package biblatex Info: Reference segment=0 on input line 180.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LibertinusSans' (encoding: TU).
 (microtype)             For optimal results, create family-specific settings.
@@ -1867,32 +1871,32 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 \openout6 = Markos_Delaportas_1316.toc
  [2] (./Introduction.tex) (./otaFoundationsAndTechniques.tex
-<img/uowm.png, id=237, 283.1804pt x 48.37665pt>
+<img/uowm.png, id=244, 283.1804pt x 48.37665pt>
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 37.
+Package luatex.def Info: img/uowm.png  used on input line 41.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
-<img/ece.png, id=238, 491.8375pt x 491.8375pt>
+<img/ece.png, id=245, 491.8375pt x 491.8375pt>
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 37.
+Package luatex.def Info: img/ece.png  used on input line 41.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [3
 
 <./img/uowm.png><./img/ece.png>]
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 54.
+Package luatex.def Info: img/uowm.png  used on input line 58.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 54.
+Package luatex.def Info: img/ece.png  used on input line 58.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [4]
-<img/ota_isi_matched.pdf, id=266, 1806.75pt x 485.815pt>
+<img/ota_isi_matched.pdf, id=273, 1806.75pt x 485.815pt>
 File: img/ota_isi_matched.pdf Graphic file (type pdf)
 <use img/ota_isi_matched.pdf>
-Package luatex.def Info: img/ota_isi_matched.pdf  used on input line 57.
+Package luatex.def Info: img/ota_isi_matched.pdf  used on input line 61.
 (luatex.def)             Requested size: 816.79765pt x 219.6303pt.
  [5
 
@@ -1917,40 +1921,40 @@ Package microtype Info: Character `guilsinglright ' is missing
 ) (./ExperimentalImplementation.tex
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 9.
+Package luatex.def Info: img/uowm.png  used on input line 13.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 9.
+Package luatex.def Info: img/ece.png  used on input line 13.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [6
 
 ]) (./ResultsAndDiscussion.tex) (./ConclusionAndFutureWork.tex
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 5.
+Package luatex.def Info: img/uowm.png  used on input line 9.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 5.
+Package luatex.def Info: img/ece.png  used on input line 9.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
- [7])
+ [7]) (./Appendix_A.tex)
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 211.
+Package luatex.def Info: img/uowm.png  used on input line 219.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 211.
+Package luatex.def Info: img/ece.png  used on input line 219.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [8]
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 213.
+Package luatex.def Info: img/uowm.png  used on input line 221.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 213.
+Package luatex.def Info: img/ece.png  used on input line 221.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [9] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
@@ -2133,6 +2137,8 @@ biblatex.cfg
 blx-case-expl3.sty    2025/07/10 v3.21 expl3 case changing code for biblatex
     umsa.fd    2013/01/14 v3.01 AMS symbols A
     umsb.fd    2013/01/14 v3.01 AMS symbols B
+subfiles.sty    2020/11/14 v2.2 Multi-file projects (package)
+  import.sty    2020/04/01  v 6.2
 supp-pdf.mkii
 epstopdf-base.sty    2020-01-24 v2.11 Base part for package epstopdf
 epstopdf-sys.cfg    2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
@@ -2159,6 +2165,7 @@ ResultsAndDiscussion.tex
 ConclusionAndFutureWork.tex
 img/uowm.png
  img/ece.png
+Appendix_A.tex
 img/uowm.png
  img/ece.png
 img/uowm.png
@@ -2166,26 +2173,26 @@ img/uowm.png
  ***********
 
 Package rerunfilecheck Info: File `Markos_Delaportas_1316.out' has not changed.
-(rerunfilecheck)             Checksum: DB8E9A27438676E6A145190E01E5A02E;7554.
+(rerunfilecheck)             Checksum: 094CB1430B017274295CA77E76A22F95;7761.
 Package logreq Info: Writing requests to 'Markos_Delaportas_1316.run.xml'.
 
 \openout1 = Markos_Delaportas_1316.run.xml
 )
 
 Here is how much of LuaTeX's memory you used:
- 65926 strings out of 475900
+ 66080 strings out of 475900
  156327,2848258 words of node,token memory allocated
- 798 words of node memory still in use:
-   7 hlist, 2 vlist, 2 rule, 1 local_par, 5 glue, 5 kern, 1 penalty, 3 glyph, 17 attribute, 89 glue_spec, 17 attribute_list, 2 write, 4 pdf_action nodes
-   avail lists: 1:12,2:1828,3:652,4:1748,5:1423,6:153,7:9478,8:46,9:3475,10:45,11:758
- 87087 multiletter control sequences out of 65536+600000
- 125 fonts using 52972839 bytes
+ 793 words of node memory still in use:
+   7 hlist, 2 vlist, 2 rule, 1 local_par, 5 glue, 5 kern, 1 penalty, 3 glyph, 17 attribute, 88 glue_spec, 17 attribute_list, 2 write, 4 pdf_action nodes
+   avail lists: 1:10,2:1825,3:622,4:1748,5:1432,6:155,7:9087,8:46,9:3475,10:45,11:754
+ 87194 multiletter control sequences out of 65536+600000
+ 125 fonts using 52972591 bytes
  102i,15n,124p,5876b,2304s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <./font/LibertinusMath-Regular.otf><./font/LibertinusMono-Regular.otf><./font/LibertinusSerif-Italic.otf><./font/LibertinusSerif-Bold.otf><./font/LibertinusSerif-BoldItalic.otf><./font/LibertinusSerif-Regular.otf><./font/LibertinusSans-Regular.otf>
-Output written on Markos_Delaportas_1316.pdf (9 pages, 196920 bytes).
+Output written on Markos_Delaportas_1316.pdf (9 pages, 197618 bytes).
 
-PDF statistics: 479 PDF objects out of 1000 (max. 8388607)
- 426 compressed objects within 5 object streams
- 68 named destinations out of 1000 (max. 1048576)
- 266 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 487 PDF objects out of 1000 (max. 8388607)
+ 434 compressed objects within 5 object streams
+ 69 named destinations out of 1000 (max. 1048576)
+ 274 words of extra memory for PDF output out of 10000 (max. 100000000)
 
