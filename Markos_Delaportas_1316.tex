@@ -176,6 +176,7 @@ urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
 } \author{\textsf{Markos Delaportas} \footnote{E-mail: ece01316@uowm.gr}}
 \date{\textsf{April 2026}}
 
+\usepackage{subfiles}
 \begin{document}
 
 \maketitle
@@ -201,12 +202,12 @@ scenarios are also presented.}
 \clearpage
 
     
-    \input{Introduction.tex}
-    \input{otaFoundationsAndTechniques.tex}
-    \input{SystemModelAndChallenges.tex}
-    \input{ExperimentalImplementation.tex}
-    \input{ResultsAndDiscussion.tex}
-    \input{ConclusionAndFutureWork.tex}
+    \subfile{Introduction}
+    \subfile{otaFoundationsAndTechniques}
+    \subfile{SystemModelAndChallenges}
+    \subfile{ExperimentalImplementation}
+    \subfile{ResultsAndDiscussion}
+    \subfile{ConclusionAndFutureWork}
 
     \printbibliography
 
