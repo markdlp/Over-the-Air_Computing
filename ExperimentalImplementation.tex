@@ -4,6 +4,34 @@
     
     \section{Experimental Implementation using SDR and MATLAB}
     \subsection{Experimental Layout and Network Topology}
+        In the (following) table we can see the parameters of the bpsk layout
+        \begin{table}[htpb]
+            \centering
+            \caption{Key SDR Hardware and Software Parameters for the OAC Implementation}
+            \label{tab:sdr_parameters}
+            \ra{1.3} % Uses your custom command to increase row spacing slightly
+            \begin{tabular}{@{}llp{7cm}@{}}
+                \toprule
+                \textbf{Parameter} & \textbf{Value} & \textbf{Description} \\
+                \midrule
+                
+                \multicolumn{3}{@{}l}{\textit{Hardware Configurations}} \\
+                Center Frequency ($f_c$) & 2.4 GHz & ISM band, selected to minimize external interference. \\
+                Sample Rate ($f_s$)      & 32 kHz  & Defined b aseband rate for the SDR sink/source blocks. \\
+                TX / RX Gain             & TBD     & Adjusted during runtime to prevent clipping while maintaining sufficient SNR. \\
+                Antenna Configuration    & SISO    & Single-Input Single-Output for initial baseline testing. \\
+                
+                \midrule
+                \multicolumn{3}{@{}l}{\textit{Software \& Baseband Processing}} \\
+                Modulation Scheme        & BPSK    & Binary Phase Shift Keying (Symbol mapping: $-1, 1$). \\
+                Samples per Symbol (sps) & 6       & Determines the interpolation/decimation rate for the signal. \\
+                Pulse Shaping Filter     & RRC     & Root Raised Cosine filter applied to mitigate Inter-Symbol Interference (ISI). \\
+                Roll-off Factor ($\alpha$)& 0.3    & Standard excess bandwidth factor defining the filter's frequency transition band. \\
+                
+                \bottomrule
+            \end{tabular}
+        \end{table}
+
     \begin{itemize}
         \item \textit{Layout Description}: Presentation of the
             network structure (e.g., a

@@ -3,6 +3,14 @@
 \begin{document}
 
 \section{Over-the-Air Computation: Foundations and Techniques}
+The \gls{ota} paradigm takes advantage of the superposition property of 
+the wireless medium to enable simultaneous transmissions from multiple devices 
+to be combined in a way that directly computes a desired function of the 
+transmitted data. This section examines the theoretical foundations and 
+practical techniques of \gls{ota} computation, providing an overview 
+of the key concepts and methodologies that underpin the approach 
+to distributed computing in wireless networks.
+
 \subsection{Theoretical Foundations of OAC}
 \begin{itemize}
     \item \textit{Signal Superposition in the Multiple Access Channel (MAC)}:
@@ -11,7 +19,7 @@
         \cite{sahin_survey_2023,goldenbaum_robust_2013}.
     \item \textit{Nomographic Functions}: Defining the class of
         functions computable via
-        OAC, which can be expressed as a post-processed sum of pre-processed
+        \gls{ota}, which can be expressed as a post-processed sum of pre-processed
         sensor readings \cite{sahin_survey_2023,goldenbaum_analyzing_2011,
         goldenbaum_nomographic_2015,goldenbaum_robust_2013}.
     \item \textit{Examples of Nomographic Functions}: Arithmetic
@@ -23,26 +31,24 @@
 
     \subsubsection{Nomographic Functions}
     The nomographic functions are the functions that depict the behavior of the \gls{ota} schemes.
-    In this thesis project I will focus on how different schemes can be used to compute the arithmetic mean of the transmitted data.
-    
+    In this thesis project I will focus on how different schemes can be used to compute the arithmetic 
+    mean of the transmitted data.
 
-\begin{itemize}
-    \item \textit{Analog vs. Digital OAC}: Reviewing uncoded analog
-        transmission (often
-        optimal for simple Gaussian sensor networks) versus digital schemes
-        designed for modern systems (e.g., using QAM or one-bit
-        quantization)\cite{evgenidis_waveform_2025,zhu_one-bit_2021}.
-    \item \textit{Coherent Schemes (CSI Dependent)}: Discussing
-        methods requiring
-        Channel State Information (CSI), such as Truncated Channel
-        Inversion (TCI) or
-        Zero-Forcing (ZF) coordination, for phase and amplitude
-        alignment\cite{sahin_survey_2023,cao_optimized_2022,zhu_one-bit_2021}.
-    \item \textit{Non-Coherent Schemes (CSI Independent)}: Examining
-        techniques robust to
-        synchronization errors, such as those using Orthogonal Signaling
-        (FSK/PPM)\cite{sahin_survey_2023,yang_federated_2020}.
-\end{itemize}
+    \begin{itemize}
+        \item \textit{Analog vs. Digital OAC}: Reviewing uncoded analog
+            transmission (often
+            optimal for simple Gaussian sensor networks) versus digital schemes
+            designed for modern systems (e.g., using QAM or one-bit
+            quantization)\cite{evgenidis_waveform_2025,zhu_one-bit_2021}.
+        \item \textit{Coherent Schemes (CSI Dependent)}: Discussing methods requiring
+            Channel State Information (CSI), such as Truncated Channel Inversion (TCI)
+            or Zero-Forcing (ZF) coordination, for phase and amplitude alignment
+            \cite{sahin_survey_2023,cao_optimized_2022,zhu_one-bit_2021}.
+        \item \textit{Non-Coherent Schemes (CSI Independent)}: Examining
+            techniques robust to
+            synchronization errors, such as those using Orthogonal Signaling
+            (FSK/PPM)\cite{sahin_survey_2023,yang_federated_2020}.
+    \end{itemize}
 
     In this section I will demonstrate the Raised Cosine method in order to take advantage of
     the signal superposition in the \gls{mac}. More specifically I will implement three devices
@@ -60,11 +66,29 @@
             \centering
             \includegraphics[width=\linewidth]{ota_isi_matched.pdf}
             \caption{GNU Radio Companion flowgraph for the OTA implementation including ISI considerations.}
-            \label{fig:gnuradio_flowgraph}
+            \label{fig:ota_isi_matched}
         \end{figure}
     \end{landscape}
-\subsection{Applications Context (e.g., Distributed Consensus)}
-    Application choice (e.g., Federated Edge Learning (FEEL) for gradient
+
+    For the purely analog \gls{ota} the RootRaised Cosine can be implemented in GNU Radio using
+    and interpolating filted block at the transmitter and a decimating filter at the receiver. 
+    The interpolation/decimation 
+    rate is determined by the number of samples per symbol (sps) which is set to 6 in this 
+    implementation. The roll-off factor of the filter is set to 0.3, 
+    which defines the excess bandwidth of the signal and helps to 
+    mitigate intersymbol interference (ISI) while maintaining spectral efficiency.
+    The Root Raised Cosine filter could have been chosen \dots
+    \begin{landscape}
+        \begin{figure}[htpb]
+            \centering
+            \includegraphics[width=\linewidth]{OTAwithISI.pdf}
+            \caption{GNU Radio Companion flowgraph for the OTA implementation including ISI considerations.}
+            \label{fig:ota_analog}
+        \end{figure}
+    \end{landscape}
+
+    \subsection{Applications Context (e.g., Distributed Consensus)}
+    Application choice (e.g., Federated Edge Learning (FEEL)) for gradient
     aggregation, or average consensus in (Wireless Sensor Networks (WSNs))
     
     \cite{sahin_survey_2023,yang_distributed_2025,yang_federated_2020,
