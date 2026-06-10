@@ -2,10 +2,10 @@
 
 \begin{document}    
     
-    \section{System Model and Practical Challenges in \gls{ota}}
+    \section{System Model and Practical Challenges in \texorpdfstring{\gls{ota}}{ }}
         A system that takes advantage of \gls{ota} can be modeled in different
         ways, also depending on the use case and environment. Most layouts involve
-        a number of \gls{eds} that transmit to a \gls{fs} or \gls{es}. The channel 
+        a number of \gls{ed}s that transmit to a \gls{fc} or \gls{es}. The channel 
         model is also an important aspect, as it can be affected by fading, noise, 
         and path loss. In addition to the system model, there are also practical 
         challenges that can affect the reliability of \gls{ota}, such as synchronization 
@@ -15,28 +15,71 @@
 
     \subsection{System Architecture and Channel Model}
         In this section the mathematical model of a network consisting of three
-        \gls{eds} will be presented. These devices are deployed at an agricultural
-        field and take advantage of \gls{ota} in order to transmit to the \gls{fs},
+        \gls{ed}s will be presented. These devices are deployed at an agricultural
+        field and take advantage of \gls{ota} in order to transmit to the \gls{fc},
         by using \gls{pam}. The physical environment has multipath characteristics
         and an impulse response with a span of three taps.
 
     \begin{itemize}
-        \item \textit{Modeling the Network}: Description of Edge Devices (EDs)
-            transmitting to an Edge Server (ES)/Fusion Center (FC), possibly
-            involving multiple antennas
+        \item \textit{Modeling the Network}: Description of \gls{ed}s
+            transmitting to an \gls{fc}, possibly involving multiple antennas
             (\gls{mimo})\cite{sahin_survey_2023,yang_federated_2020,
             hellstrom_optimal_2023,cao_optimized_2022,zhu_over--air_2024}.
 
             \begin{itemize}
-                \item \textbf{Sensor 1}: $ x_1 \[n\] = \[2, -1, 1\] $
-                \item \textbf{Sensor 2}: $ x_1 \[n\] = \[1, 2, -1\] $
+                \item \textbf{Sensor 1}: $x_1[n] = [2, -1, 1]$
+                \item \textbf{Sensor 2}: $x_1[n] = [1, 2, -1]$
             \end{itemize}
+
         \item \textit{Wireless Channel Model}: Consideration of
             channel impairments, including
             fading (e.g., Rayleigh fading), noise (\gls{awgn}), and path
             loss\cite{zhu_one-bit_2021,evgenidis_waveform_2025,cao_optimized_2022}.
+
+            The channel impulse response is given as: $h[n] = [1.0, 0.5, -0.2]$
+
+            (\textit{Here zero noise is assumed})
     \end{itemize}
+
+    To calculate the ideal target function of the \gls{ota} aggregated sequence, $s[n]$,
+    the ideal flat channel without multipath is assumed as: $h_{ideal}[n] = [1]$.
+    \begin{equation}
+        \label{eq:IdealTargetFunc}
+        \begin{aligned}
+            s[n] & = x_1[n] + x_2[n] \Rightarrow \\
+            s[n] & = [3, 1, 0]
+        \end{aligned}
+    \end{equation}
+
     \subsection{Impact of Practical Impairments on OAC Reliability}
+        In order to calculate the received signal with \gls{isi} at the \gls{fc},
+        the linear property of the channel can be taken advantage of.
+
+        \begin{equation}
+            \label{eq:ActualTargetFunc}
+            \begin{aligned}
+                y[n] & = s[n] \ast h[n] \Rightarrow \\
+                y[n] & = \sum_{m=0}^{n} s[m] h[n - m] \Rightarrow \\
+                y[n] & = [3.0, 2.5, -0.1, -0.2, 0];
+            \end{aligned}
+        \end{equation}
+
+        It is obvious that because of the \gls{isi} the three symbols of 
+        \ref{eq:IdealTargetFunc} are spread to the five symbols of \ref{eq:ActualTargetFunc}.    
+
+        To calculate the \gls{mse} at each sample the comparison of the actual received
+        signal to the ideal target function shall be made.
+
+        \begin{equation}
+            \label{eq:mse}
+            \begin{aligned}
+                e[n] & = y[n] - n[n] \Rightarrow \\
+                e[n] & = [0.0, 1.5, -0.1, -0.2, 0.0] \\
+                MSE & = \frac{e[n]}{5} \Rightarrow \\
+                MSE & = 0.46
+            \end{aligned}
+        \end{equation}
+
     \subsubsection{Synchronization Errors}
     \textit{Time, Frequency, and Phase Offsets (TO, CFO, PO)}: The detrimental
     impact of imperfect time-of-arrivals and phase alignment on signal
@@ -56,7 +99,7 @@
     \cite{sahin_survey_2023,yang_federated_2020,evgenidis_waveform_2025}.
     \subsubsection{Waveform and Filter Design}
     Addressing time sampling error and intersymbol interference \gls{isi}
-    inherent in digital communication transceivers when applied to OAC
+    inherent in digital communication transceivers when applied to \gls{ota}
     \cite{evgenidis_waveform_2025}.
     \subsection{Optimization Strategies to Enhance OAC Performance}
     \begin{itemize}
