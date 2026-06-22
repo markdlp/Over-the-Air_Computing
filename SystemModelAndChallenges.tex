@@ -51,6 +51,31 @@
         \end{aligned}
     \end{equation}
 
+    \subsection{Waveform Design and Intersymbol Interference in Nomographic Computations}
+        \label{subsec:waveform_isi}
+
+        To transcend idealized discrete-time models, it is imperative to analyze the Over-the-Air (OTA) computation architecture in the continuous-time domain, incorporating the physical constraints of pulse shaping and channel memory. 
+
+        According to Kolmogorov's superposition theorem, a multivariate target function $f:\mathbb{R}^K \to \mathbb{R}$ can be represented nomographically. Assuming the Fusion Center (FC) necessitates the geometric mean of the sensor observations $v_k[m]$, the requisite pre-processing and post-processing functions are designated as:
+        \begin{equation}
+            \phi_k(v_k) = \ln(v_k), \quad \psi(y) = \exp\left(\frac{y}{K}\right)
+        \end{equation}
+
+        The End Devices (EDs) emit the pre-processed symbols $s_k[m] = \phi_k(v_k[m])$ via Pulse Amplitude Modulation (PAM). Employing a Root Raised Cosine (RRC) filter $g(t)$ to strictly bound the spectral occupancy, the transmitted waveform of the $k$-th device is formulated as:
+        \begin{equation}
+            u_k(t) = \sum_{m=-\infty}^{\infty} s_k[m] g(t - m T_s)
+        \end{equation}
+
+        Propagating through a multiple-access channel characterized by a fractional multipath delay profile $h(t) = \delta(t) + \alpha_1\delta(t - \tau)$, the aggregated signal arrives at the FC. Upon traversing the matched filter $g(-t)$ and undergoing sampling at $t=nT_s$, the discrete sequence emerges as:
+        \begin{equation}
+            y[n] = \sum_{k=1}^{K} s_k[n] + \alpha_1 \sum_{k=1}^{K} \sum_{m=-\infty}^{\infty} s_k[m] p(n T_s - m T_s - \tau) + w[n]
+        \end{equation}
+        where $p(t)$ denotes the Raised Cosine Nyquist pulse, and $w[n]$ signifies the filtered noise sequence.
+
+        Equation (3) explicitly segregates the desired OTA superposition (the primary term) from the severe \gls{isi} induced by the fractional delay $\tau$ disrupting the zero-crossing alignment of $p(t)$. 
+
+        To evaluate the degradation imposed by this fractional delay, an extensive computational model was constructed in MATLAB. The simulation iterates the excess bandwidth parameter (roll-off factor $\alpha$) to quantify the attenuation of the ISI tails and its subsequent impact on the Mean Squared Error (MSE).
+
     \subsection{Impact of Practical Impairments on OAC Reliability}
         In order to calculate the received signal with \gls{isi} at the \gls{fc},
         the linear property of the channel can be taken advantage of.
