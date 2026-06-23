@@ -2,144 +2,107 @@
 
 \begin{document}    
     
-    \section{System Model and Practical Challenges in \texorpdfstring{\gls{ota}}{ }}
-        A system that takes advantage of \gls{ota} can be modeled in different
-        ways, also depending on the use case and environment. Most layouts involve
-        a number of \gls{ed}s that transmit to a \gls{fc} or \gls{es}. The channel 
-        model is also an important aspect, as it can be affected by fading, noise, 
-        and path loss. In addition to the system model, there are also practical 
-        challenges that can affect the reliability of \gls{ota}, such as synchronization 
-        errors and waveform design. To enhance the performance of
-        \gls{ota}, optimization strategies can be employed, such as power management
-        and transceiver design.
+        \section{System Model and Practical Challenges in \texorpdfstring{\gls{ota}}{ }} A
+        system that utilizes \gls{ota} computing can be modeled in various ways depending
+        on the specific use case and propagation environment. Most architectures involve a
+        set of \gls{ed}s that transmit concurrently to a \gls{fc} or \gls{es}. The
+        communication channel is a critical component of this model, as it introduces
+        physical impairments such as fading, noise, and path loss. In addition to the
+        channel model, practical challenges inherent to wireless communications---such as
+        time sampling errors, multipath propagation, and waveform design---can
+        significantly degrade the computational reliability of \gls{ota} systems. To
+        mitigate these effects, optimization strategies including power management,
+        transceiver design, and equalization must be employed.
 
-    \subsection{System Architecture and Channel Model}
-        In this section the mathematical model of a network consisting of three
-        \gls{ed}s will be presented. These devices are deployed at an agricultural
-        field and take advantage of \gls{ota} in order to transmit to the \gls{fc},
-        by using \gls{pam}. The physical environment has multipath characteristics
-        and an impulse response with a span of three taps.
+        \subsection{System Architecture and Channel Model}
+            To mathematically formulate the impact of channel impairments on \gls{ota}
+            computing, we consider a discrete-time network model consisting of multiple
+            \gls{ed}s deployed in an agricultural environment. These devices utilize Pulse
+            Amplitude Modulation (\gls{pam}) to transmit local temperature readings to a
+            central \gls{fc}. 
 
-    \begin{itemize}
-        \item \textit{Modeling the Network}: Description of \gls{ed}s
-            transmitting to an \gls{fc}, possibly involving multiple antennas
-            (\gls{mimo})\cite{sahin_survey_2023,yang_federated_2020,
-            hellstrom_optimal_2023,cao_optimized_2022,zhu_over--air_2024}.
+        Let $x_i[n]$ denote the discrete-time signal transmitted by the $i$-th sensor. For
+        an illustrative scenario involving two sensors, the transmitted sequences are
+        defined as:
+        \begin{align}
+            x_1[n] &= [2, -1, 1] \\
+            x_2[n] &= [1, 2, -1]
+        \end{align}
 
-            \begin{itemize}
-                \item \textbf{Sensor 1}: $x_1[n] = [2, -1, 1]$
-                \item \textbf{Sensor 2}: $x_1[n] = [1, 2, -1]$
-            \end{itemize}
-
-        \item \textit{Wireless Channel Model}: Consideration of
-            channel impairments, including
-            fading (e.g., Rayleigh fading), noise (\gls{awgn}), and path
-            loss\cite{zhu_one-bit_2021,evgenidis_waveform_2025,cao_optimized_2022}.
-
-            The channel impulse response is given as: $h[n] = [1.0, 0.5, -0.2]$
-
-            (\textit{Here zero noise is assumed})
-    \end{itemize}
-
-    To calculate the ideal target function of the \gls{ota} aggregated sequence, $s[n]$,
-    the ideal flat channel without multipath is assumed as: $h_{ideal}[n] = [1]$.
-    \begin{equation}
-        \label{eq:IdealTargetFunc}
-        \begin{aligned}
-            s[n] & = x_1[n] + x_2[n] \Rightarrow \\
-            s[n] & = [3, 1, 0]
-        \end{aligned}
-    \end{equation}
-
-    \subsection{Waveform Design and Intersymbol Interference in Nomographic Computations}
-        \label{subsec:waveform_isi}
-
-        To transcend idealized discrete-time models, it is imperative to analyze the Over-the-Air (OTA) computation architecture in the continuous-time domain, incorporating the physical constraints of pulse shaping and channel memory. 
-
-        According to Kolmogorov's superposition theorem, a multivariate target function $f:\mathbb{R}^K \to \mathbb{R}$ can be represented nomographically. Assuming the Fusion Center (FC) necessitates the geometric mean of the sensor observations $v_k[m]$, the requisite pre-processing and post-processing functions are designated as:
+        \subsubsection{The Ideal Target Function}
+        The primary objective of \gls{ota} computing is to leverage the multiple access
+        channel (MAC) superposition property to aggregate data natively in the air.
+        Assuming a flat-fading, noise-free, and perfectly synchronized channel, the ideal
+        target function received at the \gls{fc}, denoted as $s[n]$, is the direct sum of
+        the transmitted signals:
         \begin{equation}
-            \phi_k(v_k) = \ln(v_k), \quad \psi(y) = \exp\left(\frac{y}{K}\right)
+            s[n] = \sum_{i=1}^{K} x_i[n]
         \end{equation}
+        where $K$ is the total number of transmitting devices. For the given sensor data,
+        the ideal aggregated sequence is evaluated as $s[n] = [3, 1, 0]$.
 
-        The End Devices (EDs) emit the pre-processed symbols $s_k[m] = \phi_k(v_k[m])$ via Pulse Amplitude Modulation (PAM). Employing a Root Raised Cosine (RRC) filter $g(t)$ to strictly bound the spectral occupancy, the transmitted waveform of the $k$-th device is formulated as:
+        \subsubsection{Multipath Channel Distortion}
+        In practical agricultural deployments, the physical environment exhibits multipath
+        characteristics (e.g., reflections from terrain or machinery). This is modeled as
+        a Finite Impulse Response (FIR) filter. Assuming a channel impulse response $h[n]$
+        with a span of three taps, defined as $h[n] = [1.0, 0.5, -0.2]$, the actual
+        received signal $y[n]$ is the convolution of the ideal aggregated signal with the
+        channel response:
         \begin{equation}
-            u_k(t) = \sum_{m=-\infty}^{\infty} s_k[m] g(t - m T_s)
+            y[n] = s[n] * h[n] = \sum_{k=0}^{n} s[k] h[n-k]
         \end{equation}
+        Evaluating this convolution yields the distorted sequence $y[n] = [3.0, 2.5, -0.1,
+        -0.2, 0.0]$. The extension of the sequence length from three to five symbols
+        mathematically illustrates the presence of Intersymbol Interference (\gls{isi}),
+        wherein previous and future symbols bleed into the current sampling instance.
 
-        Propagating through a multiple-access channel characterized by a fractional multipath delay profile $h(t) = \delta(t) + \alpha_1\delta(t - \tau)$, the aggregated signal arrives at the FC. Upon traversing the matched filter $g(-t)$ and undergoing sampling at $t=nT_s$, the discrete sequence emerges as:
+        \subsubsection{Mean Squared Error (MSE) Evaluation}
+        To quantify the degradation caused by the multipath channel, the Mean Squared
+        Error (\gls{mse}) is calculated between the ideal target function $s[n]$ and the
+        actual received signal $y[n]$. The error at each discrete time step is given by
+        $e[n] = y[n] - s[n]$. For a sequence of length $N$, the overall \gls{mse} is
+        defined as:
         \begin{equation}
-            y[n] = \sum_{k=1}^{K} s_k[n] + \alpha_1 \sum_{k=1}^{K} \sum_{m=-\infty}^{\infty} s_k[m] p(n T_s - m T_s - \tau) + w[n]
+            \text{MSE} = \frac{1}{N} \sum_{n=0}^{N-1} (y[n] - s[n])^2
         \end{equation}
-        where $p(t)$ denotes the Raised Cosine Nyquist pulse, and $w[n]$ signifies the filtered noise sequence.
+        For the evaluated sequences, the discrepancy between the ideal sum and the
+        ISI-corrupted signal results in an $\text{MSE} = 0.46$. This theoretical error
+        establishes the baseline challenge that must be addressed through waveform design
+        or digital equalization techniques at the \gls{fc}.
 
-        Equation (3) explicitly segregates the desired OTA superposition (the primary term) from the severe \gls{isi} induced by the fractional delay $\tau$ disrupting the zero-crossing alignment of $p(t)$. 
+    \subsection{Practical Challenges}
+        \subsubsection{Channel State Information (CSI) Imperfection}
+        The theoretical model assumes perfect knowledge of the channel impulse response.
+        In practice, the need for accurate and fresh \gls{csi} at transmitters or
+        receivers is critical for precoding and equalization techniques
+        \cite{sahin_survey_2023,yang_federated_2020,evgenidis_waveform_2025}. Obsolete or
+        noisy CSI severely limits the ability to pre-distort signals, exacerbating the
+        \gls{mse}.
 
-        To evaluate the degradation imposed by this fractional delay, an extensive computational model was constructed in MATLAB. The simulation iterates the excess bandwidth parameter (roll-off factor $\alpha$) to quantify the attenuation of the ISI tails and its subsequent impact on the Mean Squared Error (MSE).
+        \subsubsection{Waveform and Filter Design}
+        As demonstrated by the sequence expansion in the multipath model, standard digital
+        communication transceivers suffer from time sampling errors and \gls{isi}.
+        Designing custom pulse shapes, such as optimized Root Raised Cosine (RRC) filters
+        or DNN-generated waveforms, is essential to force zero-crossings at the exact
+        sampling instances, thereby suppressing ISI natively over the air
+        \cite{evgenidis_waveform_2025}.
 
-    \subsection{Impact of Practical Impairments on OAC Reliability}
-        In order to calculate the received signal with \gls{isi} at the \gls{fc},
-        the linear property of the channel can be taken advantage of.
-
-        \begin{equation}
-            \label{eq:ActualTargetFunc}
-            \begin{aligned}
-                y[n] & = s[n] \ast h[n] \Rightarrow \\
-                y[n] & = \sum_{m=0}^{n} s[m] h[n - m] \Rightarrow \\
-                y[n] & = [3.0, 2.5, -0.1, -0.2, 0];
-            \end{aligned}
-        \end{equation}
-
-        It is obvious that because of the \gls{isi} the three symbols of 
-        \ref{eq:IdealTargetFunc} are spread to the five symbols of \ref{eq:ActualTargetFunc}.    
-
-        To calculate the \gls{mse} at each sample the comparison of the actual received
-        signal to the ideal target function shall be made.
-
-        \begin{equation}
-            \label{eq:mse}
-            \begin{aligned}
-                e[n] & = y[n] - n[n] \Rightarrow \\
-                e[n] & = [0.0, 1.5, -0.1, -0.2, 0.0] \\
-                MSE & = \frac{e[n]}{5} \Rightarrow \\
-                MSE & = 0.46
-            \end{aligned}
-        \end{equation}
-
-    \subsubsection{Synchronization Errors}
-    \textit{Time, Frequency, and Phase Offsets (TO, CFO, PO)}: The detrimental
-    impact of imperfect time-of-arrivals and phase alignment on signal
-    superposition and computation
-    accuracy\cite{sahin_survey_2023,evgenidis_waveform_2025,hellstrom_optimal_2023}.
-
-    \begin{lstlisting}
-        % This is a comment
-        x = linspace(0, 2*pi, 100);
-        y = sin(x) + 0.5 * randn(size(x)); % Numbers like 0.5 will be in Math Font
-        plot(x, y);
-    \end{lstlisting}
-
-    \subsubsection{Channel State Information (CSI) Imperfection}
-    The need for accurate and fresh \gls{csi} at transmitters or
-    receivers for many precoding/equalization techniques
-    \cite{sahin_survey_2023,yang_federated_2020,evgenidis_waveform_2025}.
-    \subsubsection{Waveform and Filter Design}
-    Addressing time sampling error and intersymbol interference \gls{isi}
-    inherent in digital communication transceivers when applied to \gls{ota}
-    \cite{evgenidis_waveform_2025}.
     \subsection{Optimization Strategies to Enhance OAC Performance}
-    \begin{itemize}
-        \item \textit{Power Management}: Strategies to mitigate
-            aggregation errors, such as
-            optimizing power control policies to minimize Mean Squared Error
-            \gls{mse} or maximize convergence speed
+        To mitigate the aforementioned challenges, several optimization frameworks have
+        been proposed in the literature:
+        \begin{itemize}
+            \item \textbf{Power Management}: Strategies to mitigate aggregation errors
+            involve optimizing power control policies at the \gls{ed}s to align received
+            signal amplitudes, thereby minimizing the overall \gls{mse} or maximizing the
+            convergence speed of federated learning algorithms
             \cite{sahin_survey_2023,cao_optimized_2022,evgenidis_waveform_2025}.
-        \item \textit{Transceiver Design}: Joint design of
-            pre-processing functions,
-            precoders/beamformers, and post-processing functions (decoders) to
-            match the channel to the desired function and minimize
-            distortion \cite{goldenbaum_robust_2013,hellstrom_optimal_2023,
-            sahin_survey_2023,yang_federated_2020}.
-    \end{itemize}
+            \item \textbf{Transceiver Design}: The joint design of pre-processing
+            functions at the transmitter and post-processing equalizers at the receiver
+            allows the system to match the channel characteristics to the desired
+            nomographic function, effectively canceling multipath echoes and minimizing
+            computational distortion
+            \cite{goldenbaum_robust_2013,hellstrom_optimal_2023,sahin_survey_2023,yang_federated_2020}.
+        \end{itemize}
 
     \ifSubfilesClassLoaded{
         \clearpage
