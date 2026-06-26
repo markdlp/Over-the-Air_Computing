@@ -17,9 +17,8 @@
         \subsection{System Architecture and Channel Model}
             To mathematically formulate the impact of channel impairments on \gls{ota}
             computing, we consider a discrete-time network model consisting of multiple
-            \gls{ed}s deployed in an agricultural environment. These devices utilize Pulse
-            Amplitude Modulation (\gls{pam}) to transmit local temperature readings to a
-            central \gls{fc}. 
+            \gls{ed}s deployed in an agricultural environment. These devices utilize 
+            \gls{pam} to transmit local temperature readings to a central \gls{fc}. 
 
         Let $x_i[n]$ denote the discrete-time signal transmitted by the $i$-th sensor. For
         an illustrative scenario involving two sensors, the transmitted sequences are
@@ -53,12 +52,11 @@
         \end{equation}
         Evaluating this convolution yields the distorted sequence $y[n] = [3.0, 2.5, -0.1,
         -0.2, 0.0]$. The extension of the sequence length from three to five symbols
-        mathematically illustrates the presence of Intersymbol Interference (\gls{isi}),
+        mathematically illustrates the presence of \gls{isi},
         wherein previous and future symbols bleed into the current sampling instance.
 
         \subsubsection{Mean Squared Error (MSE) Evaluation}
-        To quantify the degradation caused by the multipath channel, the Mean Squared
-        Error (\gls{mse}) is calculated between the ideal target function $s[n]$ and the
+        To quantify the degradation caused by the multipath channel, the \gls{mse} is calculated between the ideal target function $s[n]$ and the
         actual received signal $y[n]$. The error at each discrete time step is given by
         $e[n] = y[n] - s[n]$. For a sequence of length $N$, the overall \gls{mse} is
         defined as:

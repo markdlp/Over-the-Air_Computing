@@ -1,17 +1,17 @@
 [0] Config.pm:328> INFO - This is Biber 2.21
-[0] Config.pm:331> INFO - Logfile is 'tmp/Markos_Delaportas_1316.blg'
-[104] biber-MSWIN64:342> INFO - === 
-[135] Biber.pm:421> INFO - Reading 'tmp/Markos_Delaportas_1316.bcf'
-[246] Biber.pm:1002> INFO - Found 12 citekeys in bib section 0
-[262] Biber.pm:4487> INFO - Processing section 0
-[273] Biber.pm:4678> INFO - Looking for bibtex file 'ref.bib' for section 0
-[318] bibtex.pm:1713> INFO - LaTeX decoding ...
-[389] bibtex.pm:1519> INFO - Found BibTeX data source 'ref.bib'
-[528] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[528] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[528] Biber.pm:4307> INFO - Sorting list 'none/global//global/global/global' of type 'entry' with template 'none' and locale 'en-US'
-[528] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
-[543] bbl.pm:676> INFO - Writing 'tmp/Markos_Delaportas_1316.bbl' with encoding 'UTF-8'
-[555] bbl.pm:779> INFO - Output to tmp/Markos_Delaportas_1316.bbl
-[555] Biber.pm:132> WARN - ISBN '978-1-61284-402-2 978-1-61284-403-9 978-1-61284-401-5' in entry 'goldenbaum_analyzing_2011' is invalid - run biber with '--validate_datamodel' for details.
-[556] Biber.pm:134> INFO - WARNINGS: 1
+[1] Config.pm:331> INFO - Logfile is 'tmp/Markos_Delaportas_1316.blg'
+[141] biber-MSWIN64:342> INFO - === 
+[179] Biber.pm:421> INFO - Reading 'tmp/Markos_Delaportas_1316.bcf'
+[391] Biber.pm:1002> INFO - Found 10 citekeys in bib section 0
+[442] Biber.pm:4487> INFO - Processing section 0
+[493] Biber.pm:4678> INFO - Looking for bibtex file 'ref.bib' for section 0
+[560] bibtex.pm:1713> INFO - LaTeX decoding ...
+[751] bibtex.pm:1519> INFO - Found BibTeX data source 'ref.bib'
+[1269] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[1270] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[1270] Biber.pm:4307> INFO - Sorting list 'none/global//global/global/global' of type 'entry' with template 'none' and locale 'en-US'
+[1270] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[1401] bbl.pm:676> INFO - Writing 'tmp/Markos_Delaportas_1316.bbl' with encoding 'UTF-8'
+[1435] bbl.pm:779> INFO - Output to tmp/Markos_Delaportas_1316.bbl
+[1436] Biber.pm:132> WARN - ISBN '978-1-61284-402-2 978-1-61284-403-9 978-1-61284-401-5' in entry 'goldenbaum_analyzing_2011' is invalid - run biber with '--validate_datamodel' for details.
+[1437] Biber.pm:134> INFO - WARNINGS: 1

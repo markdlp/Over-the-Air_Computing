@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.4.30)  15 MAY 2026 19:16
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.4.30)  26 JUN 2026 02:57
  restricted system commands enabled.
  file:line:error style messages enabled.
 **Markos_Delaportas_1316.tex
@@ -1870,66 +1870,66 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 \tf@toc=\write6
 
 \openout6 = Markos_Delaportas_1316.toc
- [2] (./Introduction.tex) (./otaFoundationsAndTechniques.tex
-<img/uowm.png, id=244, 283.1804pt x 48.37665pt>
+ [2] (./Introduction.tex) (./SystemModelAndChallenges.tex
+<img/uowm.png, id=233, 283.1804pt x 48.37665pt>
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 41.
+Package luatex.def Info: img/uowm.png  used on input line 29.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
-<img/ece.png, id=245, 491.8375pt x 491.8375pt>
+<img/ece.png, id=234, 491.8375pt x 491.8375pt>
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 41.
+Package luatex.def Info: img/ece.png  used on input line 29.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [3
 
 <./img/uowm.png><./img/ece.png>]
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 58.
+Package luatex.def Info: img/uowm.png  used on input line 80.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 58.
+Package luatex.def Info: img/ece.png  used on input line 80.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
- [4]
-<img/ota_isi_matched.pdf, id=273, 1806.75pt x 485.815pt>
-File: img/ota_isi_matched.pdf Graphic file (type pdf)
-<use img/ota_isi_matched.pdf>
-Package luatex.def Info: img/ota_isi_matched.pdf  used on input line 61.
-(luatex.def)             Requested size: 816.79765pt x 219.6303pt.
- [5
+ [4]) (./ExperimentalImplementation.tex
+Underfull \hbox (badness 4621) in paragraph at lines 27--28
+[]|\TU/LibertinusSerif(0)/m/n/12 De-fined base-band rate for the SDR
+ []
 
 
-<./img/ota_isi_matched.pdf>]) (./SystemModelAndChallenges.tex
-Package microtype Info: Loading generic protrusion settings for font family
-(microtype)             `LibertinusMono-Regular.otf' (encoding: TU).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
-Package microtype Info: Character `guilsinglleft ' is missing
-(microtype)             in font `TU/LibertinusMono-Regular.otf(0)/m/n/12'.
-(microtype)             Ignoring protrusion settings for this character.
-Package microtype Info: Character `guilsinglright ' is missing
-(microtype)             in font `TU/LibertinusMono-Regular.otf(0)/m/n/12'.
-(microtype)             Ignoring protrusion settings for this character.
-Package microtype Info: Character `guilsinglleft ' is missing
-(microtype)             in font `TU/LibertinusMono-Regular.otf(0)/m/n/10.95'.
-(microtype)             Ignoring protrusion settings for this character.
-Package microtype Info: Character `guilsinglright ' is missing
-(microtype)             in font `TU/LibertinusMono-Regular.otf(0)/m/n/10.95'.
-(microtype)             Ignoring protrusion settings for this character.
-) (./ExperimentalImplementation.tex
+Underfull \hbox (badness 3009) in paragraph at lines 28--29
+[]|\TU/LibertinusSerif(0)/m/n/12 Single-Input Single-Output for ini-tial
+ []
+
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 13.
+Package luatex.def Info: img/uowm.png  used on input line 44.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 13.
+Package luatex.def Info: img/ece.png  used on input line 44.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
- [6
-
-]) (./ResultsAndDiscussion.tex) (./ConclusionAndFutureWork.tex
+[5]
+<img/OTAwithISI.pdf, id=301, 2039.62pt x 883.3pt>
+File: img/OTAwithISI.pdf Graphic file (type pdf)
+<use img/OTAwithISI.pdf>
+Package luatex.def Info: img/OTAwithISI.pdf  used on input line 51.
+(luatex.def)             Requested size: 597.50789pt x 258.76518pt.
+<img/ota&isi_matched.png, id=302, 1156.32pt x 614.295pt>
+File: img/ota&isi_matched.png Graphic file (type png)
+<use img/ota&isi_matched.png>
+Package luatex.def Info: img/ota&isi_matched.png  used on input line 58.
+(luatex.def)             Requested size: 597.50789pt x 317.41995pt.
+File: img/uowm.png Graphic file (type png)
+<use img/uowm.png>
+Package luatex.def Info: img/uowm.png  used on input line 65.
+(luatex.def)             Requested size: 166.55646pt x 28.45274pt.
+File: img/ece.png Graphic file (type png)
+<use img/ece.png>
+Package luatex.def Info: img/ece.png  used on input line 65.
+(luatex.def)             Requested size: 28.45274pt x 28.45079pt.
+ [6<./img/OTAwithISI.pdf>]) (./ResultsAndDiscussion.tex) (./ConclusionAndFutureWork.tex
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
 Package luatex.def Info: img/uowm.png  used on input line 9.
@@ -1938,7 +1938,7 @@ File: img/ece.png Graphic file (type png)
 <use img/ece.png>
 Package luatex.def Info: img/ece.png  used on input line 9.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
- [7]) (./Appendix_A.tex)
+ [7<./img/ota&isi_matched.png>]) (./Appendix_A.tex)
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
 Package luatex.def Info: img/uowm.png  used on input line 219.
@@ -2151,14 +2151,16 @@ Markos_Delaportas_1316.bbl
   mt-msa.cfg    2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
   mt-msb.cfg    2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 Introduction.tex
-otaFoundationsAndTechniques.tex
-img/uowm.png
- img/ece.png
-img/uowm.png
- img/ece.png
-img/ota_isi_matched.pdf
 SystemModelAndChallenges.tex
+img/uowm.png
+ img/ece.png
+img/uowm.png
+ img/ece.png
 ExperimentalImplementation.tex
+img/uowm.png
+ img/ece.png
+img/OTAwithISI.pdf
+img/ota&isi_matched.png
 img/uowm.png
  img/ece.png
 ResultsAndDiscussion.tex
@@ -2173,26 +2175,26 @@ img/uowm.png
  ***********
 
 Package rerunfilecheck Info: File `Markos_Delaportas_1316.out' has not changed.
-(rerunfilecheck)             Checksum: 094CB1430B017274295CA77E76A22F95;7761.
+(rerunfilecheck)             Checksum: 2AECDF18536A478A6320D66F264ED22A;6406.
 Package logreq Info: Writing requests to 'Markos_Delaportas_1316.run.xml'.
 
 \openout1 = Markos_Delaportas_1316.run.xml
 )
 
 Here is how much of LuaTeX's memory you used:
- 66080 strings out of 475900
- 156327,2848258 words of node,token memory allocated
- 793 words of node memory still in use:
-   7 hlist, 2 vlist, 2 rule, 1 local_par, 5 glue, 5 kern, 1 penalty, 3 glyph, 17 attribute, 88 glue_spec, 17 attribute_list, 2 write, 4 pdf_action nodes
-   avail lists: 1:10,2:1825,3:622,4:1748,5:1432,6:155,7:9087,8:46,9:3475,10:45,11:754
- 87194 multiletter control sequences out of 65536+600000
- 125 fonts using 52972591 bytes
- 102i,15n,124p,5876b,2304s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<./font/LibertinusMath-Regular.otf><./font/LibertinusMono-Regular.otf><./font/LibertinusSerif-Italic.otf><./font/LibertinusSerif-Bold.otf><./font/LibertinusSerif-BoldItalic.otf><./font/LibertinusSerif-Regular.otf><./font/LibertinusSans-Regular.otf>
-Output written on Markos_Delaportas_1316.pdf (9 pages, 197618 bytes).
+ 66054 strings out of 475900
+ 125056,2848258 words of node,token memory allocated
+ 826 words of node memory still in use:
+   8 hlist, 2 vlist, 2 rule, 1 local_par, 5 glue, 5 kern, 1 penalty, 3 glyph, 23 attribute, 88 glue_spec, 23 attribute_list, 2 write, 4 pdf_action nodes
+   avail lists: 1:4,2:1413,3:622,4:242,5:611,6:124,7:9173,8:46,9:604,10:14,11:870
+ 87160 multiletter control sequences out of 65536+600000
+ 105 fonts using 45588743 bytes
+ 102i,16n,124p,5876b,2320s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<./font/LibertinusSerif-Italic.otf><./font/LibertinusMath-Regular.otf><./font/LibertinusMath-Regular.otf><./font/LibertinusSerif-Bold.otf><./font/LibertinusSerif-BoldItalic.otf><./font/LibertinusSerif-Regular.otf><./font/LibertinusSans-Regular.otf>
+Output written on Markos_Delaportas_1316.pdf (9 pages, 356803 bytes).
 
-PDF statistics: 487 PDF objects out of 1000 (max. 8388607)
- 434 compressed objects within 5 object streams
- 69 named destinations out of 1000 (max. 1048576)
- 274 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 451 PDF objects out of 1000 (max. 8388607)
+ 396 compressed objects within 4 object streams
+ 68 named destinations out of 1000 (max. 1048576)
+ 250 words of extra memory for PDF output out of 10000 (max. 100000000)
 
