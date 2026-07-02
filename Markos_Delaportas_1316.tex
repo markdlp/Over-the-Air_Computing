@@ -51,6 +51,12 @@
 \usepackage{graphicx, animate}
 
 %\def\pdfpageref{\pdffeedback pageref}
+%\def\pdfximage{\pdfextension ximage}
+%\def\pdfrefximage{\pdfextension refximage}
+
+\usepackage{siunitx} % \SI{}{} commands
+\usepackage{subfiles}
+
 \usepackage{hyperref}
 \hypersetup{ bookmarksopen=true, colorlinks=true, linkcolor=black,
     filecolor=magenta,
@@ -58,7 +64,7 @@ urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
 
 % Load glossaries-extra with 'record' (triggers bib2gls) and 'abbreviations' support
 % stylemods=long allows us to use table-based styles
-\usepackage[record, abbreviations, stylemods={long}]{glossaries-extra}
+\usepackage[record, abbreviations, acronym, stylemods={long}]{glossaries-extra}
 
 % Set the style to a clean 2-column list
 \setabbreviationstyle[acronym]{long-short} % First use: Long (Short)
@@ -75,7 +81,7 @@ urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
 \setdefaultlanguage{english}
 \setotherlanguages{greek}
 
-\usepackage[ backend=biber, bibencoding=utf8, style=ieee]{biblatex}
+\usepackage[ backend=biber, bibencoding=utf8, style=ieee, sorting=nyt]{biblatex}
 \addbibresource{ref.bib}
 
 \listfiles
@@ -176,7 +182,6 @@ urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
 } \author{\textsf{Markos Delaportas} \footnote{E-mail: ece01316@uowm.gr}}
 \date{\textsf{April 2026}}
 
-\usepackage{subfiles}
 \begin{document}
 
 \maketitle
@@ -202,18 +207,19 @@ scenarios are also presented.}
 \clearpage
 
     
-    \subfile{Introduction}
-    % \subfile{otaFoundationsAndTechniques}
-    \subfile{SystemModelAndChallenges}
-    \subfile{ExperimentalImplementation}
-    \subfile{ResultsAndDiscussion}
-    \subfile{ConclusionAndFutureWork}
+    \IfFileExists{Introduction.tex}{\subfile{Introduction}}{}
+    \IfFileExists{IdealOTA.tex}{\subfile{IdealOTA}}{}
+     % \IfFileExists{otaFoundationsAndTechniques.tex}{\subfile{otaFoundationsAndTechniques}}{}
+    \IfFileExists{SystemModelAndChallenges.tex}{\subfile{SystemModelAndChallenges}}{}
+    \IfFileExists{ExperimentalImplementation.tex}{\subfile{ExperimentalImplementation}}{}
+    \IfFileExists{ResultsAndDiscussion.tex}{\subfile{ResultsAndDiscussion}}{}
+    \IfFileExists{ConclusionAndFutureWork.tex}{\subfile{ConclusionAndFutureWork}}{}
 
     \begin{appendices}
         % (Changes A.a to A.1)
         \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
         
-        \subfile{Appendix_A}
+        \IfFileExists{Appendix_A.tex}{\subfile{Appendix_A}}{}
     \end{appendices}
 
     \printbibliography

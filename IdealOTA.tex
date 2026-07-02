@@ -1,0 +1,169 @@
+\documentclass[Markos_Delaportas_1316.tex]{subfiles}
+
+\begin{document}
+
+    \section{Ideal Over-the-Air Computation}
+    Before introducing the practical impairments inherent to wireless channels, such as \gls{isi}, 
+    multipath fading and symbol to filter mismatch, it is essential to
+    establish a baseline model of \gls{ota} computation under ideal
+    conditions. In this scenario, the wireless medium is assumed to be perfectly
+    synchronized, lacking frequency-selective fading, and corrupted only by \gls{awgn}.
+    This chapter aggregates the mathematical formulation, MATLAB
+    code, Simulink models, and GNU Radio flowgraphs that demonstrate this ideal baseline.
+
+    \subsection{Mathematical Formulation of the Ideal Channel}
+    Consider a wireless sensor network consisting of $K$ \gls{ed} transmitting
+    analog values to a \gls{fc}. Let $x_k(t)$ denote the continuous-time signal
+    transmitted by the $k$-th device. In an ideal \gls{mac} where
+    perfect \gls{csi} allows for perfect pre-equalization of phase
+    and amplitude shifts, the signals superimpose perfectly at the receiver.
+    
+    The received baseband signal $y(t)$ at the \gls{fc} is mathematically expressed as:
+    \begin{equation}
+        y(t) = \sum_{k=1}^{K} x_k(t) + n(t) \label{eq:mac_sum}
+    \end{equation}
+    where $n(t) \sim \mathcal{N}(0, \sigma^2)$ represents the \gls{awgn}. Because there is no
+    multipath delay spread, the channel impulse response is effectively a Dirac delta
+    function $h(t) = \delta(t)$, meaning the current symbol is entirely unaffected by past
+    or future symbols.
+
+    \subsection{MATLAB Simulation and Code Analysis}
+    To validate this superposition principle, the ideal environment can be modeled using MATLAB. 
+    The following
+    script generates normally distributed simulated sensor readings, aligns them perfectly
+    in time, and adds \gls{awgn} to emulate the ideal \gls{mac}.
+
+    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB script for ideal OTA computation aggregation.}, label={lst:matlab_ideal}]
+        % Ideal OTA Computation Simulation
+        K = 3;                  % Number of sensors
+        N = 1000;               % Number of samples
+        SNR_dB = 20;            % Signal-to-Noise Ratio
+
+        % Generate random temperature readings around 27 degrees
+        X = 27 + randn(K, N); 
+
+        % The Air acts as an ideal adder (MAC Superposition)
+        Ideal_Sum = sum(X, 1);
+
+        % Add AWGN
+        Received_Signal = awgn(Ideal_Sum, SNR_dB, 'measured');
+
+        % Calculate the Fusion Center Average
+        Estimated_Average = Received_Signal / K;
+
+        % Display Mean Squared Error (MSE)
+        MSE = immse(Estimated_Average, mean(X, 1)); fprintf('Ideal Baseline MSE at %d dB SNR: %f\n', SNR_dB, MSE);
+    \end{lstlisting}
+
+    As demonstrated by the script, when synchronization is perfect, the MSE is strictly a
+    function of the AWGN variance.
+
+    \begin{center}
+        \begin{minipage}{.45\textwidth}
+            \begin{tikzpicture}
+                \begin{axis}[ 
+                    title={\textsf{Estimated \& Mean Baseband Signal}},
+                    xlabel={Sample}, ylabel={Amplitude},
+                    legend pos=north east 
+                ] 
+                    \addplot[thick, blue, no marks] table[x index=0, y index=1, col sep=tab] {data/XvsEstimate.txt};
+                    \addplot[thick, red, no marks] table[x index=0, y index=2, col sep=tab] {data/XvsEstimate.txt};
+
+                    \addlegendentry{Estimated\_Average}
+                    \addlegendentry{meanX}
+                \end{axis}
+            \end{tikzpicture}
+            % \caption{\textsf{}}
+            \label{plt:XvsEstimate}
+        \end{minipage}
+        \begin{minipage}{.45\textwidth}
+            \begin{tikzpicture}
+                \begin{axis}[ 
+                    title={\textsf{Mean Square Error}},
+                    xlabel={SNR\_dB}, ylabel={MSE},
+                    legend pos=north east 
+                ] 
+                    \addplot table[x index=1, y index=0, col sep=tab] {data/MSEvsSNR.txt};
+                    
+                    \addlegendentry{SNR}
+                \end{axis}
+            \end{tikzpicture}
+            % \caption{\textsf{}}
+            \label{plt:MSEvsSNR}
+        \end{minipage}
+    \end{center}
+
+    On the \ref{plt:MSEvsSNR} plot how much the \gls{awgn} influences the variance of the estimated received signal
+    and the average values of the randomly generated signal.
+
+    \subsection{MATLAB Simulink Architecture}
+    Transitioning from raw code to a block-level architecture, MATLAB Simulink provides a
+    clear visual representation of the feedforward ideal system. In this model, the
+    transmitters use standard \gls{pam} without the need for
+    complex feedback loops or equalizers.
+
+    \begin{figure}[htpb]
+        \centering
+        \includegraphics[width=\linewidth]{flowgraphs/arithmeticMean_simulink.pdf}        
+        \caption{Simulink block diagram representing the ideal OTA computation network over an \gls{awgn} channel.}
+        \label{fig:simulink_ideal}
+    \end{figure}
+
+    Observing the \gls{mse} calculation scope yields how apart the the estimate can be because of the 
+    \gls{awgn}.
+    % Here is a good idea add the fact that there needs to be pulses for pulse shaping to work.
+    % In other words, I shall state that just transmitting a constant value is impossible in over 
+    % the air computing because the signals need to be downsampled in order for the FIR filters to upsample them.
+
+    \begin{figure}[htpb]
+        \centering
+        \includegraphics[width=\linewidth]{img/IdealOTA_MSE_simulink.pdf}        
+        \caption{Mean Square Error of the ideal OTA computation network over an \gls{awgn} channel.}
+        \label{fig:simulink_MSE_ideal}
+    \end{figure}
+
+    \subsection{GNU Radio Validation}
+    Finally, the ideal model is verified using a \gls{sdr} environment
+    in GNU Radio. To maintain the ideal conditions mathematically defined in (\ref{eq:mac_sum}),
+    the Root Raised Cosine (RRC) filters are perfectly matched. Specifically, the
+    interpolation rate at the transmitters and the decimation rate at the receiver are
+    identically matched to the symbol design rate (\texttt{sps\_actual = sps\_design =
+    6}). In other words the upsampling rate of the \gls{fir} filters matches the spacing between
+    sample generation.
+
+    What is interesting to note about the flowgraph implementation is that because no digital
+    modulation technique is implemented, downsampling is mandatory. Each device for every one symbol
+    it transmits sixteen are discarded in order for pulse shaping to work.
+
+    \begin{figure}[htpb]
+        \centering
+        \includegraphics[width=\linewidth]{flowgraphs/IdealOTA.pdf}
+
+        \caption{GNU Radio flowgraph for the ideal, Nyquist-compliant scenario.}
+        \label{fig:grc_ideal}
+    \end{figure}
+
+    Under these constraints, the Eye Diagram remains perfectly "open" at the optimal
+    sampling phase, and the Constellation Diagram exhibits tightly clustered points. The
+    absence of horizontal dispersion in the constellation confirms that, prior to the
+    introduction of timing offsets or Faster-Than-Nyquist signaling, the \gls{mac} superposition
+    principle flawlessly computes the arithmetic average of the agricultural sensors.
+
+    \begin{figure}[htpb]
+        \centering
+        \includegraphics[width=\linewidth]{img/IdealOTA.png}
+
+        \caption{GNU Radio Eye \& Constelation Diagram for the ideal, Nyquist-compliant scenario.}
+        \label{fig:grc_ideal_diagram}
+    \end{figure}
+
+    What is interesting to observe is that the sampling phase needs to be set at $33$ in order to receive 
+    the maximum available data. That is because at sample 33 out of 96\footnote{The cycle is 16 symbols long. 
+    Since there are 6 samples per symbol, your total cycle is 96 samples (16 * 6).} is the physical 
+    "group delay" caused  by the math inside Interpolating and Decimating \gls{fir} filters.
+
+    \ifSubfilesClassLoaded{
+        \clearpage
+        \printbibliography
+    }{}
+\end{document}

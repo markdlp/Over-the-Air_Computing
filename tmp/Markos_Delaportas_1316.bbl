@@ -18,60 +18,157 @@
 
 
 \refsection{0}
-  \datalist[entry]{none/global//global/global/global}
-    \entry{sahin_survey_2023}{article}{}{}
-      \name{author}{2}{}{%
-        {{hash=503adafe99b03107eb77ee809bbbc1c0}{%
-           family={Şahin},
-           familyi={Ş\bibinitperiod},
-           given={Alphan},
-           giveni={A\bibinitperiod}}}%
-        {{hash=c4f0c9678fb69ebf79ff4210b385eee5}{%
-           family={Yang},
-           familyi={Y\bibinitperiod},
-           given={Rui},
-           giveni={R\bibinitperiod}}}%
+  \datalist[entry]{nyt/global//global/global/global}
+    \entry{cao_optimized_2022}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=4a297b95c96c16519286f9f0f03aaa92}{%
+           family={Cao},
+           familyi={C\bibinitperiod},
+           given={Xiaowen},
+           giveni={X\bibinitperiod}}}%
+        {{hash=e154f8699642e7e41329f5e58320739f}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Guangxu},
+           giveni={G\bibinitperiod}}}%
+        {{hash=ffd0b0c3743e938ccac63525d574f0a0}{%
+           family={Xu},
+           familyi={X\bibinitperiod},
+           given={Jie},
+           giveni={J\bibinitperiod}}}%
+        {{hash=34ccf0a55519128bc9b02e5222d3f54a}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Zhiqin},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=6eb52b287f341af394b7385d519efb5b}{%
+           family={Cui},
+           familyi={C\bibinitperiod},
+           given={Shuguang},
+           giveni={S\bibinitperiod}}}%
       }
-      \strng{namehash}{33d2e34636c873cf2940f6151e0c836c}
-      \strng{fullhash}{33d2e34636c873cf2940f6151e0c836c}
-      \strng{fullhashraw}{33d2e34636c873cf2940f6151e0c836c}
-      \strng{bibnamehash}{33d2e34636c873cf2940f6151e0c836c}
-      \strng{authorbibnamehash}{33d2e34636c873cf2940f6151e0c836c}
-      \strng{authornamehash}{33d2e34636c873cf2940f6151e0c836c}
-      \strng{authorfullhash}{33d2e34636c873cf2940f6151e0c836c}
-      \strng{authorfullhashraw}{33d2e34636c873cf2940f6151e0c836c}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \strng{namehash}{98c78932170aed07460a4c432bc49f31}
+      \strng{fullhash}{84847e7d02ae6212e4dde07bece28170}
+      \strng{fullhashraw}{84847e7d02ae6212e4dde07bece28170}
+      \strng{bibnamehash}{84847e7d02ae6212e4dde07bece28170}
+      \strng{authorbibnamehash}{84847e7d02ae6212e4dde07bece28170}
+      \strng{authornamehash}{98c78932170aed07460a4c432bc49f31}
+      \strng{authorfullhash}{84847e7d02ae6212e4dde07bece28170}
+      \strng{authorfullhashraw}{84847e7d02ae6212e4dde07bece28170}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{abstract}{Communication and computation are often viewed as separate tasks. This approach is very effective from the perspective of engineering as isolated optimizations can be performed. However, for many computation-oriented applications, the main interest is a function of the local information at the devices, rather than the local information itself. In such scenarios, information theoretical results show that harnessing the interference in a multiple access channel for computation, i.e., over-the-air computation ({OAC}), can provide a signiﬁcantly higher achievable computation rate than separating communication and computation tasks. Moreover, the gap between {OAC} and separation in terms of computation rate increases with more participating nodes. Given this motivation, in this study, we provide a comprehensive survey on practical {OAC} methods. After outlining fundamentals related to {OAC}, we discuss the available {OAC} schemes with their pros and cons. We provide an overview of the enabling mechanisms for achieving reliable computation in the wireless channel. Finally, we summarize the potential applications of {OAC} and point out some future directions.}
-      \field{issn}{1553-877X, 2373-745X}
-      \field{journaltitle}{{IEEE} Communications Surveys \& Tutorials}
+      \field{issn}{0733-8716, 1558-0008}
+      \field{journaltitle}{{IEEE} Journal on Selected Areas in Communications}
       \field{langid}{english}
-      \field{number}{3}
-      \field{shortjournal}{{IEEE} Commun. Surv. Tutorials}
-      \field{title}{A Survey on Over-the-Air Computation}
+      \field{month}{1}
+      \field{number}{1}
+      \field{shortjournal}{{IEEE} J. Select. Areas Commun.}
+      \field{title}{Optimized Power Control Design for Over-the-Air Federated Edge Learning}
       \field{urlday}{4}
       \field{urlmonth}{12}
       \field{urlyear}{2025}
-      \field{volume}{25}
-      \field{year}{2023}
+      \field{volume}{40}
+      \field{year}{2022}
       \field{dateera}{ce}
       \field{urldateera}{ce}
-      \field{pages}{1877\bibrangedash 1908}
-      \range{pages}{32}
+      \field{pages}{342\bibrangedash 358}
+      \range{pages}{17}
       \verb{doi}
-      \verb 10.1109/COMST.2023.3264649
+      \verb 10.1109/JSAC.2021.3126060
       \endverb
       \verb{file}
-      \verb PDF:C\:\\Users\\marko\\Zotero\\storage\\STNXUTZX\\Şahin and Yang - 2023 - A Survey on Over-the-Air Computation.pdf:application/pdf
+      \verb PDF:C\:\\Users\\marko\\Zotero\\storage\\VCZKJLVM\\Cao et al. - 2022 - Optimized Power Control Design for Over-the-Air Federated Edge Learning.pdf:application/pdf
       \endverb
       \verb{urlraw}
-      \verb https://ieeexplore.ieee.org/document/10092857/
+      \verb https://ieeexplore.ieee.org/document/9606731/
       \endverb
       \verb{url}
-      \verb https://ieeexplore.ieee.org/document/10092857/
+      \verb https://ieeexplore.ieee.org/document/9606731/
       \endverb
+    \endentry
+    \entry{evgenidis_waveform_2025}{article}{}{}
+      \name{author}{7}{}{%
+        {{hash=3c5b4a367ae5bec128d17f647870432d}{%
+           family={Evgenidis},
+           familyi={E\bibinitperiod},
+           given={Nikos\bibnamedelima G.},
+           giveni={N\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+        {{hash=a5cc258eda5922e9d6b3898ac02506db}{%
+           family={Mitsiou},
+           familyi={M\bibinitperiod},
+           given={Nikos\bibnamedelima A.},
+           giveni={N\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=cca7f9877ebaa795ee9f8b38289037ed}{%
+           family={Tegos},
+           familyi={T\bibinitperiod},
+           given={Sotiris\bibnamedelima A.},
+           giveni={S\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=35ae9b940ac59b67d820dbfb4631e7b2}{%
+           family={Diamantoulakis},
+           familyi={D\bibinitperiod},
+           given={Panagiotis\bibnamedelima D.},
+           giveni={P\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=9db39d9f5d8cde8e16f2ace5befcddea}{%
+           family={Sarigiannidis},
+           familyi={S\bibinitperiod},
+           given={Panagiotis},
+           giveni={P\bibinitperiod}}}%
+        {{hash=883e0d43bad3df86af3ed0d32376b739}{%
+           family={Rekanos},
+           familyi={R\bibinitperiod},
+           given={Ioannis\bibnamedelima T.},
+           giveni={I\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+        {{hash=3ded19ee1321eb87e9d813a109459bdf}{%
+           family={Karagiannidis},
+           familyi={K\bibinitperiod},
+           given={George\bibnamedelima K.},
+           giveni={G\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+      }
+      \strng{namehash}{1970eeab21045b4192630c8c9177b235}
+      \strng{fullhash}{d416aeb79d157618eb804c1c9c43c4f0}
+      \strng{fullhashraw}{d416aeb79d157618eb804c1c9c43c4f0}
+      \strng{bibnamehash}{1970eeab21045b4192630c8c9177b235}
+      \strng{authorbibnamehash}{1970eeab21045b4192630c8c9177b235}
+      \strng{authornamehash}{1970eeab21045b4192630c8c9177b235}
+      \strng{authorfullhash}{d416aeb79d157618eb804c1c9c43c4f0}
+      \strng{authorfullhashraw}{d416aeb79d157618eb804c1c9c43c4f0}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In response to the increasing number of devices anticipated in next-generation networks, a shift toward overthe-air ({OTA}) computing has been proposed. Leveraging the superposition of multiple access channels, {OTA} computing enables efficient resource management by supporting simultaneous uncoded transmission in the time and the frequency domain. Thus, to advance the integration of {OTA} computing, our study presents a theoretical analysis addressing practical issues encountered in current digital communication transceivers, such as time sampling error and intersymbol interference ({ISI}). To this end, we examine the theoretical mean squared error ({MSE}) for {OTA} transmission under time sampling error and {ISI}, while also exploring methods for minimizing the {MSE} in the {OTA} transmission. Utilizing alternating optimization, we also derive optimal power policies for both the devices and the base station. Additionally, we propose a novel deep neural network ({DNN})-based approach to design waveforms enhancing {OTA} transmission performance under time sampling error and {ISI}. To ensure fair comparison with existing waveforms like the raised cosine ({RC}) and the better-than-raised-cosine ({BRTC}), we incorporate a custom loss function integrating energy and bandwidth constraints, along with practical design considerations such as waveform symmetry. Simulation results validate our theoretical analysis and demonstrate performance gains of the designed pulse over {RC} and {BTRC} waveforms. To facilitate testing of our results without necessitating the {DNN} structure recreation, we provide curve fitting parameters for select {DNNbased} waveforms as well.}
+      \field{eprinttype}{arxiv}
+      \field{issn}{1536-1276, 1558-2248}
+      \field{journaltitle}{{IEEE} Transactions on Wireless Communications}
+      \field{langid}{english}
+      \field{shortjournal}{{IEEE} Trans. Wireless Commun.}
+      \field{title}{Waveform Design for Over-the-Air Computing}
+      \field{urlday}{4}
+      \field{urlmonth}{12}
+      \field{urlyear}{2025}
+      \field{year}{2025}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{1\bibrangedash 1}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1109/TWC.2025.3613838
+      \endverb
+      \verb{eprint}
+      \verb 2405.20877 [cs]
+      \endverb
+      \verb{file}
+      \verb PDF:C\:\\Users\\marko\\Zotero\\storage\\2TSQ9DX5\\Evgenidis et al. - 2025 - Waveform Design for Over-the-Air Computing.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/2405.20877
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/2405.20877
+      \endverb
+      \keyw{Computer Science - Information Theory,Electrical Engineering and Systems Science - Signal Processing,Computer Science - Distributed,Parallel,and Cluster Computing,Computer Science - Machine Learning,Mathematics - Statistics Theory}
     \endentry
     \entry{goldenbaum_analyzing_2011}{inproceedings}{}{}
       \name{author}{3}{}{%
@@ -105,8 +202,8 @@
       \strng{authornamehash}{e4b0d78e0a0ee76abd9038f545351d77}
       \strng{authorfullhash}{e4f80006f65dbe25738c1d127144b547}
       \strng{authorfullhashraw}{e4f80006f65dbe25738c1d127144b547}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{To efﬁciently compute linear functions of the measurements in sensor networks, it was recently shown that the superposition property of the wireless multiple-access channel can proﬁtably be exploited. Using suitable pre- and postprocessing functions operating on real sensor readings and on the superimposed signal received by a fusion center, respectively, the natural computation property of the wireless channel can be adapted such that a much larger class of functions is efﬁciently computable as well. In this paper, we analyze the corresponding space of functions which are in principle computable, or at least approximable, in an analog fashion via a wireless multipleaccess channel and show to what extend this impacts the communication pattern and the complexity of nodes. Finally, we change the transmission scenario to a sequence of successively received multiple-access channel output-signals and observe that the resulting questions on the computability of functions are related to the famous 13th Hilbert problem.}
@@ -158,8 +255,8 @@
       \strng{authornamehash}{7febd4a3b21e4f8d2c21074c4d59d91c}
       \strng{authorfullhash}{7febd4a3b21e4f8d2c21074c4d59d91c}
       \strng{authorfullhashraw}{7febd4a3b21e4f8d2c21074c4d59d91c}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Wireless sensor network applications often involve the computation of pre-deﬁned functions of the measurements such as for example the arithmetic mean or maximum value. Standard approaches to this problem separate communication from computation: digitized sensor readings are transmitted interference-free to a fusion center that reconstructs each sensor reading and subsequently computes the sought function value. Such separation-based computation schemes are generally highly inefﬁcient as a complete reconstruction of individual sensor readings at the fusion center is not necessary to compute a function of them. In particular, if the mathematical structure of the channel is suitably matched (in some sense) to the function of interest, then channel collisions induced by concurrent transmissions of different nodes can be beneﬁcially exploited for computation purposes. This paper proposes an analog computation scheme that allows for an efﬁcient estimate of linear and nonlinear functions over the wireless multiple-access channel. A match between the channel and the function being evaluated is thereby achieved via some pre-processing on the sensor readings and postprocessing on the superimposed signals observed by the fusion center. After analyzing the estimation error for two function examples, simulations are presented to show the potential for huge performance gains over time- and code-division multipleaccess based computation schemes.}
@@ -190,6 +287,130 @@
       \endverb
       \verb{url}
       \verb http://ieeexplore.ieee.org/document/6573232/
+      \endverb
+    \endentry
+    \entry{hellstrom_optimal_2023}{inproceedings}{}{}
+      \name{author}{4}{}{%
+        {{hash=ee99d97afec52cdb5996d1c5f6256160}{%
+           family={Hellström},
+           familyi={H\bibinitperiod},
+           given={Henrik},
+           giveni={H\bibinitperiod}}}%
+        {{hash=5c9b3ffa4ffcadb9ccf354370abced56}{%
+           family={Razavikia},
+           familyi={R\bibinitperiod},
+           given={Saeed},
+           giveni={S\bibinitperiod}}}%
+        {{hash=eb6235e077d887bd4464b1e6ee260d37}{%
+           family={Fodor},
+           familyi={F\bibinitperiod},
+           given={Viktoria},
+           giveni={V\bibinitperiod}}}%
+        {{hash=aabdde8a17813ab91a1926848d81502c}{%
+           family={Fischione},
+           familyi={F\bibinitperiod},
+           given={Carlo},
+           giveni={C\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Kuala Lumpur, Malaysia}%
+      }
+      \list{publisher}{1}{%
+        {IEEE}%
+      }
+      \strng{namehash}{811b6a625679d5422fd3ae1bb13ced43}
+      \strng{fullhash}{04f4eb4b6e5f2c40b98048754455c78e}
+      \strng{fullhashraw}{04f4eb4b6e5f2c40b98048754455c78e}
+      \strng{bibnamehash}{04f4eb4b6e5f2c40b98048754455c78e}
+      \strng{authorbibnamehash}{04f4eb4b6e5f2c40b98048754455c78e}
+      \strng{authornamehash}{811b6a625679d5422fd3ae1bb13ced43}
+      \strng{authorfullhash}{04f4eb4b6e5f2c40b98048754455c78e}
+      \strng{authorfullhashraw}{04f4eb4b6e5f2c40b98048754455c78e}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Over-the-air computation ({AirComp}) is a promising wireless communication method for aggregating data from many devices in dense wireless networks. The fundamental idea of {AirComp} is to exploit signal superposition to compute functions of multiple simultaneously transmitted signals. However, the time- and phase-alignment of these superimposed signals have a significant effect on the quality of function computation. In this study, we analyze the {AirComp} problem for a system with unknown random time delays and phase shifts. We show that the classical matched filter does not produce optimal results, and generates bias in the function estimates. To counteract this, we propose a new filter design and show that, under a bound on the maximum time delay, it is possible to achieve unbiased function computation. Additionally, we propose a Tikhonov regularization problem that produces an optimal filter given a tradeoff between the bias and noise-induced variance of the function estimates. When the time delays are long compared to the length of the transmitted pulses, our filter vastly outperforms the matched filter both in terms of bias and mean-squared error ({MSE}). For shorter time delays, our proposal yields similar {MSE} as the matched filter, while reducing the bias.}
+      \field{booktitle}{2023 {IEEE} Globecom Workshops ({GC} Wkshps)}
+      \field{day}{4}
+      \field{eventtitle}{2023 {IEEE} Globecom Workshops ({GC} Wkshps)}
+      \field{isbn}{979-8-3503-7021-8}
+      \field{langid}{english}
+      \field{month}{12}
+      \field{title}{Optimal Receive Filter Design for Misaligned Over-the-Air Computation}
+      \field{urlday}{4}
+      \field{urlmonth}{12}
+      \field{urlyear}{2025}
+      \field{year}{2023}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{1529\bibrangedash 1535}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1109/GCWkshps58843.2023.10464656
+      \endverb
+      \verb{file}
+      \verb PDF:C\:\\Users\\marko\\Zotero\\storage\\2NE47UBU\\Hellström et al. - 2023 - Optimal Receive Filter Design for Misaligned Over-the-Air Computation.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://ieeexplore.ieee.org/document/10464656/
+      \endverb
+      \verb{url}
+      \verb https://ieeexplore.ieee.org/document/10464656/
+      \endverb
+    \endentry
+    \entry{sahin_survey_2023}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=503adafe99b03107eb77ee809bbbc1c0}{%
+           family={Şahin},
+           familyi={Ş\bibinitperiod},
+           given={Alphan},
+           giveni={A\bibinitperiod}}}%
+        {{hash=c4f0c9678fb69ebf79ff4210b385eee5}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Rui},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{33d2e34636c873cf2940f6151e0c836c}
+      \strng{fullhash}{33d2e34636c873cf2940f6151e0c836c}
+      \strng{fullhashraw}{33d2e34636c873cf2940f6151e0c836c}
+      \strng{bibnamehash}{33d2e34636c873cf2940f6151e0c836c}
+      \strng{authorbibnamehash}{33d2e34636c873cf2940f6151e0c836c}
+      \strng{authornamehash}{33d2e34636c873cf2940f6151e0c836c}
+      \strng{authorfullhash}{33d2e34636c873cf2940f6151e0c836c}
+      \strng{authorfullhashraw}{33d2e34636c873cf2940f6151e0c836c}
+      \field{sortinit}{Ş}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Communication and computation are often viewed as separate tasks. This approach is very effective from the perspective of engineering as isolated optimizations can be performed. However, for many computation-oriented applications, the main interest is a function of the local information at the devices, rather than the local information itself. In such scenarios, information theoretical results show that harnessing the interference in a multiple access channel for computation, i.e., over-the-air computation ({OAC}), can provide a signiﬁcantly higher achievable computation rate than separating communication and computation tasks. Moreover, the gap between {OAC} and separation in terms of computation rate increases with more participating nodes. Given this motivation, in this study, we provide a comprehensive survey on practical {OAC} methods. After outlining fundamentals related to {OAC}, we discuss the available {OAC} schemes with their pros and cons. We provide an overview of the enabling mechanisms for achieving reliable computation in the wireless channel. Finally, we summarize the potential applications of {OAC} and point out some future directions.}
+      \field{issn}{1553-877X, 2373-745X}
+      \field{journaltitle}{{IEEE} Communications Surveys \& Tutorials}
+      \field{langid}{english}
+      \field{number}{3}
+      \field{shortjournal}{{IEEE} Commun. Surv. Tutorials}
+      \field{title}{A Survey on Over-the-Air Computation}
+      \field{urlday}{4}
+      \field{urlmonth}{12}
+      \field{urlyear}{2025}
+      \field{volume}{25}
+      \field{year}{2023}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{1877\bibrangedash 1908}
+      \range{pages}{32}
+      \verb{doi}
+      \verb 10.1109/COMST.2023.3264649
+      \endverb
+      \verb{file}
+      \verb PDF:C\:\\Users\\marko\\Zotero\\storage\\STNXUTZX\\Şahin and Yang - 2023 - A Survey on Over-the-Air Computation.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://ieeexplore.ieee.org/document/10092857/
+      \endverb
+      \verb{url}
+      \verb https://ieeexplore.ieee.org/document/10092857/
       \endverb
     \endentry
     \entry{xiao_heterogeneous_2025}{article}{}{}
@@ -233,8 +454,8 @@
       \strng{authornamehash}{4798ea0729fda8a3b2dabd9a2871f33d}
       \strng{authorfullhash}{87dad492d7d556dfd8157476429480ea}
       \strng{authorfullhashraw}{87dad492d7d556dfd8157476429480ea}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{X}
+      \field{sortinithash}{1965c258adceecf23ce3d67b05113442}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{The vision of sixth-generation networks, powered by artificial intelligence ({AI}) and edge computing, is to establish a ubiquitous and immersive wireless communication infrastructure that facilitates the transition to the advanced Artificial Intelligence of Things ({AIoT}) paradigm. To realize this vision, wireless federated learning ({WFL}) has emerged as a promising approach for distributing {AI} computations across diverse endpoints while ensuring data privacy within the wireless network. As the exploration of access entities expands, {AIoT} systems encounter challenges due to the multi-heterogeneity of devices, including diverse computation capabilities and data distribution. To address these challenges, we propose a novel synchronous/asynchronous {WFL} mechanism with over-the-air computation, which simultaneously ensures time efficiency, communication efficiency, and performance accuracy. Specifically, this framework leverages both global and local momentum to accelerate convergence. Then, a masking matrix is introduced to mitigate heavy noise, balance communication overhead with training loss, and reduce the mean squared error in model aggregation after optimal beamforming design. To further improve performance in such heterogeneous settings, a fair-weighted aggregation method is employed to tackle the biased device selection problem in asynchronous aggregation, especially in the non-independent and identically distributed (i.i.d.) case. Finally, the proposed framework is validated by both i.i.d. and non-i.i.d. {MNIST} datasets, with extensive numerical results demonstrating fast convergence and improved aggregation performance under varying computational diversity.}
@@ -263,88 +484,6 @@
       \verb{url}
       \verb https://ieeexplore.ieee.org/document/11131470/
       \endverb
-    \endentry
-    \entry{evgenidis_waveform_2025}{article}{}{}
-      \name{author}{7}{}{%
-        {{hash=3c5b4a367ae5bec128d17f647870432d}{%
-           family={Evgenidis},
-           familyi={E\bibinitperiod},
-           given={Nikos\bibnamedelima G.},
-           giveni={N\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
-        {{hash=a5cc258eda5922e9d6b3898ac02506db}{%
-           family={Mitsiou},
-           familyi={M\bibinitperiod},
-           given={Nikos\bibnamedelima A.},
-           giveni={N\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
-        {{hash=cca7f9877ebaa795ee9f8b38289037ed}{%
-           family={Tegos},
-           familyi={T\bibinitperiod},
-           given={Sotiris\bibnamedelima A.},
-           giveni={S\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
-        {{hash=35ae9b940ac59b67d820dbfb4631e7b2}{%
-           family={Diamantoulakis},
-           familyi={D\bibinitperiod},
-           given={Panagiotis\bibnamedelima D.},
-           giveni={P\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
-        {{hash=9db39d9f5d8cde8e16f2ace5befcddea}{%
-           family={Sarigiannidis},
-           familyi={S\bibinitperiod},
-           given={Panagiotis},
-           giveni={P\bibinitperiod}}}%
-        {{hash=883e0d43bad3df86af3ed0d32376b739}{%
-           family={Rekanos},
-           familyi={R\bibinitperiod},
-           given={Ioannis\bibnamedelima T.},
-           giveni={I\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
-        {{hash=3ded19ee1321eb87e9d813a109459bdf}{%
-           family={Karagiannidis},
-           familyi={K\bibinitperiod},
-           given={George\bibnamedelima K.},
-           giveni={G\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
-      }
-      \strng{namehash}{1970eeab21045b4192630c8c9177b235}
-      \strng{fullhash}{d416aeb79d157618eb804c1c9c43c4f0}
-      \strng{fullhashraw}{d416aeb79d157618eb804c1c9c43c4f0}
-      \strng{bibnamehash}{1970eeab21045b4192630c8c9177b235}
-      \strng{authorbibnamehash}{1970eeab21045b4192630c8c9177b235}
-      \strng{authornamehash}{1970eeab21045b4192630c8c9177b235}
-      \strng{authorfullhash}{d416aeb79d157618eb804c1c9c43c4f0}
-      \strng{authorfullhashraw}{d416aeb79d157618eb804c1c9c43c4f0}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{In response to the increasing number of devices anticipated in next-generation networks, a shift toward overthe-air ({OTA}) computing has been proposed. Leveraging the superposition of multiple access channels, {OTA} computing enables efficient resource management by supporting simultaneous uncoded transmission in the time and the frequency domain. Thus, to advance the integration of {OTA} computing, our study presents a theoretical analysis addressing practical issues encountered in current digital communication transceivers, such as time sampling error and intersymbol interference ({ISI}). To this end, we examine the theoretical mean squared error ({MSE}) for {OTA} transmission under time sampling error and {ISI}, while also exploring methods for minimizing the {MSE} in the {OTA} transmission. Utilizing alternating optimization, we also derive optimal power policies for both the devices and the base station. Additionally, we propose a novel deep neural network ({DNN})-based approach to design waveforms enhancing {OTA} transmission performance under time sampling error and {ISI}. To ensure fair comparison with existing waveforms like the raised cosine ({RC}) and the better-than-raised-cosine ({BRTC}), we incorporate a custom loss function integrating energy and bandwidth constraints, along with practical design considerations such as waveform symmetry. Simulation results validate our theoretical analysis and demonstrate performance gains of the designed pulse over {RC} and {BTRC} waveforms. To facilitate testing of our results without necessitating the {DNN} structure recreation, we provide curve fitting parameters for select {DNNbased} waveforms as well.}
-      \field{eprinttype}{arxiv}
-      \field{issn}{1536-1276, 1558-2248}
-      \field{journaltitle}{{IEEE} Transactions on Wireless Communications}
-      \field{langid}{english}
-      \field{shortjournal}{{IEEE} Trans. Wireless Commun.}
-      \field{title}{Waveform Design for Over-the-Air Computing}
-      \field{urlday}{4}
-      \field{urlmonth}{12}
-      \field{urlyear}{2025}
-      \field{year}{2025}
-      \field{dateera}{ce}
-      \field{urldateera}{ce}
-      \field{pages}{1\bibrangedash 1}
-      \range{pages}{1}
-      \verb{doi}
-      \verb 10.1109/TWC.2025.3613838
-      \endverb
-      \verb{eprint}
-      \verb 2405.20877 [cs]
-      \endverb
-      \verb{file}
-      \verb PDF:C\:\\Users\\marko\\Zotero\\storage\\2TSQ9DX5\\Evgenidis et al. - 2025 - Waveform Design for Over-the-Air Computing.pdf:application/pdf
-      \endverb
-      \verb{urlraw}
-      \verb http://arxiv.org/abs/2405.20877
-      \endverb
-      \verb{url}
-      \verb http://arxiv.org/abs/2405.20877
-      \endverb
-      \keyw{Computer Science - Information Theory,Electrical Engineering and Systems Science - Signal Processing,Computer Science - Distributed,Parallel,and Cluster Computing,Computer Science - Machine Learning,Mathematics - Statistics Theory}
     \endentry
     \entry{yang_federated_2020}{article}{}{}
       \name{author}{4}{}{%
@@ -377,8 +516,8 @@
       \strng{authornamehash}{0c56335511ced9e4e017802e02c97e88}
       \strng{authorfullhash}{645fc58e03983ea672732323071550c6}
       \strng{authorfullhashraw}{645fc58e03983ea672732323071550c6}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{Y}
+      \field{sortinithash}{fd67ad5a9ef0f7456bdd9aab10fe1495}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{The stringent requirements for low-latency and privacy of the emerging high-stake applications with intelligent devices such as drones and smart vehicles make the cloud computing inapplicable in these scenarios. Instead, edge machine learning becomes increasingly attractive for performing training and inference directly at network edges without sending data to a centralized data center. This stimulates a nascent ﬁeld termed as federated learning for training a machine learning model on computation, storage, energy and bandwidth limited mobile devices in a distributed manner. To preserve data privacy and address the issues of unbalanced and non-{IID} data points across different devices, the federated averaging algorithm has been proposed for global model aggregation by computing the weighted average of locally updated model at each selected device. However, the limited communication bandwidth becomes the main bottleneck for aggregating the locally computed updates. We thus propose a novel over-the-air computation based approach for fast global model aggregation via exploring the superposition property of a wireless multiple-access channel. This is achieved by joint device selection and beamforming design, which is modeled as a sparse and low-rank optimization problem to support efﬁcient algorithms design. To achieve this goal, we provide a difference-of-convex-functions ({DC}) representation for the sparse and low-rank function to enhance sparsity and accurately detect the ﬁxed-rank constraint in the procedure of device selection. A {DC} algorithm is further developed to solve the resulting {DC} program with global convergence guarantees. The algorithmic advantages and admirable performance of the proposed methodologies are demonstrated through extensive numerical results.}
@@ -409,145 +548,6 @@
       \endverb
       \verb{url}
       \verb https://ieeexplore.ieee.org/document/8952884/
-      \endverb
-    \endentry
-    \entry{cao_optimized_2022}{article}{}{}
-      \name{author}{5}{}{%
-        {{hash=4a297b95c96c16519286f9f0f03aaa92}{%
-           family={Cao},
-           familyi={C\bibinitperiod},
-           given={Xiaowen},
-           giveni={X\bibinitperiod}}}%
-        {{hash=e154f8699642e7e41329f5e58320739f}{%
-           family={Zhu},
-           familyi={Z\bibinitperiod},
-           given={Guangxu},
-           giveni={G\bibinitperiod}}}%
-        {{hash=ffd0b0c3743e938ccac63525d574f0a0}{%
-           family={Xu},
-           familyi={X\bibinitperiod},
-           given={Jie},
-           giveni={J\bibinitperiod}}}%
-        {{hash=34ccf0a55519128bc9b02e5222d3f54a}{%
-           family={Wang},
-           familyi={W\bibinitperiod},
-           given={Zhiqin},
-           giveni={Z\bibinitperiod}}}%
-        {{hash=6eb52b287f341af394b7385d519efb5b}{%
-           family={Cui},
-           familyi={C\bibinitperiod},
-           given={Shuguang},
-           giveni={S\bibinitperiod}}}%
-      }
-      \strng{namehash}{98c78932170aed07460a4c432bc49f31}
-      \strng{fullhash}{84847e7d02ae6212e4dde07bece28170}
-      \strng{fullhashraw}{84847e7d02ae6212e4dde07bece28170}
-      \strng{bibnamehash}{84847e7d02ae6212e4dde07bece28170}
-      \strng{authorbibnamehash}{84847e7d02ae6212e4dde07bece28170}
-      \strng{authornamehash}{98c78932170aed07460a4c432bc49f31}
-      \strng{authorfullhash}{84847e7d02ae6212e4dde07bece28170}
-      \strng{authorfullhashraw}{84847e7d02ae6212e4dde07bece28170}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{issn}{0733-8716, 1558-0008}
-      \field{journaltitle}{{IEEE} Journal on Selected Areas in Communications}
-      \field{langid}{english}
-      \field{month}{1}
-      \field{number}{1}
-      \field{shortjournal}{{IEEE} J. Select. Areas Commun.}
-      \field{title}{Optimized Power Control Design for Over-the-Air Federated Edge Learning}
-      \field{urlday}{4}
-      \field{urlmonth}{12}
-      \field{urlyear}{2025}
-      \field{volume}{40}
-      \field{year}{2022}
-      \field{dateera}{ce}
-      \field{urldateera}{ce}
-      \field{pages}{342\bibrangedash 358}
-      \range{pages}{17}
-      \verb{doi}
-      \verb 10.1109/JSAC.2021.3126060
-      \endverb
-      \verb{file}
-      \verb PDF:C\:\\Users\\marko\\Zotero\\storage\\VCZKJLVM\\Cao et al. - 2022 - Optimized Power Control Design for Over-the-Air Federated Edge Learning.pdf:application/pdf
-      \endverb
-      \verb{urlraw}
-      \verb https://ieeexplore.ieee.org/document/9606731/
-      \endverb
-      \verb{url}
-      \verb https://ieeexplore.ieee.org/document/9606731/
-      \endverb
-    \endentry
-    \entry{hellstrom_optimal_2023}{inproceedings}{}{}
-      \name{author}{4}{}{%
-        {{hash=ee99d97afec52cdb5996d1c5f6256160}{%
-           family={Hellström},
-           familyi={H\bibinitperiod},
-           given={Henrik},
-           giveni={H\bibinitperiod}}}%
-        {{hash=5c9b3ffa4ffcadb9ccf354370abced56}{%
-           family={Razavikia},
-           familyi={R\bibinitperiod},
-           given={Saeed},
-           giveni={S\bibinitperiod}}}%
-        {{hash=eb6235e077d887bd4464b1e6ee260d37}{%
-           family={Fodor},
-           familyi={F\bibinitperiod},
-           given={Viktoria},
-           giveni={V\bibinitperiod}}}%
-        {{hash=aabdde8a17813ab91a1926848d81502c}{%
-           family={Fischione},
-           familyi={F\bibinitperiod},
-           given={Carlo},
-           giveni={C\bibinitperiod}}}%
-      }
-      \list{location}{1}{%
-        {Kuala Lumpur, Malaysia}%
-      }
-      \list{publisher}{1}{%
-        {IEEE}%
-      }
-      \strng{namehash}{811b6a625679d5422fd3ae1bb13ced43}
-      \strng{fullhash}{04f4eb4b6e5f2c40b98048754455c78e}
-      \strng{fullhashraw}{04f4eb4b6e5f2c40b98048754455c78e}
-      \strng{bibnamehash}{04f4eb4b6e5f2c40b98048754455c78e}
-      \strng{authorbibnamehash}{04f4eb4b6e5f2c40b98048754455c78e}
-      \strng{authornamehash}{811b6a625679d5422fd3ae1bb13ced43}
-      \strng{authorfullhash}{04f4eb4b6e5f2c40b98048754455c78e}
-      \strng{authorfullhashraw}{04f4eb4b6e5f2c40b98048754455c78e}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{Over-the-air computation ({AirComp}) is a promising wireless communication method for aggregating data from many devices in dense wireless networks. The fundamental idea of {AirComp} is to exploit signal superposition to compute functions of multiple simultaneously transmitted signals. However, the time- and phase-alignment of these superimposed signals have a significant effect on the quality of function computation. In this study, we analyze the {AirComp} problem for a system with unknown random time delays and phase shifts. We show that the classical matched filter does not produce optimal results, and generates bias in the function estimates. To counteract this, we propose a new filter design and show that, under a bound on the maximum time delay, it is possible to achieve unbiased function computation. Additionally, we propose a Tikhonov regularization problem that produces an optimal filter given a tradeoff between the bias and noise-induced variance of the function estimates. When the time delays are long compared to the length of the transmitted pulses, our filter vastly outperforms the matched filter both in terms of bias and mean-squared error ({MSE}). For shorter time delays, our proposal yields similar {MSE} as the matched filter, while reducing the bias.}
-      \field{booktitle}{2023 {IEEE} Globecom Workshops ({GC} Wkshps)}
-      \field{day}{4}
-      \field{eventtitle}{2023 {IEEE} Globecom Workshops ({GC} Wkshps)}
-      \field{isbn}{979-8-3503-7021-8}
-      \field{langid}{english}
-      \field{month}{12}
-      \field{title}{Optimal Receive Filter Design for Misaligned Over-the-Air Computation}
-      \field{urlday}{4}
-      \field{urlmonth}{12}
-      \field{urlyear}{2025}
-      \field{year}{2023}
-      \field{dateera}{ce}
-      \field{urldateera}{ce}
-      \field{pages}{1529\bibrangedash 1535}
-      \range{pages}{7}
-      \verb{doi}
-      \verb 10.1109/GCWkshps58843.2023.10464656
-      \endverb
-      \verb{file}
-      \verb PDF:C\:\\Users\\marko\\Zotero\\storage\\2NE47UBU\\Hellström et al. - 2023 - Optimal Receive Filter Design for Misaligned Over-the-Air Computation.pdf:application/pdf
-      \endverb
-      \verb{urlraw}
-      \verb https://ieeexplore.ieee.org/document/10464656/
-      \endverb
-      \verb{url}
-      \verb https://ieeexplore.ieee.org/document/10464656/
       \endverb
     \endentry
     \entry{zhu_one-bit_2021}{article}{}{}
@@ -582,8 +582,8 @@
       \strng{authorfullhash}{1b4408a66ab91fb5ba22c9b48fbc6ed9}
       \strng{authorfullhashraw}{1b4408a66ab91fb5ba22c9b48fbc6ed9}
       \field{extraname}{1}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{shorttitle}
       \field{issn}{1536-1276, 1558-2248}
@@ -658,8 +658,8 @@
       \strng{authorfullhash}{ef7e49640f69394e8c8743d74af5c134}
       \strng{authorfullhashraw}{ef7e49640f69394e8c8743d74af5c134}
       \field{extraname}{2}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Federated edge learning ({FL}), as an emerging distributed machine learning paradigm, allows a mass of edge devices to collaboratively train a global model while preserving privacy. In this tutorial, we focus on {FL} via over-the-air computation ({AirComp}), which is proposed to reduce the communication overhead for {FL} over wireless networks at the cost of compromising in the learning performance due to model aggregation error ({MAE}) arising from channel fading and noise. We ﬁrst provide a comprehensive study on the convergence of {AirCompbased} {FEDAVG} ({AIRFEDAVG}) algorithms under both strongly convex ({SC}) and nonconvex ({NC}) settings with constant and diminishing learning rates in the presence of data heterogeneity. Through convergence and asymptotic analysis, we characterize the impact of aggregation error on the convergence bound and provide insights for system design with convergence guarantees. Then we derive convergence rates for {AIRFEDAVG} algorithms for {SC} and {NC} objectives. For different types of local updates that can be transmitted by edge devices (i.e., local model, gradient, and model difference), we reveal that transmitting local model in {AIRFEDAVG} may cause divergence in the training procedure. In addition, we consider more practical signal processing schemes to improve the communication efﬁciency and further extend the convergence analysis to different forms of {MAE} caused by these signal processing schemes. Extensive simulation results under different settings of objective functions, transmitted local information, and communication schemes verify the theoretical conclusions.}
