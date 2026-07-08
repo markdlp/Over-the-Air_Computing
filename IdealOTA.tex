@@ -96,6 +96,35 @@
     On the \ref{plt:MSEvsSNR} plot how much the \gls{awgn} influences the variance of the estimated received signal
     and the average values of the randomly generated signal.
 
+    \begin{figure}[htbp]
+        \centering
+        \begin{subfigure}[b]{0.8\textwidth}
+            \begin{axis}[
+                title={3D MSE Surface Plot (sps = 2)},
+                xlabel={SNR (dB)},
+                ylabel={Roll-off ($\alpha$)},
+                zlabel={MSE},
+                view={60}{30}, % Adjust the 3D camera angle here
+                grid=major,
+                colorbar, % Adds a color scale bar
+                colormap/viridish, % Modern, clean color gradient
+            ]
+                % matrix plot parsing the data columns
+                % pgfplots can read mesh data directly if x, y, and z are specified
+                \addplot3[surf, mesh/cols=21] table[
+                    x=SNR_dB, 
+                    y expr=0.0, % Map explicit columns or conv ert layout
+                    z=MSE_a_0
+                ] {data/MSEvsSNR_2e0sps.txt};
+                
+                % Alternative: Reparsing via Lua if you flatten your matrix file 
+                % into 3 columns: SNR, Alpha, MSE
+                % \addplot3[surf] table {flattened_data_sps2.txt};
+            \end{axis}
+        \end{subfigure}
+        \caption{Mean Squared Error variation across SNR and Roll-off factors.}
+    \end{figure}
+
     \subsection{MATLAB Simulink Architecture}
     Transitioning from raw code to a block-level architecture, MATLAB Simulink provides a
     clear visual representation of the feedforward ideal system. In this model, the

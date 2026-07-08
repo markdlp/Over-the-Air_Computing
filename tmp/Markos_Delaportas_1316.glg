@@ -24,16 +24,19 @@ Processing resource Markos_Delaportas_1316.glstex.
 Selecting entries for resource Markos_Delaportas_1316.glstex.
 Writing tmp\.\Markos_Delaportas_1316.glstex
 Encoding: UTF-8
+awgn
 csi
 ed
 es
 fc
+fir
 iot
 isi
+mac
 mimo
 mse
 ota
 pam
 sdr
 tdma
-12 entries written to tmp\.\Markos_Delaportas_1316.glstex.
+15 entries written to tmp\.\Markos_Delaportas_1316.glstex.

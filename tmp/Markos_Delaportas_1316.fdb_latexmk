@@ -1,12 +1,12 @@
 # Fdb version 4
-["biber tmp/Markos_Delaportas_1316"] 1782921864.71672 "tmp/Markos_Delaportas_1316.bcf" "tmp/Markos_Delaportas_1316.bbl" "tmp/Markos_Delaportas_1316" 1783007824.43218 0
+["biber tmp/Markos_Delaportas_1316"] 1783036232.1133 "tmp/Markos_Delaportas_1316.bcf" "tmp/Markos_Delaportas_1316.bbl" "tmp/Markos_Delaportas_1316" 1783036324.97811 0
   "ref.bib" 1777415033 37778 84c687f1bf76e4b1e66d42bac5a9cf16 ""
-  "tmp/Markos_Delaportas_1316.bcf" 1783007822 111304 9f15263e40f2884208448b1624634694 "lualatex"
+  "tmp/Markos_Delaportas_1316.bcf" 1783036323 111304 9f15263e40f2884208448b1624634694 "lualatex"
   (generated)
   "tmp/Markos_Delaportas_1316.bbl"
   "tmp/Markos_Delaportas_1316.blg"
   (rewritten before read)
-["lualatex"] 1783007804.25394 "Markos_Delaportas_1316.tex" "Markos_Delaportas_1316.pdf" "Markos_Delaportas_1316" 1783007824.43475 2
+["lualatex"] 1783036302.83361 "Markos_Delaportas_1316.tex" "Markos_Delaportas_1316.pdf" "Markos_Delaportas_1316" 1783036324.98101 0
   "Appendix_A.tex" 1778861878 548 e8076564565066c73e1e387d8003296f ""
   "C:/texlive/2026/texmf-var/luatex-cache/generic/fonts/hb/6496241cf4ab14836e5913617358835e4cdd99cf103d55417375513563b066c7.luc" 1777731828 139308 cc7ea27ce6b1149fe9fe4e18dcf3a151 ""
   "C:/texlive/2026/texmf-var/luatex-cache/generic/fonts/hb/938a0d42f87c89e23bba5227cfbe8a7d26f0b31263fd68c092ac730b54cbe853.luc" 1777731829 116298 f9b460b4387d913ae486c0d259e2fa02 ""
@@ -29,11 +29,10 @@
   "C:/texlive/2026/texmf-var/luatex-cache/generic/fonts/otl/lmroman12-regular.luc" 1777731815 127662 0f4c70cb51974f0b7e8b2ba22ed4ef9a ""
   "C:/texlive/2026/texmf-var/luatex-cache/generic/names/luaotfload-names.luc.gz" 1777731815 329813 7d8f2119ff10d13d7a82ec3e30a379f3 ""
   "ConclusionAndFutureWork.tex" 1778808735 772 65491e9ea382523665b315668ba9987c ""
-  "ExperimentalImplementation.tex" 1782429761 5604 51954774a8d0ca2304c8e3e66fef5f81 ""
+  "ExperimentalImplementation.tex" 1783008109 5615 a54e31a6a634bff8b45741affb9f39f0 ""
   "IdealOTA.tex" 1783007500 8327 7e79b83eedf8f76972db68ec17284e54 ""
   "Introduction.tex" 1779273050 2603 e501df7a2121032da63aa9f25ab97e9c ""
-  "Markos_Delaportas_1316.tex" 1783007802 7241 23084e2bd05eda2de4816a6f57edbb06 ""
-  "OTAwithISI.pdf" 0 -1 0 ""
+  "Markos_Delaportas_1316.tex" 1783036201 7275 bf4d941591aab52a767d2ed30cf49f1f ""
   "ResultsAndDiscussion.tex" 1778808735 1293 db4160e756e95b94cb9df362c95a80c1 ""
   "SystemModelAndChallenges.tex" 1782427974 6504 33eb19eec639c303e9765854876abb76 ""
   "c:/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1777460020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -397,6 +396,7 @@
   "data/MSEvsSNR.txt" 1782952365 853 6c2992914f58c15b0a947096fce6fc37 ""
   "data/XvsEstimate.txt" 1783001112 157975 903e57346d0ac33ef22e39267ba80eeb ""
   "flowgraphs/IdealOTA.pdf" 1783002400 33183 563b64470375ac523a088b79bf6228bf ""
+  "flowgraphs/OTAwithISI.pdf" 1779364858 33193 96a04ee21c25acdb533e7890e2f461f4 ""
   "flowgraphs/arithmeticMean_simulink.pdf" 1783004224 22745 31e610916f7cce20975eaa8f1ba47db1 ""
   "font/LibertinusMath-Regular.otf" 1777415036 588848 4fea98c5cbc8759ac92cf18e33de0715 ""
   "font/LibertinusMono-Regular.otf" 1777415036 59264 cc88ffaac838a6103943fef95fa79d63 ""
@@ -407,17 +407,15 @@
   "font/LibertinusSerif-Regular.otf" 1777415036 337132 28e0b660d81d07d82a96ee9927da4a14 ""
   "img/IdealOTA.png" 1783002234 55589 d57ef0664a1453ea7eb42050e22b77dc ""
   "img/IdealOTA_MSE_simulink.pdf" 1783003469 12237 183fd153d8b308d514fc1bbc50c7e4eb ""
-  "img/OTAwithISI.pdf" 0 -1 0 ""
   "img/ece.png" 1777415035 76218 fa09f245a1716ae00e55a659d2829ddb ""
   "img/ota&isi_matched.png" 1777743274 166909 73045d2058060f06534425cc10cb7786 ""
   "img/uowm.png" 1777415035 35737 633e530e143c891b82095185a34c8c80 ""
-  "tmp/Markos_Delaportas_1316.aux" 1783007822 31613 b0351f398b9d8c9a8d8506fc24360ab9 "lualatex"
-  "tmp/Markos_Delaportas_1316.bbl" 1782921867 40168 db278db6f41457553117d717a15824df "biber tmp/Markos_Delaportas_1316"
-  "tmp/Markos_Delaportas_1316.glstex" 1782922050 6022 846c0c8124e12d06df732dea88cb8fb8 ""
-  "tmp/Markos_Delaportas_1316.out" 1783007822 7512 afa057664e05135bf8eee21602e90dc1 "lualatex"
-  "tmp/Markos_Delaportas_1316.run.xml" 1783007822 2617 412709c47c7e7867eaa0e316ff1e6838 "lualatex"
-  "tmp/Markos_Delaportas_1316.toc" 1783007822 3279 63d439b80c983a26bdba486543717359 "lualatex"
-  "tmp/OTAwithISI.pdf" 0 -1 0 ""
+  "tmp/Markos_Delaportas_1316.aux" 1783036323 31612 9bd3490106af6336f134d76e411e3230 "lualatex"
+  "tmp/Markos_Delaportas_1316.bbl" 1783036249 40168 db278db6f41457553117d717a15824df "biber tmp/Markos_Delaportas_1316"
+  "tmp/Markos_Delaportas_1316.glstex" 1783036278 8645 a05f154e5fc9f37004ea1a232a214cd9 ""
+  "tmp/Markos_Delaportas_1316.out" 1783036323 7512 afa057664e05135bf8eee21602e90dc1 "lualatex"
+  "tmp/Markos_Delaportas_1316.run.xml" 1783036323 2617 412709c47c7e7867eaa0e316ff1e6838 "lualatex"
+  "tmp/Markos_Delaportas_1316.toc" 1783036323 3278 5ad958b3e42cded34b033b13574fc26e "lualatex"
   (generated)
   "Markos_Delaportas_1316.pdf"
   "tmp/Markos_Delaportas_1316.aux"

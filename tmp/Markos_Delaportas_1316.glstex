@@ -51,38 +51,62 @@
   \newabbreviation[#2]{#1}{#3}{#4}%
 }
 
+\bibglsnewabbreviation{awgn}%
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}\delimR \glsnoidxdisplayloc{}{page}{glsnumberformat}{6}},
+sort={AWGN|}}%
+{AWGN}%
+{Additive White Gaussian Noise}
+\glsxtrfieldlistadd{awgn}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}}
+\glsxtrfieldlistadd{awgn}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{4}}
+\glsxtrfieldlistadd{awgn}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}}
+\glsxtrfieldlistadd{awgn}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{6}}
+
+
 \bibglsnewabbreviation{csi}%
-{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{4}},
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}\bibglslastDelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{8}},
 sort={CSI|}}%
 {CSI}%
 {Channel State Information}
-\glsxtrfieldlistadd{csi}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{4}}
+\glsxtrfieldlistadd{csi}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}}
+\glsxtrfieldlistadd{csi}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{8}}
 
 
 \bibglsnewabbreviation{ed}%
-{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}\bibglslastDelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{5}},
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}\bibglsdelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{5}\bibglsdelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{7}\bibglslastDelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{8}},
 sort={ED|}}%
 {ED}%
 {End Device}
 \glsxtrfieldlistadd{ed}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}}
 \glsxtrfieldlistadd{ed}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}}
+\glsxtrfieldlistadd{ed}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{7}}
+\glsxtrfieldlistadd{ed}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{8}}
 
 
 \bibglsnewabbreviation{es}%
-{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}},
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}},
 sort={ES|}}%
 {ES}%
 {Edge Server}
-\glsxtrfieldlistadd{es}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}}
+\glsxtrfieldlistadd{es}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}}
 
 
 \bibglsnewabbreviation{fc}%
-{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}\bibglslastDelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{4}},
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}\bibglsdelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{5}\bibglsdelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{7}\bibglslastDelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{8}},
 sort={FC|}}%
 {FC}%
 {Fusion Center}
 \glsxtrfieldlistadd{fc}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}}
-\glsxtrfieldlistadd{fc}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{4}}
+\glsxtrfieldlistadd{fc}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}}
+\glsxtrfieldlistadd{fc}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{7}}
+\glsxtrfieldlistadd{fc}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{8}}
+
+
+\bibglsnewabbreviation{fir}%
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}},
+sort={FIR|}}%
+{FIR}%
+{Finite Impulse Response}
+\glsxtrfieldlistadd{fir}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}}
 
 
 \bibglsnewabbreviation{iot}%
@@ -94,64 +118,78 @@ sort={IoT|}}%
 
 
 \bibglsnewabbreviation{isi}%
-{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{4}\delimR \glsnoidxdisplayloc{}{page}{glsnumberformat}{6}},
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}\bibglsdelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{8}\delimR \glsnoidxdisplayloc{}{page}{glsnumberformat}{10}},
 sort={ISI|}}%
 {ISI}%
 {Inter-Symbol Interference}
-\glsxtrfieldlistadd{isi}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{4}}
-\glsxtrfieldlistadd{isi}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}}
-\glsxtrfieldlistadd{isi}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{6}}
+\glsxtrfieldlistadd{isi}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}}
+\glsxtrfieldlistadd{isi}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{8}}
+\glsxtrfieldlistadd{isi}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{9}}
+\glsxtrfieldlistadd{isi}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{10}}
+
+
+\bibglsnewabbreviation{mac}%
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}\delimR \glsnoidxdisplayloc{}{page}{glsnumberformat}{5}},
+sort={MAC|}}%
+{MAC}%
+{Multiple Access Channel}
+\glsxtrfieldlistadd{mac}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}}
+\glsxtrfieldlistadd{mac}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{4}}
+\glsxtrfieldlistadd{mac}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}}
 
 
 \bibglsnewabbreviation{mimo}%
-{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{8}},
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{11}},
 sort={MIMO|}}%
 {MIMO}%
 {Multiple-Input Multiple-Output}
-\glsxtrfieldlistadd{mimo}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{8}}
+\glsxtrfieldlistadd{mimo}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{11}}
 
 
 \bibglsnewabbreviation{mse}%
-{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{4}\bibglslastDelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{5}},
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}\bibglslastDelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{8}},
 sort={MSE|}}%
 {MSE}%
 {Mean Squared Error}
-\glsxtrfieldlistadd{mse}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{4}}
 \glsxtrfieldlistadd{mse}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}}
+\glsxtrfieldlistadd{mse}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{8}}
 
 
 \bibglsnewabbreviation{ota}%
-{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{1}\bibglsdelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{3}\delimR \glsnoidxdisplayloc{}{page}{glsnumberformat}{5}},
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{1}\bibglsdelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{3}\bibglsdelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{5}\bibglsdelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{7}\bibglslastDelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{9}},
 sort={OTA|}}%
 {OTA}%
 {Over-the-Air}
 \glsxtrfieldlistadd{ota}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{1}}
 \glsxtrfieldlistadd{ota}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}}
-\glsxtrfieldlistadd{ota}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{4}}
 \glsxtrfieldlistadd{ota}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}}
+\glsxtrfieldlistadd{ota}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{7}}
+\glsxtrfieldlistadd{ota}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{9}}
 
 
 \bibglsnewabbreviation{pam}%
-{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}},
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}\bibglslastDelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{7}},
 sort={PAM|}}%
 {PAM}%
 {Pulse Amplitude Modulation}
-\glsxtrfieldlistadd{pam}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}}
+\glsxtrfieldlistadd{pam}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}}
+\glsxtrfieldlistadd{pam}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{7}}
 
 
 \bibglsnewabbreviation{sdr}%
-{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}},
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}\bibglslastDelimN \glsnoidxdisplayloc{}{page}{glsnumberformat}{5}},
 sort={SDR|}}%
 {SDR}%
 {Software Defined Radio}
 \glsxtrfieldlistadd{sdr}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{3}}
+\glsxtrfieldlistadd{sdr}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{5}}
 
 
 \bibglsnewabbreviation{tdma}%
-{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{7}},
+{location={\glsnoidxdisplayloc{}{page}{glsnumberformat}{11}},
 sort={TDMA|}}%
 {TDMA}%
 {Time-Division Multiple Access}
-\glsxtrfieldlistadd{tdma}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{7}}
+\glsxtrfieldlistadd{tdma}{loclist}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{11}}
 
 

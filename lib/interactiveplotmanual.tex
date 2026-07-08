@@ -1,0 +1,250 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[english]{babel}
+%\usepackage{hyperref}
+\usepackage{interactiveplot}
+\usepackage{array}
+\def\keywords{build button controllable interactive plot parameter LaTeX pdfLaTeX JavaScript Adobe Reader}
+
+%\hypersetup{
+%	pdftitle={The interactiveplot Package},
+%	pdfauthor={Roberto Bock, Javier Toro, Pedro Linares},
+%	pdfsubject={Documentation},
+%	pdfkeywords={\keywords}
+%}
+
+\begin{document}
+\title{The {\sffamily interactiveplot} Package}
+\author{Roberto Bock, Javier Toro, Pedro Linares}
+\maketitle
+
+\begin{abstract}\noindent
+A \LaTeX{} package for creating multi-parametric explicit 2D and 3D plots that can be interactively controlled by buttons inside a PDF.
+\vskip 0.2\baselineskip
+
+\emph{Keywords}: \keywords
+\end{abstract}
+
+\tableofcontents
+
+%\newpage
+\section{Introduction}
+This package provides an interface to create Portable Document Format (PDF) files with 2D and 3D elemental explicit functions, that allow variable parameters as arguments. These parameters can be modified interactively by buttons.
+
+%By now, the only supported way for compiling using this package is by producing the PDF file with pdf\TeX{}; and producing elemental functions.
+
+The final PDF can be viewed with Adobe Reader 11.0 or above.
+
+\section{Requirements}
+\begin{trivlist}
+\item pdf\TeX{}, version $\ge1.20$
+\item Adobe Reader, version $\ge11.0$
+\end{trivlist}
+
+\section{Installation}
+Unzip the file `interactiveplot.zip' and copy the `interactiveplot.sty' in a place where \LaTeX{} can find it.
+
+MiK\TeX{} users should run the package manager for installation.
+
+\section{Using the package}
+Invoke the package by putting the line
+\begin{verbatim}
+    \usepackage{interactiveplot}
+\end{verbatim}
+in the preamble of your document, i.\,e. somewhere between \verb+\documentclass+ and \verb+\begin{document}+.
+
+\section{The user interface}
+Interactive plots are defined using three basic instructions provided by this package. There are two kind of graphs allowed by this package: 2D and 3D. Once you have defined the type of graph you wish to plot you have to set up the functions you would like to display. 
+\begin{itemize}
+\item A 2D Graph is inserted using the environment \verb+iplotdd+.
+\item A 3D Graph is inserted using the environment \verb+iplotddd+.
+\item Functions are defined using the macro \verb+iplot+ .
+\end{itemize}
+
+\subsection{Inserting a 2D Graph}
+\begin{verbatim}          
+\begin{iplotdd}   %  Environment that defines as 2D
+                  %  the kind of function to be plotted
+\iplot[options]   %  Macro that defines the first function 
+                  %  and its options
+{<2d_function1>}  %  function in natural language
+...
+\iplot[optionsN]  %  Last function to be plotted
+{<2d_functionN>}            
+\end{iplotdd}     %  End of environment
+\end{verbatim}
+
+\subsection{Inserting a 3D Graph}
+\begin{verbatim}  
+\begin{iplotddd}  %  Environment that defines as 3D
+                  %  the kind of function to be plotted
+\iplot[options]   %  Macro that defines the first function 
+                  %  and its options
+{<3d_function1>}  %  function in natural language
+...
+\iplot[optionsN]  %  Last function to be plotted
+{<3d_functionN>}
+\end{iplotddd}     %  End of environment
+\end{verbatim}
+
+\subsection{The \texttt{\textbackslash iplotdd} and \texttt{\textbackslash iplotddd} options.}
+
+The environments \texttt{\textbackslash iplotdd} and \texttt{\textbackslash iplotddd} share the same options. These are \verb+<width>+ and \verb+<height>+.
+
+The \verb+<width>+ and \verb+<height>+ arguments must be given in valid \TeX{} dimensions. Horizontal and vertical dimensions of the graph are scaled independently to fit \verb+<width>+ and \verb+<height>+.
+
+\subsection{The \texttt{\textbackslash iplot} options.}
+The macro \texttt{\textbackslash iplot} is used to define the function to be graphed. This macro can be used inside an \texttt{\textbackslash iplotdd} or \texttt{\textbackslash iplotddd} environment. If you would like to produce a 2D graph (by using the macro inside the environment \texttt{\textbackslash iplotdd}) you have to define only 1 $<$variable$>$ option (explained below). If you would like to use inside a 3D graph  (using the environment \texttt{\textbackslash iplotddd}) you have to define 2 $<$variable$>$ options for the \texttt{\textbackslash iplot} macro. 
+
+The macro \texttt{\textbackslash iplot} admits the following options:
+
+\begin{itemize}
+\item \verb+<var={<variable_name>[,start[,end]]}>+: this option defines the property of a variable. It has 3 entries:
+\begin{itemize}
+\item \verb+<variable_name>+: it defines the name of the variable. This value is mandatory.
+\item \verb+[variable_start]+: it defines the inferior graphing limit; that is, it sets the starting value for plotting of the variable. This value is optional, if it is not defined a default value of -25 is set for the 2D case and of -1 for the 3D case.
+\item \verb+[variable_end]+: it defines the superior graphing limit; that is, it sets the ending value for plotting of the variable. This value is optional, if it is not defined a default value of 25 is set for the 2D case and of 1 for the 3D case.
+\end{itemize} 
+If you set a variable option as var=\{ X,-1,1 \} you will get a graph plotted in the interval (-1,1).
+
+\item \verb+[param={<parameter_name>,<value>,<step>,<start>,<end>}]+: this option defines a function parameter property. It has 4 entries values:
+\begin{itemize}
+\item\verb+<parameter_name>+: it defines the name or label of the parameter.
+\item\verb+<value>+: it defines the initial value of the parameter. It is used to make the first display of the graph.
+\item\verb+<step>+: it defines a positive constant value used to increase or decrease the value of the parameter.
+\item\verb+<start>+: it defines the minimum value that the parameter can reach.
+\item \verb+<end>+: it defines the maximum value that the parameter can reach.
+\end{itemize}
+
+When this option is specified, it insert  2 buttons in the PDF which can be used to increase or decrease the \verb+<value>+ by the \verb+<step>+ value.
+
+If no parameters are given, the resulting plot will be static.
+
+\item \verb+[frange={<frange>[,start[,end]]}]+: this option specifies the plottable range in the $Y$ axis in 2D case or the $Z$ axis in 3D case.
+\begin{itemize}
+\item \verb+<frange_name>+: it specifies the name of the function range. This value is mandatory.
+\item \verb+[start]+: it specifies the minimal plottable value. 
+\item \verb+[end]+: it specifies the maximal plottable value.
+\end{itemize}
+
+\item \verb+[color=<color>]+: this option defines the color of the current function graph.
+The colors that you can select are:
+\begin{itemize}
+\item \verb+black+.
+\item \verb+white+.
+\item \verb+red+.
+\item \verb+green+.
+\item \verb+blue+.
+\item \verb+cyan+.
+\item \verb+magenta+.
+\item \verb+yellow+.
+\item \verb+dark-gray+.
+\item \verb+gray+.
+\item \verb+light-gray+.
+\end{itemize}
+
+If the color option is not specified, the default value is black.
+
+\item \verb+[resolution=<resolution>]+: it defines the number of points used to build the graph of the function. If not specified a value of 500 or 30 will be assumed for 2D and 3D respectively.
+\end{itemize}
+
+When you use the \texttt{\textbackslash iplot} macro inside a \texttt{\textbackslash iplotdd} environment the \texttt{\textbackslash iplot} macro builds a 2D graph. In this case, you have to define one $<$var$>$ option.
+When you use the \texttt{\textbackslash iplot} macro inside a \texttt{\textbackslash iplotddd} environment the \texttt{\textbackslash iplot} macro builds a 3D graph. In this case, you have to define two $<$var$>$ options.
+ The \emph{var} option is not optional.
+
+\subsection{The \texttt{\textbackslash iplot} arguments.}
+
+The \texttt{\textbackslash iplot} macro has as argument the function itself.  The entire function can be composed by another functions. In this section all the admissible functions will be described:
+
+\begin{center}
+  \begin{tabular}{| m{3.8cm}| m{1.5cm} | m{1.5cm} | m{2.2cm} | m{2cm} |}
+    \hline
+    \textbf{Function Name} &\textbf{Normal} & \textbf{Inverse} & \textbf{Hyperbolic} & \textbf{Inverse H} \\ \hline
+	\emph{\textbf{sine}} function& \textbf{sin} & \textbf{asin} & \textbf{sinh} & \textbf{asinh} \\ \hline
+	\emph{\textbf{cosine}} function& \textbf{cos} & \textbf{acos} & \textbf{cosh} & \textbf{acosh}\\ \hline
+	\emph{\textbf{tangent}} function & \textbf{tan} &\textbf{atan} & \textbf{tanh}&\textbf{atanh}\\ \hline
+	\emph{\textbf{cotangent}} function & \textbf{cot} &\textbf{acot} &\textbf{coth} &\textbf{acoth}\\ \hline
+	\emph{\textbf{secant}} function & \textbf{sec} &\textbf{asec} & \textbf{sech}&\textbf{asech}\\ \hline
+	\emph{\textbf{cosecant}} function & \textbf{csc} & \textbf{acsc}& \textbf{csch}&\textbf{acsch}\\ \hline
+ \end{tabular}
+\end{center}
+
+Non trigonometric functions
+\begin{center}
+  \begin{tabular}{| m{4.5cm}| m{1.5cm} |}
+  	\hline
+  	\textbf{Function Name} &\textbf{Syntax} \\ \hline
+	\emph{\textbf{exponential}} function & \textbf{exp}\\ \hline
+	\emph{\textbf{square root}} function &\textbf{sqrt}\\ \hline
+	\emph{\textbf{neperian logarithm}} function &\textbf{ln}\\ \hline
+	\emph{\textbf{logarithm}} function &\textbf{log}\\ \hline
+	\emph{\textbf{Power}} function & \verb+^+ \\ \hline
+ \end{tabular}
+\end{center}
+\section{Examples}
+In this section, two examples will be shown. The first one will show how the package can be used to display a 2D graph. The second one will show how the package can be used to display a 3D graph.
+
+\subsection{Graphing the 2D function: \texttt{f(x)=(x\textasciicircum2+p)/q+t}}
+This example displays the 2D function f(x)=(x\textasciicircum2+p)/q+t.
+\begin{verbatim}
+\begin{iplotdd}[width=200,height=200]
+     \iplot[var={x,-5,5},param={p,-1,1,-10,10}
+          ,param={q,0,1,-10,10}
+          ,param={t,0,1,-10,10}
+          ,color=black]
+          {(x^2+p)/q+t}
+\end{iplotdd}
+\end{verbatim}
+
+
+\begin{iplotdd}[width=200,height=200]
+     \iplot[var={x,-10,15},param={p,1,1,-10,10},param={q,1,1,-10,10},param={t,0,1,-10,10},frange={y,-5,5},color=black]{(x^2+p)/q+t}
+\end{iplotdd}
+
+\subsection{Graphing the 3D function: \texttt{f(x)=x\textasciicircum*2t+y\textasciicircum2/q+p}}
+This example displays the 2D function \verb$f(x)=x^2*t+y^2/q+p$.
+
+\begin{verbatim}
+\begin{iplotddd}[width=200,height=200]
+     \iplot[
+          var={x,-5,5}
+          ,var={y,-5,5}
+          ,param={p,1,1,-10,10}
+          ,param={q,1,1,-10,10}
+          ,param={t,1,1,-3,7}
+          ,frange={z,-5,5}
+          ,color=black]
+          {x^2*t+y^2/q+p}
+\end{iplotddd}
+\end{verbatim}
+
+\begin{iplotddd}[width=200,height=200]
+\iplot[var={x,-5,5},var={y,-5,5},param={p,1,1,-10,10},param={q,1,1,-10,10},param={t,1,1,-3,7},frange={z,-5,5},color=red]{x^2*t+y^2/q+p}
+\end{iplotddd}
+
+
+\clearpage
+
+\section{Known issues}
+	This section shows the issues you may experience during the use of this package.
+	
+	%\subsection{Skiping Issue}
+	%Depending of the function being plotted, if you shoose a low \verb+<resolution>+ value, you can get a wrong graph, because that resolution may skip a non graphicable points and assumes they exist.
+	
+	\subsection{2D Issues }
+	
+	When you graph a 2D function, if undefined segments between the specified graphing limits exist, the package will draw a connecting line over the undefined segment. For instance, the function \verb-arcsec(x)- is undefined in interval (-1,1) but a line connecting the inferior limit value (-1) with the superior one (1) is drawn.
+
+\begin{iplotdd}[width=200,height=200]
+	\iplot[var={x,-5,5},frange={y,-5,5},color=red]{asec(x)}
+\end{iplotdd}
+\clearpage
+\subsection{3D Issues}
+	If the \verb+<resolution>+ for a 3D function is low the package could draw connecting lines between two points where no connecting lines should exist. For instance, with function \verb=-4*x^2+y^2+1= if you define a resolution of 30 you will get the following result:
+
+\begin{iplotddd}[width=200,height=200]
+	\iplot[var={x,-5,5},var={y,-5,5},frange={z,-5,5},color=red]{-4*x^2+y^2+1}
+\end{iplotddd}
+
+In this case, you can solve this problem by increasing the \verb+<resolution>+, but the speed at which the plot is displayed could be affected.
+
+\end{document}

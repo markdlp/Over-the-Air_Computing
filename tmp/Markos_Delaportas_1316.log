@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.4.30)  2 JUL 2026 18:56
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026)  (format=lualatex 2026.4.30)  3 JUL 2026 02:51
  restricted system commands enabled.
  file:line:error style messages enabled.
 **Markos_Delaportas_1316.tex
@@ -1105,8 +1105,8 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 )
 \Hy@SectionHShift=\skip88
 )
-Package hyperref Info: Option `bookmarksopen' set `true' on input line 63.
-Package hyperref Info: Option `colorlinks' set `true' on input line 63.
+Package hyperref Info: Option `bookmarksopen' set `true' on input line 64.
+Package hyperref Info: Option `colorlinks' set `true' on input line 64.
  (c:/texlive/2026/texmf-dist/tex/latex/glossaries-extra/glossaries-extra.sty
 Package: glossaries-extra 2026/04/21 v2.1 (NLCT)
  (c:/texlive/2026/texmf-dist/tex/latex/xkeyval/xkeyval.sty
@@ -1574,11 +1574,11 @@ Package fontspec Info:
 (fontspec)             <->"[./font/LibertinusSerif-BoldItalic.otf]:mode=base;script=latn;language=dflt;+tlig;+lnum;+tnum;+smcp;"
 
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/LibertinusSerif(1)/m/n on input line 113.
+(Font)                  OT1/cmr/m/n --> TU/LibertinusSerif(1)/m/n on input line 114.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> TU/LibertinusSerif(1)/m/it on input line 113.
+(Font)                  OT1/cmr/m/it --> TU/LibertinusSerif(1)/m/it on input line 114.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> TU/LibertinusSerif(1)/b/n on input line 113.
+(Font)                  OT1/cmr/bx/n --> TU/LibertinusSerif(1)/b/n on input line 114.
 
 Package fontspec Info: 
 (fontspec)             Font family 'LibertinusSans(0)' created for font
@@ -1630,9 +1630,9 @@ Package fontspec Info:
 (fontspec)             <->"[./font/LibertinusSans-Italic.otf]:mode=base;script=latn;language=dflt;+tlig;+lnum;+tnum;+smcp;"
 
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/LibertinusSans(1)/m/n on input line 122.
+(Font)                  OT1/cmss/m/n --> TU/LibertinusSans(1)/m/n on input line 123.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/LibertinusSans(1)/b/n on input line 122.
+(Font)                  OT1/cmss/bx/n --> TU/LibertinusSans(1)/b/n on input line 123.
 
 Package fontspec Info: 
 (fontspec)             Font family 'LibertinusMono-Regular.otf(0)' created for
@@ -1659,9 +1659,9 @@ Package fontspec Info:
 (fontspec)             <->"[./font/LibertinusMono-Regular.otf]:mode=base;script=latn;language=dflt;"
 
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/LibertinusMono-Regular.otf(1)/m/n on input line 123.
+(Font)                  OT1/cmtt/m/n --> TU/LibertinusMono-Regular.otf(1)/m/n on input line 124.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/LibertinusMono-Regular.otf(1)/b/n on input line 123.
+(Font)                  OT1/cmtt/m/n --> TU/LibertinusMono-Regular.otf(1)/b/n on input line 124.
 
 Package fontspec Info: 
 (fontspec)             Font family 'LibertinusMath-Regular.otf(0)' created for
@@ -1687,13 +1687,13 @@ Package fontspec Info:
 (fontspec)             <10.8->"[./font/LibertinusMath-Regular.otf]:mode=base;script=math;language=dflt;mathfontdimen=xetex;"<8.4-10.8>"[./font/LibertinusMath-Regular.otf]:mode=base;script=math;language=dflt;mathfontdimen=xetex;+ssty=0;"<-8.4>"[./font/LibertinusMath-Regular.otf]:mode=base;script=math;language=dflt;mathfontdimen=xetex;+ssty=1;"
 
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 125.
+(Font)              `operators' in the math version `normal' on input line 126.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/LibertinusMath-Regular.otf(1)/m/n on input line 125.
+(Font)                  OT1/cmr/m/n --> TU/LibertinusMath-Regular.otf(1)/m/n on input line 126.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 125.
+(Font)              `operators' in the math version `bold' on input line 126.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> TU/LibertinusMath-Regular.otf(1)/b/n on input line 125.
+(Font)                  OT1/cmr/bx/n --> TU/LibertinusMath-Regular.otf(1)/b/n on input line 126.
 
 Package fontspec Info: 
 (fontspec)             Font family 'LibertinusMath-Regular.otf(2)' created for
@@ -1707,13 +1707,13 @@ Package fontspec Info:
 (fontspec)             <10.8->"[./font/LibertinusMath-Regular.otf]:mode=base;script=math;language=dflt;mathfontdimen=xetex;mathfontdimen=tex2;"<8.4-10.8>"[./font/LibertinusMath-Regular.otf]:mode=base;script=math;language=dflt;mathfontdimen=xetex;mathfontdimen=tex2;+ssty=0;"<-8.4>"[./font/LibertinusMath-Regular.otf]:mode=base;script=math;language=dflt;mathfontdimen=xetex;mathfontdimen=tex2;+ssty=1;"
 
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `normal' on input line 125.
+(Font)              `symbols' in the math version `normal' on input line 126.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
-(Font)                  OMS/cmsy/m/n --> TU/LibertinusMath-Regular.otf(2)/m/n on input line 125.
+(Font)                  OMS/cmsy/m/n --> TU/LibertinusMath-Regular.otf(2)/m/n on input line 126.
 LaTeX Font Info:    Encoding `OMS' has changed to `TU' for symbol font
-(Font)              `symbols' in the math version `bold' on input line 125.
+(Font)              `symbols' in the math version `bold' on input line 126.
 LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
-(Font)                  OMS/cmsy/b/n --> TU/LibertinusMath-Regular.otf(2)/b/n on input line 125.
+(Font)                  OMS/cmsy/b/n --> TU/LibertinusMath-Regular.otf(2)/b/n on input line 126.
 
 Package fontspec Info: 
 (fontspec)             Font family 'LibertinusMath-Regular.otf(3)' created for
@@ -1727,18 +1727,18 @@ Package fontspec Info:
 (fontspec)             <10.8->"[./font/LibertinusMath-Regular.otf]:mode=base;script=math;language=dflt;mathfontdimen=xetex;mathfontdimen=tex3;"<8.4-10.8>"[./font/LibertinusMath-Regular.otf]:mode=base;script=math;language=dflt;mathfontdimen=xetex;mathfontdimen=tex3;+ssty=0;"<-8.4>"[./font/LibertinusMath-Regular.otf]:mode=base;script=math;language=dflt;mathfontdimen=xetex;mathfontdimen=tex3;+ssty=1;"
 
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `normal' on input line 125.
+(Font)              `largesymbols' in the math version `normal' on input line 126.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
-(Font)                  OMX/cmex/m/n --> TU/LibertinusMath-Regular.otf(3)/m/n on input line 125.
+(Font)                  OMX/cmex/m/n --> TU/LibertinusMath-Regular.otf(3)/m/n on input line 126.
 LaTeX Font Info:    Encoding `OMX' has changed to `TU' for symbol font
-(Font)              `largesymbols' in the math version `bold' on input line 125.
+(Font)              `largesymbols' in the math version `bold' on input line 126.
 LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
-(Font)                  OMX/cmex/m/n --> TU/LibertinusMath-Regular.otf(3)/b/n on input line 125.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 125.
+(Font)                  OMX/cmex/m/n --> TU/LibertinusMath-Regular.otf(3)/b/n on input line 126.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 126.
  (c:/texlive/2026/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 125.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 126.
  (c:/texlive/2026/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
@@ -1747,26 +1747,26 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
  (./tmp/Markos_Delaportas_1316.aux)
 \openout1 = Markos_Delaportas_1316.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 185.
-LaTeX Font Info:    ... okay on input line 185.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 185.
-LaTeX Font Info:    ... okay on input line 185.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 185.
-LaTeX Font Info:    ... okay on input line 185.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 185.
-LaTeX Font Info:    ... okay on input line 185.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 185.
-LaTeX Font Info:    ... okay on input line 185.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 185.
-LaTeX Font Info:    ... okay on input line 185.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 185.
-LaTeX Font Info:    ... okay on input line 185.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 185.
-LaTeX Font Info:    ... okay on input line 185.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 185.
-LaTeX Font Info:    ... okay on input line 185.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 185.
-LaTeX Font Info:    ... okay on input line 185.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 186.
+LaTeX Font Info:    ... okay on input line 186.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 186.
+LaTeX Font Info:    ... okay on input line 186.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 186.
+LaTeX Font Info:    ... okay on input line 186.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 186.
+LaTeX Font Info:    ... okay on input line 186.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 186.
+LaTeX Font Info:    ... okay on input line 186.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 186.
+LaTeX Font Info:    ... okay on input line 186.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 186.
+LaTeX Font Info:    ... okay on input line 186.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 186.
+LaTeX Font Info:    ... okay on input line 186.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 186.
+LaTeX Font Info:    ... okay on input line 186.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 186.
+LaTeX Font Info:    ... okay on input line 186.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: luatex
@@ -1829,13 +1829,13 @@ Package caption Info: End \AtBeginDocument code.
 
 Package pgfplots notification 'compat/show suggested version=true': document has been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
-LaTeX Info: Redefining \microtypecontext on input line 185.
-Package microtype Info: Applying patch `item' on input line 185.
-Package microtype Info: Applying patch `toc' on input line 185.
-Package microtype Info: Applying patch `eqnum' on input line 185.
-Package microtype Info: Applying patch `footnote' on input line 185.
-Package microtype Info: Applying patch `verbatim' on input line 185.
-LaTeX Info: Redefining \microtypesetup on input line 185.
+LaTeX Info: Redefining \microtypecontext on input line 186.
+Package microtype Info: Applying patch `item' on input line 186.
+Package microtype Info: Applying patch `toc' on input line 186.
+Package microtype Info: Applying patch `eqnum' on input line 186.
+Package microtype Info: Applying patch `footnote' on input line 186.
+Package microtype Info: Applying patch `verbatim' on input line 186.
+LaTeX Info: Redefining \microtypesetup on input line 186.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1853,9 +1853,9 @@ Package microtype Info: Loading generic protrusion settings for font family
 (c:/texlive/2026/texmf-dist/tex/latex/translations/translations-basic-dictionary-english.trsl
 File: translations-basic-dictionary-english.trsl (english translation file `translations-basic-dictionary')
 )
-Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 185.
-Package translations Info: no dictionary file `translations-basic-dictionary-greek.trsl' found. on input line 185.
-Package hyperref Info: Link coloring ON on input line 185.
+Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 186.
+Package translations Info: no dictionary file `translations-basic-dictionary-greek.trsl' found. on input line 186.
+Package hyperref Info: Link coloring ON on input line 186.
  (./tmp/Markos_Delaportas_1316.out) (./tmp/Markos_Delaportas_1316.out)
 \@outlinefile=\write5
 
@@ -1888,8 +1888,8 @@ Package biblatex Info: Data encoding 'utf8' specified.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'Markos_Delaportas_1316.bbl' found.
  (./tmp/Markos_Delaportas_1316.bbl)
-Package biblatex Info: Reference section=0 on input line 185.
-Package biblatex Info: Reference segment=0 on input line 185.
+Package biblatex Info: Reference section=0 on input line 186.
+Package biblatex Info: Reference segment=0 on input line 186.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LibertinusSans' (encoding: TU).
 (microtype)             For optimal results, create family-specific settings.
@@ -1909,34 +1909,19 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 
 \openout6 = Markos_Delaportas_1316.toc
  [2] (./Introduction.tex) (./IdealOTA.tex
-
-Package glossaries-extra Warning: Glossary entry `awgn' has not been defined on input line 10.
-
-
-Package glossaries-extra Warning: Glossary entry `mac' has not been defined on input line 17.
-
-
-Package glossaries-extra Warning: Glossary entry `awgn' has not been defined on input line 25.
-
-<img/uowm.png, id=229, 283.1804pt x 48.37665pt>
+<img/uowm.png, id=277, 283.1804pt x 48.37665pt>
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
 Package luatex.def Info: img/uowm.png  used on input line 29.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
-<img/ece.png, id=230, 491.8375pt x 491.8375pt>
+<img/ece.png, id=278, 491.8375pt x 491.8375pt>
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
 Package luatex.def Info: img/ece.png  used on input line 29.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
-[3
+ [3
 
 <./img/uowm.png><./img/ece.png>]
-
-Package glossaries-extra Warning: Glossary entry `awgn' has not been defined on input line 34.
-
-
-Package glossaries-extra Warning: Glossary entry `mac' has not been defined on input line 34.
-
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 36.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `LibertinusMono-Regular.otf' (encoding: TU).
@@ -1951,70 +1936,37 @@ Package microtype Info: Character `guilsinglright ' is missing
 PGFPlots: reading {data/XvsEstimate.txt}
 PGFPlots: reading {data/XvsEstimate.txt}
 PGFPlots: reading {data/MSEvsSNR.txt}
+
 NOTE: coordinate (--,--,--) [--](was (-9,4574.380263657 -8,--) [--]) has been dropped because of a coordinate filter.
-
-LaTeX Warning: Reference `plt:MSEvsSNR' on page 4 undefined on input line 96.
-
-
-Package glossaries-extra Warning: Glossary entry `awgn' has not been defined on input line 96.
-
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 104.
+Package luatex.def Info: img/uowm.png  used on input line 99.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 104.
+Package luatex.def Info: img/ece.png  used on input line 99.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
 [4]
-<flowgraphs/arithmeticMean_simulink.pdf, id=274, 612.73921pt x 169.1118pt>
+<flowgraphs/arithmeticMean_simulink.pdf, id=327, 612.73921pt x 169.1118pt>
 File: flowgraphs/arithmeticMean_simulink.pdf Graphic file (type pdf)
 <use flowgraphs/arithmeticMean_simulink.pdf>
 Package luatex.def Info: flowgraphs/arithmeticMean_simulink.pdf  used on input line 107.
 (luatex.def)             Requested size: 597.50789pt x 164.92075pt.
-
-
-Package glossaries-extra Warning: Glossary entry `awgn' has not been defined on input line 108.
-
-
-Package glossaries-extra Warning: Glossary entry `awgn' has not been defined on input line 108.
-
-
-Package glossaries-extra Warning: Glossary entry `awgn' has not been defined on input line 113.
-
-<img/IdealOTA_MSE_simulink.pdf, id=276, 845.1575pt x 597.23125pt>
+<img/IdealOTA_MSE_simulink.pdf, id=332, 845.1575pt x 597.23125pt>
 File: img/IdealOTA_MSE_simulink.pdf Graphic file (type pdf)
 <use img/IdealOTA_MSE_simulink.pdf>
 Package luatex.def Info: img/IdealOTA_MSE_simulink.pdf  used on input line 120.
 (luatex.def)             Requested size: 597.50789pt x 422.24188pt.
-
-Package glossaries-extra Warning: Glossary entry `awgn' has not been defined on input line 121.
-
-
-Package glossaries-extra Warning: Glossary entry `awgn' has not been defined on input line 121.
-
-
-LaTeX Warning: Reference `eq:mac_sum' on page 5 undefined on input line 127.
-
-
-Package glossaries-extra Warning: Glossary entry `fir' has not been defined on input line 131.
-
-<flowgraphs/IdealOTA.pdf, id=278, 1903.11pt x 650.43pt>
+<flowgraphs/IdealOTA.pdf, id=338, 1903.11pt x 650.43pt>
 File: flowgraphs/IdealOTA.pdf Graphic file (type pdf)
 <use flowgraphs/IdealOTA.pdf>
 Package luatex.def Info: flowgraphs/IdealOTA.pdf  used on input line 140.
 (luatex.def)             Requested size: 597.50789pt x 204.21164pt.
-
-Package glossaries-extra Warning: Glossary entry `mac' has not been defined on input line 149.
-
-<img/IdealOTA.png, id=279, 1445.4pt x 776.9025pt>
+<img/IdealOTA.png, id=340, 1445.4pt x 776.9025pt>
 File: img/IdealOTA.png Graphic file (type png)
 <use img/IdealOTA.png>
 Package luatex.def Info: img/IdealOTA.png  used on input line 154.
 (luatex.def)             Requested size: 597.50789pt x 321.16379pt.
-
-Package glossaries-extra Warning: Glossary entry `fir' has not been defined on input line 163.
-
 ) (./SystemModelAndChallenges.tex
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
@@ -2036,20 +1988,20 @@ Package luatex.def Info: img/ece.png  used on input line 16.
  [6<./img/IdealOTA_MSE_simulink.pdf><./flowgraphs/IdealOTA.pdf>]
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 50.
+Package luatex.def Info: img/uowm.png  used on input line 39.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 50.
+Package luatex.def Info: img/ece.png  used on input line 39.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [7<./img/IdealOTA.png>]
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 103.
+Package luatex.def Info: img/uowm.png  used on input line 92.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 103.
+Package luatex.def Info: img/ece.png  used on input line 92.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [8]) (./ExperimentalImplementation.tex
 Underfull \hbox (badness 4621) in paragraph at lines 27--28
@@ -2061,77 +2013,62 @@ Underfull \hbox (badness 3009) in paragraph at lines 28--29
 []|\TU/LibertinusSerif(0)/m/n/12 Single-Input Single-Output for ini-tial
  []
 
-File: img/uowm.png Graphic file (type png)
-<use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 43.
-(luatex.def)             Requested size: 166.55646pt x 28.45274pt.
-File: img/ece.png Graphic file (type png)
-<use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 43.
-(luatex.def)             Requested size: 28.45274pt x 28.45079pt.
-[9]
-
-LaTeX Warning: File `OTAwithISI.pdf' not found on input line 51.
-
-
-./ExperimentalImplementation.tex:51: Package luatex.def Error: File `OTAwithISI.pdf' not found: using draft setting.
-
-See the luatex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.51 ...graphics[width=\linewidth]{OTAwithISI.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-<img/ota&isi_matched.png, id=426, 1156.32pt x 614.295pt>
+<flowgraphs/OTAwithISI.pdf, id=470, 2039.62pt x 883.3pt>
+File: flowgraphs/OTAwithISI.pdf Graphic file (type pdf)
+<use flowgraphs/OTAwithISI.pdf>
+Package luatex.def Info: flowgraphs/OTAwithISI.pdf  used on input line 51.
+(luatex.def)             Requested size: 597.50789pt x 258.76518pt.
+<img/ota&isi_matched.png, id=471, 1156.32pt x 614.295pt>
 File: img/ota&isi_matched.png Graphic file (type png)
 <use img/ota&isi_matched.png>
 Package luatex.def Info: img/ota&isi_matched.png  used on input line 58.
 (luatex.def)             Requested size: 597.50789pt x 317.41995pt.
-) (./ResultsAndDiscussion.tex) (./ConclusionAndFutureWork.tex) (./Appendix_A.tex)
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 225.
+Package luatex.def Info: img/uowm.png  used on input line 65.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 225.
+Package luatex.def Info: img/ece.png  used on input line 65.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
- [10]
+[9]
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 225.
+Package luatex.def Info: img/uowm.png  used on input line 65.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 225.
+Package luatex.def Info: img/ece.png  used on input line 65.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
- [11]
+ [10<./flowgraphs/OTAwithISI.pdf>]) (./ResultsAndDiscussion.tex) (./ConclusionAndFutureWork.tex
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 225.
+Package luatex.def Info: img/uowm.png  used on input line 9.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 225.
+Package luatex.def Info: img/ece.png  used on input line 9.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
- [12<./img/ota&isi_matched.png>]
+ [11<./img/ota&isi_matched.png>]) (./Appendix_A.tex)
 File: img/uowm.png Graphic file (type png)
 <use img/uowm.png>
-Package luatex.def Info: img/uowm.png  used on input line 227.
+Package luatex.def Info: img/uowm.png  used on input line 226.
 (luatex.def)             Requested size: 166.55646pt x 28.45274pt.
 File: img/ece.png Graphic file (type png)
 <use img/ece.png>
-Package luatex.def Info: img/ece.png  used on input line 227.
+Package luatex.def Info: img/ece.png  used on input line 226.
+(luatex.def)             Requested size: 28.45274pt x 28.45079pt.
+ [12]
+File: img/uowm.png Graphic file (type png)
+<use img/uowm.png>
+Package luatex.def Info: img/uowm.png  used on input line 228.
+(luatex.def)             Requested size: 166.55646pt x 28.45274pt.
+File: img/ece.png Graphic file (type png)
+<use img/ece.png>
+Package luatex.def Info: img/ece.png  used on input line 228.
 (luatex.def)             Requested size: 28.45274pt x 28.45079pt.
  [13] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
-
-LaTeX Warning: Hook 'shipout/lastpage' executed on wrong page (9 not 13).
-               Rerun to correct this.
-
 (./tmp/Markos_Delaportas_1316.aux)
  ***********
 LaTeX2e <2025-11-01>
@@ -2347,69 +2284,44 @@ img/uowm.png
 img/uowm.png
  img/ece.png
 ExperimentalImplementation.tex
+flowgraphs/OTAwithISI.pdf
+img/ota&isi_matched.png
 img/uowm.png
  img/ece.png
-img/ota&isi_matched.png
+img/uowm.png
+ img/ece.png
 ResultsAndDiscussion.tex
 ConclusionAndFutureWork.tex
+img/uowm.png
+ img/ece.png
 Appendix_A.tex
-img/uowm.png
- img/ece.png
-img/uowm.png
- img/ece.png
 img/uowm.png
  img/ece.png
 img/uowm.png
  img/ece.png
  ***********
 
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `Markos_Delaportas_1316.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Markos_Delaportas_1316.out':
-(rerunfilecheck)             Before: 2AECDF18536A478A6320D66F264ED22A;6406
-(rerunfilecheck)             After:  AFA057664E05135BF8EEE21602E90DC1;7512.
+Package rerunfilecheck Info: File `Markos_Delaportas_1316.out' has not changed.
+(rerunfilecheck)             Checksum: AFA057664E05135BF8EEE21602E90DC1;7512.
 Package logreq Info: Writing requests to 'Markos_Delaportas_1316.run.xml'.
 
 \openout1 = Markos_Delaportas_1316.run.xml
 )
 
 Here is how much of LuaTeX's memory you used:
- 70875 strings out of 475900
- 305340,4101490 words of node,token memory allocated
- 835 words of node memory still in use:
-   8 hlist, 2 vlist, 2 rule, 1 local_par, 6 glue, 5 kern, 1 penalty, 3 glyph, 25 attribute, 88 glue_spec, 25 attribute_list, 2 write, 3 pdf_action nodes
-   avail lists: 1:10,2:21916,3:18106,4:4731,5:3329,6:126,7:9754,8:46,9:9966,10:40,11:818
- 91721 multiletter control sequences out of 65536+600000
- 106 fonts using 45785607 bytes
+ 70868 strings out of 475900
+ 305345,4101490 words of node,token memory allocated
+ 825 words of node memory still in use:
+   8 hlist, 2 vlist, 2 rule, 1 local_par, 6 glue, 5 kern, 1 penalty, 3 glyph, 24 attribute, 88 glue_spec, 24 attribute_list, 2 write, 2 pdf_action nodes
+   avail lists: 1:10,2:21894,3:18101,4:4743,5:3297,6:149,7:9645,8:46,9:9962,10:40,11:948
+ 91822 multiletter control sequences out of 65536+600000
+ 106 fonts using 45785519 bytes
  102i,19n,129p,5876b,2901s stack positions out of 10000i,1000n,20000p,240005b,200000s
-
-warning  (pdf backend): unreferenced destination with name 'table.caption.2'
-
-warning  (pdf backend): unreferenced destination with name 'subsubsection.2.2.3'
-
-warning  (pdf backend): unreferenced destination with name 'subsubsection.1.2.2'
-
-warning  (pdf backend): unreferenced destination with name 'subsubsection.1.2.1'
-
-warning  (pdf backend): unreferenced destination with name 'subsubsection.1.1.3'
-
-warning  (pdf backend): unreferenced destination with name 'subsubsection.1.1.2'
-
-warning  (pdf backend): unreferenced destination with name 'subsubsection.1.1.1'
 <./font/LibertinusSerif-Italic.otf><./font/LibertinusMono-Regular.otf><./font/LibertinusMath-Regular.otf><./font/LibertinusMath-Regular.otf><./font/LibertinusSerif-Bold.otf><./font/LibertinusSerif-BoldItalic.otf><./font/LibertinusSerif-Regular.otf><./font/LibertinusSans-Regular.otf>
-Output written on Markos_Delaportas_1316.pdf (13 pages, 526164 bytes).
+Output written on Markos_Delaportas_1316.pdf (13 pages, 558282 bytes).
 
-PDF statistics: 564 PDF objects out of 1000 (max. 8388607)
- 486 compressed objects within 5 object streams
- 110 named destinations out of 1000 (max. 1048576)
- 250 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 638 PDF objects out of 1000 (max. 8388607)
+ 548 compressed objects within 6 object streams
+ 106 named destinations out of 1000 (max. 1048576)
+ 290 words of extra memory for PDF output out of 10000 (max. 100000000)
 
