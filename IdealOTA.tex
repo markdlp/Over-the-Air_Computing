@@ -61,35 +61,45 @@
     \begin{center}
         \begin{minipage}{.45\textwidth}
             \begin{tikzpicture}
-                \begin{axis}[ 
-                    title={\textsf{Estimated \& Mean Baseband Signal}},
-                    xlabel={Sample}, ylabel={Amplitude},
-                    legend pos=north east 
-                ] 
-                    \addplot[thick, blue, no marks] table[x index=0, y index=1, col sep=tab] {data/XvsEstimate.txt};
-                    \addplot[thick, red, no marks] table[x index=0, y index=2, col sep=tab] {data/XvsEstimate.txt};
-
-                    \addlegendentry{Estimated\_Average}
-                    \addlegendentry{meanX}
+                \begin{axis}[
+                    title={\textsf{Ideal}},
+                    xlabel={SNR (dB)}, ylabel={MSE},
+                    ymode=log, grid=major,
+                    legend pos=north east,
+                ]
+                    \addplot[
+                        color=blue,
+                        mark=square,
+                        thick
+                    ] table[x=SNR_dB, y=MSE] {data/IdealBaseline_MSE.txt};
+                    
+                    \addlegendentry{Ideal}
                 \end{axis}
             \end{tikzpicture}
             % \caption{\textsf{}}
-            \label{plt:XvsEstimate}
+            \label{plt:idealOTAmse}
         \end{minipage}
         \begin{minipage}{.45\textwidth}
             \begin{tikzpicture}
-                \begin{axis}[ 
-                    title={\textsf{Mean Square Error}},
-                    xlabel={SNR\_dB}, ylabel={MSE},
-                    legend pos=north east 
-                ] 
-                    \addplot table[x index=1, y index=0, col sep=tab] {data/MSEvsSNR_ideal.txt};
-                    
-                    \addlegendentry{SNR}
+                \begin{axis}[
+                    title={\textsf{RC-Filtered}},
+                    xlabel={SNR (dB)}, ylabel={MSE},
+                    ymode=log, grid=major,
+                    legend pos=north east,
+                ]
+                    \addplot[
+                        color=red,
+                        mark=*,
+                        thick,
+                        restrict expr to domain={\thisrow{RollOff}}{0.49:0.51} 
+                    ] table[x=SNR_dB, y=MSE] {data/MSEvsSNR_10sps.txt};
+
+                    \addlegendentry{sps=$10^1$, $\alpha=0.5$}
+
                 \end{axis}
             \end{tikzpicture}
             % \caption{\textsf{}}
-            \label{plt:MSEvsSNR}
+            \label{plt:rcOTAmse}
         \end{minipage}
     \end{center}
 
@@ -141,7 +151,7 @@
                     tex.print("    ylabel={Roll-off factor ($\\alpha$)},")
                     tex.print("    zlabel={MSE},")
                     tex.print("    zmode=log,")
-                    tex.print("    zmin=0.1, zmax=7000,")
+                    tex.print("    zmin=0.1, zmax=8000,")
                     tex.print("    view={60}{30},")
                     tex.print("    grid=major,")
                     tex.print("    colorbar,")
