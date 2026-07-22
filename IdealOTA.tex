@@ -168,8 +168,8 @@
                         color=red,
                         mark=*,
                         thick,
-                        restrict expr to domain={\thisrow{RollOff}}{0.49:0.51} 
-                    ] table[x=SNR_dB, y=MSE] {data/MSEvsSNR_10sps.txt};
+                        restrict expr to domain={\thisrow{aleph_array}}{0.49:0.51} 
+                    ] table[x=SNR_dB, y=mse_results] {data/MSEvsSNR_10sps.txt};
 
                     \addlegendentry{sps=$10^1$, $\alpha=0.5$}
 
@@ -237,7 +237,7 @@
                 tex.print("]")
                 
                 -- Ensure this path perfectly matches your MATLAB output
-                tex.print("\\addplot3[surf] table[x=SNR_dB, y=RollOff, z=MSE] {data/MSEvsSNR_" .. sps.val .. "sps.txt};")
+                tex.print("\\addplot3[surf] table[x=SNR_dB, y=aleph_array, z=mse_results] {data/MSEvsSNR_" .. sps.val .. "sps.txt};")
                 
                 tex.print("\\end{axis}")
                 tex.print("\\end{tikzpicture}")
@@ -258,6 +258,55 @@
     (absent pulse shaping). This behavior underscores a fundamental trade-off inherent to practical pulse-shaping implementations: 
     enhanced spectral efficiency through reduced \gls{sps} incurs amplified inter-symbol interference, whereas elevated oversampling 
     ratios improve timing robustness at the cost of increased computational complexity and memory consumption.
+
+    % write a paragraph about the observation of the eye and constellation diagrams that are to be inserted below
+    The eye and constellation diagrams provide valuable insights into the behavior of the ideal OTA system under different 
+    SPS configurations. As the number of samples per symbol increases, the eye opening widens, indicating reduced inter-symbol 
+    interference and improved signal integrity. Similarly, the constellation points become more distinct and well-separated, 
+    reflecting better performance in terms of error probability and overall system reliability.
+
+    \begin{figure}[htbp]
+        \centering
+
+        \begin{subfigure}[b]{0.39\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{data/fusion_eye_90sps.eps}
+            \caption{Eye diagram at 90 SPS}
+            \label{fig:fusion_eye_90sps}
+        \end{subfigure}
+        
+        \hfill
+
+        \begin{subfigure}[b]{0.39\textwidth}
+            \centering
+            \begin{tikzpicture}
+                \begin{axis}[
+                    title={Constellation Diagram at Fusion Center},
+                    xlabel={In-Phase (I)},
+                    ylabel={Quadrature (Q)},
+                    ymin=-1, ymax=1, % Lock the Y-axis since Q is always 0
+                    grid=major,
+                    width=\textwidth,
+                    height=0.4\textwidth
+                ]
+                    % Use 'only marks' to create a scatter plot instead of lines
+                    \addplot[
+                        only marks,
+                        mark=*,
+                        mark size=1.5pt,
+                        color=blue,
+                        opacity=0.4 % Adding opacity shows density where points overlap
+                    ] table[x=I_Data, y=Q_Data] {data/fusion_constellation_90sps.txt};
+                \end{axis}
+            \end{tikzpicture}
+
+            \caption{Native scatter plot of the real-valued symbol constellation at 90 SPS.}
+            \label{fig:fusion_constellation_90sps}
+        \end{subfigure}
+
+        \caption{Signal integrity analysis at the Fusion Center. Top: Eye diagram illustrating Inter-Symbol Interference bounds. Bottom: Native scatter plot of the real-valued symbol constellation.}
+        \label{fig:signal_integrity}
+    \end{figure}
 
     \subsection{MATLAB Simulink Architecture}
     Transitioning from raw code to a block-level architecture, MATLAB Simulink provides a
@@ -292,12 +341,46 @@
     systems employing matched filter pairs necessitate carefully synchronized symbol generation to avoid 
     spurious transient responses.
 
-    \begin{figure}[htpb]
+    \begin{figure}[h]
         \centering
-        \includegraphics[width=\linewidth]{img/IdealOTA_MSE_simulink.pdf}        
-        \caption{Mean Square Error of the ideal OTA computation network over an \gls{awgn} channel.}
-        \label{fig:simulink_MSE_ideal}
+        \begin{subfigure}{0.39\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{img/IdealOTA_MSE_simulink.pdf}
+            \caption{Mean Square Error of the ideal OTA computation network over an \gls{awgn} channel.}
+            \label{fig:simulink_MSE_ideal}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.39\textwidth}
+            \centering
+            % \includegraphics[width=\textwidth]{img/simulink_ideal_placeholder.png}
+            \framebox{
+                \parbox{\textwidth}{
+                    \centering \vspace{2cm} \textbf{Simulink Model Placeholder} \\ 
+                    \small\textit{Insert screenshot of your Ideal Simulink model here.} 
+                    \vspace{2cm}
+                }
+            }
+            \caption{Simulink block diagram representing the ideal, unimpaired OTA computation network over an AWGN channel.}
+            \label{fig:simulink_MSE_rc}
+        \end{subfigure}
+        \caption{Simulink MSEs}
+        \label{fig:simulink_mse}
     \end{figure}
+
+    % \begin{figure}[htpb]
+    %     \centering
+    %     \begin{tabular}{ccc}
+    %         \videogriditem{0.31\textwidth}{video/E_Zmax1_027e2MHz.mkv}{E_Zmax1_027e2MHz.png} &
+    %         \videogriditem{0.31\textwidth}{video/E_Zmax1_077e2MHz.mkv}{E_Zmax1_077e2MHz.png} &
+    %         \videogriditem{0.31\textwidth}{video/E_Zmax1_127e2MHz.mkv}{E_Zmax1_127e2MHz.png} \\[1ex]
+    %         
+    %         \videogriditem{0.31\textwidth}{video/E_Zmax2_027e2MHz.mkv}{E_Zmax2_027e2MHz.png} &
+    %         \videogriditem{0.31\textwidth}{video/E_Zmax2_077e2MHz.mkv}{E_Zmax2_077e2MHz.png} &
+    %         \videogriditem{0.31\textwidth}{video/E_Zmax2_127e2MHz.mkv}{E_Zmax2_127e2MHz.png} \\
+    %     \end{tabular}
+    %     \caption{Electrical Field for 2.7, 7.7, and 12.7 GHz $Z_{max}$.}
+    %     \label{img:E}
+    % \end{figure}
 
     \subsection{GNU Radio Validation}
     Finally, the ideal model is verified using a \gls{sdr} environment
@@ -316,7 +399,7 @@
 
     \begin{figure}[htpb]
         \centering
-        \includegraphics[width=\linewidth]{flowgraphs/IdealOTA.pdf}
+        \includegraphics[width=\linewidth]{flowgraphs/idealOTA_grc.pdf}
 
         \caption{GNU Radio flowgraph for the ideal, Nyquist-compliant scenario.}
         \label{fig:grc_ideal}
