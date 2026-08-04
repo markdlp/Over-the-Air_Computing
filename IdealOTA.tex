@@ -16,7 +16,7 @@
     This chapter aggregates the mathematical formulation,
     algorithmic MATLAB modeling, block-level Simulink architecture, and GNU Radio
     flowgraphs that demonstrate this ideal, unimpaired baseline. Establishing this
-    benchmark is critical for quantifying the exact degradation caused by physical channel
+    benchmark is critical for quantifying the exact degradation caused by physical channel 
     constraints in subsequent chapters.
 
     \subsection{Mathematical Formulation of the Ideal Channel}
@@ -135,8 +135,9 @@
     the interplay between symbol timing parameters (\gls{sps}) and spectral efficiency (\gls{rof}) introduces 
     measurable deviation from the ideal theoretical bound.
 
-    \begin{center}
-        \begin{minipage}{.45\textwidth}
+    \begin{figure}[htbp]
+        \centering
+        \begin{subfigure}{.45\linewidth}
             \begin{tikzpicture}
                 \begin{axis}[
                     title={\textsf{Ideal}},
@@ -153,10 +154,11 @@
                     \addlegendentry{Ideal}
                 \end{axis}
             \end{tikzpicture}
-            % \caption{\textsf{}}
+            \caption{\textsf{Ideal}}
             \label{plt:idealOTAmse}
-        \end{minipage}
-        \begin{minipage}{.45\textwidth}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}{.45\linewidth}
             \begin{tikzpicture}
                 \begin{axis}[
                     title={\textsf{RC-Filtered}},
@@ -175,10 +177,12 @@
 
                 \end{axis}
             \end{tikzpicture}
-            % \caption{\textsf{}}
+            \caption{\textsf{RC-Filtered}}
             \label{plt:rcOTAmse}
-        \end{minipage}
-    \end{center}
+        \end{subfigure}
+        \caption{Comparison of MSE performance between the ideal baseline and the Raised Cosine filtered scenario.}
+        \label{fig:mse_comparison}
+    \end{figure}
 
     Figure~\ref{plt:idealOTAmse} presents the theoretical performance floor, wherein the \gls{mse} 
     is a function solely of \gls{awgn} variance. In contrast, Figure~\ref{plt:rcOTAmse} illustrates 
@@ -259,7 +263,6 @@
     enhanced spectral efficiency through reduced \gls{sps} incurs amplified inter-symbol interference, whereas elevated oversampling 
     ratios improve timing robustness at the cost of increased computational complexity and memory consumption.
 
-    % write a paragraph about the observation of the eye and constellation diagrams that are to be inserted below
     The eye and constellation diagrams provide valuable insights into the behavior of the ideal OTA system under different 
     SPS configurations. As the number of samples per symbol increases, the eye opening widens, indicating reduced inter-symbol 
     interference and improved signal integrity. Similarly, the constellation points become more distinct and well-separated, 
@@ -268,26 +271,20 @@
     \begin{figure}[htbp]
         \centering
 
-        \begin{subfigure}[b]{0.39\textwidth}
-            \centering
-            \includegraphics[width=\textwidth]{data/fusion_eye_90sps.eps}
+        \begin{subfigure}{0.45\linewidth}
+            \includegraphics[width=\linewidth, height=0.8\linewidth]{data/fusion_eye_90sps.eps}
             \caption{Eye diagram at 90 SPS}
             \label{fig:fusion_eye_90sps}
-        \end{subfigure}
-        
+        \end{subfigure}%
         \hfill
-
-        \begin{subfigure}[b]{0.39\textwidth}
-            \centering
+        \begin{subfigure}{0.45\linewidth}
             \begin{tikzpicture}
                 \begin{axis}[
                     title={Constellation Diagram at Fusion Center},
                     xlabel={In-Phase (I)},
                     ylabel={Quadrature (Q)},
-                    ymin=-1, ymax=1, % Lock the Y-axis since Q is always 0
-                    grid=major,
-                    width=\textwidth,
-                    height=0.4\textwidth
+                    ymin=-1, ymax=1, grid=major,% Lock the Y-axis since Q is always 0
+                    width=\linewidth, height=0.8\linewidth
                 ]
                     % Use 'only marks' to create a scatter plot instead of lines
                     \addplot[
@@ -296,7 +293,7 @@
                         mark size=1.5pt,
                         color=blue,
                         opacity=0.4 % Adding opacity shows density where points overlap
-                    ] table[x=I_Data, y=Q_Data] {data/fusion_constellation_90sps.txt};
+                    ] table[x=I_Data, y=Q_Data] {data/fc_constellation_90sps.txt};
                 \end{axis}
             \end{tikzpicture}
 
@@ -304,7 +301,7 @@
             \label{fig:fusion_constellation_90sps}
         \end{subfigure}
 
-        \caption{Signal integrity analysis at the Fusion Center. Top: Eye diagram illustrating Inter-Symbol Interference bounds. Bottom: Native scatter plot of the real-valued symbol constellation.}
+        \caption{Signal integrity analysis at the Fusion Center. Left: Eye diagram illustrating Inter-Symbol Interference bounds. Right: Native scatter plot of the real-valued symbol constellation.}
         \label{fig:signal_integrity}
     \end{figure}
 
@@ -322,15 +319,15 @@
     \end{figure}
 
     To bridge the gap between theory and practical system implementation, an enhanced model incorporating 
-    Raised Cosine pulse shaping is presented in Figure~\ref{fig:idealOTA_simulink_rc}. This architecture 
+    Raised Cosine pulse shaping is presented in Figure~\ref{fig:idealOTA_simulink_rrc}. This architecture 
     employs matched filtering pairs at both transmission and reception stages, enabling quantitative assessment 
     of performance degradation attributable to finite symbol-rate sampling and spectral roll-off constraints.
 
     \begin{figure}[htpb]
         \centering
-        \includegraphics[width=\linewidth]{flowgraphs/idealOTA_simulink_rc.pdf}        
+        \includegraphics[width=\linewidth]{flowgraphs/idealOTA_simulink_rrc.pdf}        
         \caption{Simulink block diagram representing the ideal OTA computation network over an \gls{awgn} channel.}
-        \label{fig:idealOTA_simulink_rc} 
+        \label{fig:idealOTA_simulink_rrc} 
     \end{figure}
 
     Inspection of the \gls{mse} calculation scope output demonstrates the quantitative deviation between 
@@ -341,42 +338,156 @@
     systems employing matched filter pairs necessitate carefully synchronized symbol generation to avoid 
     spurious transient responses.
 
-    \begin{figure}[h]
+    \begin{figure}[htpb]
         \centering
-        \begin{subfigure}{0.39\textwidth}
-            \centering
-            \includegraphics[width=\textwidth]{img/IdealOTA_MSE_simulink.pdf}
-            \caption{Mean Square Error of the ideal OTA computation network over an \gls{awgn} channel.}
-            \label{fig:simulink_MSE_ideal}
-        \end{subfigure}
+        \includegraphics[width=\linewidth]{img/idealOTA_MSE_simulink.pdf}        
+        \caption{Simulink block diagram representing the ideal OTA computation network over an \gls{awgn} channel.}
+        \label{fig:idealOTA_MSE_simulink} 
+    \end{figure}    
+
+    The constellation diagrams provide a clear visual confirmation of the role played by
+    pulse shaping in the received signal. The plot corresponding to the fusion center
+    observation after the matched RRC filter shows a more compact and well-defined symbol
+    distribution, indicating that the filtering stage has improved temporal alignment and
+    reduced the impact of inter-symbol interference. In contrast, the constellation
+    associated with the theoretical receiver model without pulse shaping appears more
+    dispersed and less structured, reflecting the absence of the smoothing and
+    energy-concentrating effect provided by the matched filter. This comparison highlights
+    that the matched RRC filter contributes not only to spectral shaping, but also to
+    preserving symbol integrity and improving the reliability of the recovered OTA
+    estimate.
+
+    \begin{figure}[htbp]
+        \centering
+        \begin{subfigure}{.45\linewidth}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    title={\textsf{Constellation Diagram Matched Filter}},
+                    xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},
+                    grid=major,
+                    width=0.8\textwidth,
+                    height=0.5\textwidth,
+                    legend pos=outer north east, % Moves legend outside to avoid covering 800 data points
+                    mark=none, % Disables markers. 800 markers on a line looks like a thick smudge!
+                    thick
+                ]
+                    \addplot[
+                        color=blue,
+                        mark=square,
+                        thick
+                    ] table[x=SNR_dB, y=MSE] {data/IdealBaseline_MSE.txt};
+                    
+                    \addlegendentry{Ideal}
+                \end{axis}
+            \end{tikzpicture}
+            \caption{Constellation Diagram of the ideal OTA computation network over an \gls{awgn} channel.}
+            \label{fig:simulink_Constellation_ideal}
+        \end{subfigure}%
         \hfill
-        \begin{subfigure}{0.39\textwidth}
-            \centering
-            % \includegraphics[width=\textwidth]{img/simulink_ideal_placeholder.png}
-            \framebox{
-                \parbox{\textwidth}{
-                    \centering \vspace{2cm} \textbf{Simulink Model Placeholder} \\ 
-                    \small\textit{Insert screenshot of your Ideal Simulink model here.} 
-                    \vspace{2cm}
-                }
-            }
-            \caption{Simulink block diagram representing the ideal, unimpaired OTA computation network over an AWGN channel.}
-            \label{fig:simulink_MSE_rc}
+        \begin{subfigure}{.45\linewidth}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    title={\textsf{Constellation Diagram No filter}},
+                    xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},
+                    grid=major,
+                    width=0.8\textwidth,
+                    height=0.5\textwidth,
+                    legend pos=outer north east,
+                ]
+                    \addplot[
+                        color=red,
+                        mark=*,
+                        thick,
+                        restrict expr to domain={\thisrow{aleph_array}}{0.49:0.51} 
+                    ] table[x=SNR_dB, y=mse_results] {data/MSEvsSNR_10sps.txt};
+
+                    \addlegendentry{sps=$10^1$, $\alpha=0.5$}
+
+                \end{axis}
+            \end{tikzpicture}
+            \caption{Constellation Diagram of the Raised Cosine filtered OTA computation network over an \gls{awgn} channel.}
+            \label{fig:simulink_Constellation_rc}
         \end{subfigure}
-        \caption{Simulink MSEs}
-        \label{fig:simulink_mse}
+        \caption{Simulink Constellation Diagrams}
+        \label{fig:simulink_constellation}
+    \end{figure}
+
+    The eye diagrams further illustrate the impact of pulse shaping on the received
+    signal. The eye diagram corresponding to the fusion center observation after the
+    matched RRC filter shows a more open and well-defined eye pattern, indicating that the
+    filtering stage has improved temporal alignment and reduced inter-symbol interference.
+    In contrast, the eye diagram associated with the theoretical receiver model without
+    pulse shaping appears more closed and less structured, reflecting the absence of the
+    smoothing and energy-concentrating effect provided by the matched filter. This
+    comparison highlights that the matched RRC filter contributes not only to spectral
+    shaping, but also to preserving symbol integrity and improving the reliability of the
+    recovered OTA estimate.
+
+    \begin{figure}[htbp]
+        \centering
+        \begin{subfigure}{.45\linewidth}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    title={\textsf{Eye Diagram Matched Filter}},
+                    xlabel={Time}, ylabel={Real Amplitude},
+                    grid=major,
+                    width=0.8\textwidth,
+                    height=0.5\textwidth,
+                    legend pos=outer north east, % Moves legend outside to avoid covering 800 data points
+                    mark=none, % Disables markers. 800 markers on a line looks like a thick smudge!
+                    thick
+                ]
+                    \addplot[
+                        color=blue,
+                        mark=square,
+                        thick
+                    ] table[x=SNR_dB, y=MSE] {data/IdealBaseline_MSE.txt};
+                    
+                    \addlegendentry{Ideal}
+                \end{axis}
+            \end{tikzpicture}
+            \caption{Eye Diagram of the ideal OTA computation network over an \gls{awgn} channel.}
+            \label{fig:simulink_Eye_ideal}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}{.45\linewidth}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    title={\textsf{Eye Diagram No filter}},
+                    xlabel={Time}, ylabel={Real Amplitude},
+                    grid=major,
+                    width=0.8\textwidth,
+                    height=0.5\textwidth,
+                    legend pos=outer north east,
+                ]
+                    \addplot[
+                        color=red,
+                        mark=*,
+                        thick,
+                        restrict expr to domain={\thisrow{aleph_array}}{0.49:0.51} 
+                    ] table[x=SNR_dB, y=mse_results] {data/MSEvsSNR_10sps.txt};
+
+                    \addlegendentry{sps=$10^1$, $\alpha=0.5$}
+
+                \end{axis}
+            \end{tikzpicture}
+            \caption{Eye Diagram of the Raised Cosine filtered OTA computation network over an \gls{awgn} channel.}
+            \label{fig:simulink_Eye_rc}
+        \end{subfigure}
+        \caption{Simulink Eye Diagrams}
+        \label{fig:simulink_eye}
     \end{figure}
 
     % \begin{figure}[htpb]
     %     \centering
     %     \begin{tabular}{ccc}
-    %         \videogriditem{0.31\textwidth}{video/E_Zmax1_027e2MHz.mkv}{E_Zmax1_027e2MHz.png} &
-    %         \videogriditem{0.31\textwidth}{video/E_Zmax1_077e2MHz.mkv}{E_Zmax1_077e2MHz.png} &
-    %         \videogriditem{0.31\textwidth}{video/E_Zmax1_127e2MHz.mkv}{E_Zmax1_127e2MHz.png} \\[1ex]
+    %         \videogriditem{0.31\linewidth}{video/E_Zmax1_027e2MHz.mkv}{E_Zmax1_027e2MHz.png} &
+    %         \videogriditem{0.31\linewidth}{video/E_Zmax1_077e2MHz.mkv}{E_Zmax1_077e2MHz.png} &
+    %         \videogriditem{0.31\linewidth}{video/E_Zmax1_127e2MHz.mkv}{E_Zmax1_127e2MHz.png} \\[1ex]
     %         
-    %         \videogriditem{0.31\textwidth}{video/E_Zmax2_027e2MHz.mkv}{E_Zmax2_027e2MHz.png} &
-    %         \videogriditem{0.31\textwidth}{video/E_Zmax2_077e2MHz.mkv}{E_Zmax2_077e2MHz.png} &
-    %         \videogriditem{0.31\textwidth}{video/E_Zmax2_127e2MHz.mkv}{E_Zmax2_127e2MHz.png} \\
+    %         \videogriditem{0.31\linewidth}{video/E_Zmax2_027e2MHz.mkv}{E_Zmax2_027e2MHz.png} &
+    %         \videogriditem{0.31\linewidth}{video/E_Zmax2_077e2MHz.mkv}{E_Zmax2_077e2MHz.png} &
+    %         \videogriditem{0.31\linewidth}{video/E_Zmax2_127e2MHz.mkv}{E_Zmax2_127e2MHz.png} \\
     %     \end{tabular}
     %     \caption{Electrical Field for 2.7, 7.7, and 12.7 GHz $Z_{max}$.}
     %     \label{img:E}
@@ -415,7 +526,7 @@
         \centering
         \includegraphics[width=\linewidth]{img/IdealOTA.png}
 
-        \caption{GNU Radio Eye \& Constelation Diagram for the ideal, Nyquist-compliant scenario.}
+        \caption{GNU Radio Eye \& Constellation Diagram for the ideal, Nyquist-compliant scenario.}
         \label{fig:grc_ideal_diagram}
     \end{figure}
 

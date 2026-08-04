@@ -336,3 +336,4 @@ TSWLatexianTemp*
 # End of https://www.toptal.com/developers/gitignore/api/latex,visualstudiocode
 
 MSEvsSNR_*
+fc_constellation_*
