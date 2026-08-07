@@ -80,7 +80,7 @@
     factor ($\alpha$)—which materially influence system performance. The enhanced implementation is presented 
     in Listing~\ref{lst:ideal_ota_rc}.
 
-    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB script for OTA computation aggregation using the \gls{rc} filter.}, label={lst:ideal_ota_rc}]
+    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB script for OTA computation aggregation using the \gls{rrc} filter.}, label={lst:ideal_ota_rc}]
         txUpSamped = upsample(X', sps_val); % phase may need to be set
 
         % Raised Cosine Filter
@@ -323,6 +323,59 @@
     employs matched filtering pairs at both transmission and reception stages, enabling quantitative assessment 
     of performance degradation attributable to finite symbol-rate sampling and spectral roll-off constraints.
 
+    \begin{figure}[htbp]
+        \centering
+        \begin{subfigure}{.45\linewidth}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    title={\textsf{Constellation Diagram without a channel}},
+                    xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},
+                    ymin=-0.5, ymax=1.5, grid=major,
+                    width=\linewidth, height=0.8\linewidth,
+                    legend pos=north east,
+                    mark=none, thick
+                ]
+                    \addplot[
+                        only marks,
+                        mark=*,
+                        mark size=1.5pt,
+                        color=blue,
+                        opacity=0.4
+                    ] table[x=ConstellationDiagram, y expr=0] {data/simulink_fc_constellation.txt};
+            
+                \end{axis}
+            \end{tikzpicture}
+            \caption{Constellation Diagram of the ideal OTA computation network over an \gls{awgn} channel.}
+            \label{fig:simulink_Constellation_no_ch}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}{.45\linewidth}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    title={\textsf{Constellation Diagram with a channel}},
+                    xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},
+                    ymin=-0.5, ymax=1.5, grid=major,
+                    width=\linewidth, height=0.8\linewidth,
+                    legend pos=north east,
+                    mark=none, thick
+                ]
+                    \addplot[
+                        only marks,
+                        mark=*,
+                        mark size=1.5pt,
+                        color=blue,
+                        opacity=0.4
+                    ] table[x=ConstellationDiagramCh, y expr=0] {data/simulink_fc_constellation.txt};
+
+                \end{axis}
+            \end{tikzpicture}
+            \caption{Constellation Diagram of the Raised Cosine filtered OTA computation network over an \gls{awgn} channel.}
+            \label{fig:simulink_Constellation_ch}
+        \end{subfigure}
+        \caption{Simulink Constellation Diagrams}
+        \label{fig:simulink_constellation_comparison}
+    \end{figure}
+
     \begin{figure}[htpb]
         \centering
         \includegraphics[width=\linewidth]{flowgraphs/idealOTA_simulink_rrc.pdf}        
@@ -338,18 +391,14 @@
     systems employing matched filter pairs necessitate carefully synchronized symbol generation to avoid 
     spurious transient responses.
 
-    \begin{figure}[htpb]
-        \centering
-        \includegraphics[width=\linewidth]{img/idealOTA_MSE_simulink.pdf}        
-        \caption{Simulink block diagram representing the ideal OTA computation network over an \gls{awgn} channel.}
-        \label{fig:idealOTA_MSE_simulink} 
-    \end{figure}    
+    % Consider adding a figure from the Simulink simulation showing the MSE over time or SNR to visually 
+    % reinforce the performance analysis.
 
     The constellation diagrams provide a clear visual confirmation of the role played by
     pulse shaping in the received signal. The plot corresponding to the fusion center
     observation after the matched RRC filter shows a more compact and well-defined symbol
     distribution, indicating that the filtering stage has improved temporal alignment and
-    reduced the impact of inter-symbol interference. In contrast, the constellation
+    reduced the impact of inter-symbol interference. In contrast, the constellation 
     associated with the theoretical receiver model without pulse shaping appears more
     dispersed and less structured, reflecting the absence of the smoothing and
     energy-concentrating effect provided by the matched filter. This comparison highlights
@@ -364,20 +413,29 @@
                 \begin{axis}[
                     title={\textsf{Constellation Diagram Matched Filter}},
                     xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},
-                    grid=major,
-                    width=0.8\textwidth,
-                    height=0.5\textwidth,
-                    legend pos=outer north east, % Moves legend outside to avoid covering 800 data points
-                    mark=none, % Disables markers. 800 markers on a line looks like a thick smudge!
-                    thick
+                    ymin=-0.5, ymax=1.5, grid=major,
+                    width=\linewidth, height=0.8\linewidth,
+                    legend pos=north east,
+                    mark=none, thick
                 ]
                     \addplot[
+                        only marks,
+                        mark=*,
+                        mark size=1.5pt,
                         color=blue,
-                        mark=square,
-                        thick
-                    ] table[x=SNR_dB, y=MSE] {data/IdealBaseline_MSE.txt};
+                        opacity=0.4
+                    ] table[x=ConstellationDiagramMatched_Layer1, y expr=0] {data/simulink_fc_constellation_matched_rrc.txt};
+                    \addlegendentry{Layer 1}
                     
-                    \addlegendentry{Ideal}
+                    \addplot[
+                        only marks,
+                        mark=*,
+                        mark size=1.5pt,
+                        color=red,
+                        opacity=0.4
+                    ] table[x=ConstellationDiagramMatched_Layer2, y expr=0] {data/simulink_fc_constellation_matched_rrc.txt};
+                    \addlegendentry{Layer 2}
+            
                 \end{axis}
             \end{tikzpicture}
             \caption{Constellation Diagram of the ideal OTA computation network over an \gls{awgn} channel.}
@@ -389,19 +447,28 @@
                 \begin{axis}[
                     title={\textsf{Constellation Diagram No filter}},
                     xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},
-                    grid=major,
-                    width=0.8\textwidth,
-                    height=0.5\textwidth,
-                    legend pos=outer north east,
+                    ymin=-0.5, ymax=1.5, grid=major,
+                    width=\linewidth, height=0.8\linewidth,
+                    legend pos=north east,
+                    mark=none, thick
                 ]
                     \addplot[
-                        color=red,
+                        only marks,
                         mark=*,
-                        thick,
-                        restrict expr to domain={\thisrow{aleph_array}}{0.49:0.51} 
-                    ] table[x=SNR_dB, y=mse_results] {data/MSEvsSNR_10sps.txt};
-
-                    \addlegendentry{sps=$10^1$, $\alpha=0.5$}
+                        mark size=1.5pt,
+                        color=blue,
+                        opacity=0.4
+                    ] table[x=ConstellationDiagramNoFilt_Layer1, y expr=0] {data/simulink_fc_constellation_rrc.txt};
+                    \addlegendentry{Layer 1}
+                    
+                    \addplot[
+                        only marks,
+                        mark=*,
+                        mark size=1.5pt,
+                        color=red,
+                        opacity=0.4
+                    ] table[x=ConstellationDiagramNoFilt_Layer2, y expr=0] {data/simulink_fc_constellation_rrc.txt};
+                    \addlegendentry{Layer 2}
 
                 \end{axis}
             \end{tikzpicture}
@@ -423,59 +490,126 @@
     shaping, but also to preserving symbol integrity and improving the reliability of the
     recovered OTA estimate.
 
+    \begin{luacode*}
+    
+        function process_dual_eye(input_file, output_file, sps, max_traces)
+            
+            local samples_per_trace = 2 * sps
+            local infile = io.open(input_file, "r")
+            local outfile = io.open(output_file, "w")
+
+            if not infile then
+                tex.print("% Error: Could not open " .. input_file)
+                return
+            end
+
+            -- Write the unified headers for pgfplots
+            outfile:write("Time\tLayer1\tLayer2\n")
+            
+            -- Discard the original header
+            local header = infile:read("*l") 
+
+            local trace_count = 0
+            local sample_count = 0
+
+            for line in infile:lines() do
+                if trace_count >= max_traces then break end
+
+                -- Extract BOTH data columns safely
+                local layer1, layer2 = string.match(line, "^%s*([^%s]+)%s+([^%s]+)")
+                
+                if layer1 and layer2 then
+                    local time_val = sample_count / sps
+                    
+                    -- Output Time, Layer 1, and Layer 2
+                    outfile:write(string.format("%f\t%s\t%s\n", time_val, layer1, layer2))
+                    
+                    sample_count = sample_count + 1
+
+                    -- Insert the blank line for pgfplots to segment the traces
+                    if sample_count >= samples_per_trace then
+                        outfile:write("\n") 
+                        sample_count = 0
+                        trace_count = trace_count + 1
+                    end
+                end
+            end
+
+            infile:close()
+            outfile:close()
+        end
+
+        -- Process both files before rendering the figures.
+        -- (Adjust '100' to match the actual SPS used in your Simulink export)
+        process_dual_eye("data/simulink_fc_eye.txt", "data/processed_nofilt.txt", 8, 150)
+        process_dual_eye("data/simulink_fc_eye_matched_rrc.txt", "data/processed_matched.txt", 8, 150)
+    \end{luacode*}
+
     \begin{figure}[htbp]
         \centering
-        \begin{subfigure}{.45\linewidth}
+
+        \begin{subfigure}{0.48\linewidth}
             \begin{tikzpicture}
                 \begin{axis}[
-                    title={\textsf{Eye Diagram Matched Filter}},
-                    xlabel={Time}, ylabel={Real Amplitude},
+                    title={Fusion Center (No Filter)},
+                    xlabel={Time ($T_{sym}$)},
+                    ylabel={Amplitude},
+                    xmin=0, xmax=2,
                     grid=major,
-                    width=0.8\textwidth,
-                    height=0.5\textwidth,
-                    legend pos=outer north east, % Moves legend outside to avoid covering 800 data points
-                    mark=none, % Disables markers. 800 markers on a line looks like a thick smudge!
-                    thick
+                    width=\linewidth, height=0.8\linewidth,
+                    every axis plot/.append style={
+                        mark=none,
+                        line width=0.4pt,
+                        opacity=0.2 % Slightly higher opacity since layers compete for contrast
+                    },
+                    legend pos=south east,
+                    legend style={fill opacity=0.8, draw opacity=1, text opacity=1}
                 ]
-                    \addplot[
-                        color=blue,
-                        mark=square,
-                        thick
-                    ] table[x=SNR_dB, y=MSE] {data/IdealBaseline_MSE.txt};
+                    % Layer 1 (Blue)
+                    \addplot[color=blue] table[x=Time, y=Layer1] {data/processed_nofilt.txt};
+                    \addlegendentry{Layer 1}
                     
-                    \addlegendentry{Ideal}
+                    % Layer 2 (Red)
+                    \addplot[color=red] table[x=Time, y=Layer2] {data/processed_nofilt.txt};
+                    \addlegendentry{Layer 2}
                 \end{axis}
             \end{tikzpicture}
-            \caption{Eye Diagram of the ideal OTA computation network over an \gls{awgn} channel.}
-            \label{fig:simulink_Eye_ideal}
-        \end{subfigure}%
+            \caption{Unfiltered signal.}
+            \label{fig:eye_nofilt}
+        \end{subfigure}% <-- Crucial to prevent wrapping
         \hfill
-        \begin{subfigure}{.45\linewidth}
+        \begin{subfigure}{0.48\linewidth}
             \begin{tikzpicture}
                 \begin{axis}[
-                    title={\textsf{Eye Diagram No filter}},
-                    xlabel={Time}, ylabel={Real Amplitude},
+                    title={Fusion Center (Matched Filter)},
+                    xlabel={Time ($T_{sym}$)},
+                    ylabel={Amplitude},
+                    xmin=0, xmax=2,
                     grid=major,
-                    width=0.8\textwidth,
-                    height=0.5\textwidth,
-                    legend pos=outer north east,
+                    width=\linewidth, height=0.8\linewidth,
+                    every axis plot/.append style={
+                        mark=none,
+                        line width=0.4pt,
+                        opacity=0.2
+                    },
+                    legend pos=south east,
+                    legend style={fill opacity=0.8, draw opacity=1, text opacity=1}
                 ]
-                    \addplot[
-                        color=red,
-                        mark=*,
-                        thick,
-                        restrict expr to domain={\thisrow{aleph_array}}{0.49:0.51} 
-                    ] table[x=SNR_dB, y=mse_results] {data/MSEvsSNR_10sps.txt};
-
-                    \addlegendentry{sps=$10^1$, $\alpha=0.5$}
-
+                    % Layer 1 (Blue)
+                    \addplot[color=blue] table[x=Time, y=Layer1] {data/processed_matched.txt};
+                    \addlegendentry{Layer 1}
+                    
+                    % Layer 2 (Red)
+                    \addplot[color=red] table[x=Time, y=Layer2] {data/processed_matched.txt};
+                    \addlegendentry{Layer 2}
                 \end{axis}
             \end{tikzpicture}
-            \caption{Eye Diagram of the Raised Cosine filtered OTA computation network over an \gls{awgn} channel.}
-            \label{fig:simulink_Eye_rc}
+            \caption{Signal after RRC filtering.}
+            \label{fig:eye_matched}
         \end{subfigure}
-        \caption{Simulink Eye Diagrams}
-        \label{fig:simulink_eye}
+
+        \caption{Comparative eye diagrams demonstrating the signal reconstruction at the fusion center.}
+        \label{fig:eye_comparison}
     \end{figure}
 
     % \begin{figure}[htpb]
@@ -516,6 +650,20 @@
         \label{fig:grc_ideal}
     \end{figure}
 
+    % write a paragraph about the flowgraph and the ideal scenario that cannot be implemente in real hardware
+
+    
+
+    % write a paragraph about the flowgraph and the ideal scenario that cannot be implemente in real hardware with the matched RRC filter
+
+    \begin{figure}[htpb]
+        \centering
+        \includegraphics[width=\linewidth]{flowgraphs/idealOTA_grc_rrc.pdf}
+
+        \caption{GNU Radio flowgraph for the ideal, Nyquist-compliant scenario.}
+        \label{fig:grc_ideal_rrc}
+    \end{figure}
+
     Under these constraints, the Eye Diagram remains perfectly "open" at the optimal
     sampling phase, and the Constellation Diagram exhibits tightly clustered points. The
     absence of horizontal dispersion in the constellation confirms that, prior to the
@@ -524,9 +672,11 @@
 
     \begin{figure}[htpb]
         \centering
-        \includegraphics[width=\linewidth]{img/IdealOTA.png}
 
-        \caption{GNU Radio Eye \& Constellation Diagram for the ideal, Nyquist-compliant scenario.}
+        \includegraphics[width=\linewidth]{img/idealOTA.png}
+        \includegraphics[width=\linewidth]{img/idealOTA_rrc.png}
+
+        \caption{GNU Radio flowgraph for the ideal, Nyquist-compliant scenario.}
         \label{fig:grc_ideal_diagram}
     \end{figure}
 
