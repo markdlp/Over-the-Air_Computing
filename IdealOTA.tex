@@ -541,8 +541,8 @@
 
         -- Process both files before rendering the figures.
         -- (Adjust '100' to match the actual SPS used in your Simulink export)
-        process_dual_eye("data/simulink_fc_eye.txt", "data/processed_nofilt.txt", 8, 150)
-        process_dual_eye("data/simulink_fc_eye_matched_rrc.txt", "data/processed_matched.txt", 8, 150)
+        process_dual_eye("data/simulink_fc_eye.txt", "data/processed_nofilt.txt", 8, 40)
+        process_dual_eye("data/simulink_fc_eye_matched_rrc.txt", "data/processed_matched.txt", 8, 40)
     \end{luacode*}
 
     \begin{figure}[htbp]
@@ -673,7 +673,7 @@
     \begin{figure}[htpb]
         \centering
 
-        \includegraphics[width=\linewidth]{img/idealOTA.png}
+        \includegraphics[width=\linewidth]{img/idealOTA.png}\hfil
         \includegraphics[width=\linewidth]{img/idealOTA_rrc.png}
 
         \caption{GNU Radio flowgraph for the ideal, Nyquist-compliant scenario.}
