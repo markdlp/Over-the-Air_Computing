@@ -409,35 +409,42 @@
     \begin{figure}[htbp]
         \centering
         \begin{subfigure}{.45\linewidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    title={\textsf{Constellation Diagram Matched Filter}},
-                    xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},
-                    ymin=-0.5, ymax=1.5, grid=major,
-                    width=\linewidth, height=0.8\linewidth,
-                    legend pos=north east,
-                    mark=none, thick
-                ]
-                    \addplot[
-                        only marks,
-                        mark=*,
-                        mark size=1.5pt,
-                        color=blue,
-                        opacity=0.4
-                    ] table[x=ConstellationDiagramMatched_Layer1, y expr=0] {data/simulink_fc_constellation_matched_rrc.txt};
-                    \addlegendentry{Layer 1}
+            \begin{luacode*}
+                -- Start the tikzpicture and axis environments
+                tex.print("\\begin{tikzpicture}")
+                tex.print("\\begin{axis}[")
+                tex.print("    title={\\textsf{Constellation Diagram Matched Filter}},")
+                tex.print("    xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},")
+                tex.print("    ymin=-0.5, ymax=1.5, grid=major,")
+                tex.print("    width=\\linewidth, height=0.8\\linewidth,")
+                tex.print("    legend pos=north east,")
+                tex.print("    legend columns=2,")
+                tex.print("    legend style={font=\\scriptsize}")
+                tex.print("]")
+
+                -- Define an array of 8 distinct colors
+                local colors = {"blue", "red", "green", "orange", "purple", "cyan", "magenta", "brown"}
+                
+                -- Loop through the 8 layers
+                for i = 1, 8 do
+                    -- pgfplots x index is 0-based, so Layer 1 is index 0
+                    local col_index = i - 1
                     
-                    \addplot[
-                        only marks,
-                        mark=*,
-                        mark size=1.5pt,
-                        color=red,
-                        opacity=0.4
-                    ] table[x=ConstellationDiagramMatched_Layer2, y expr=0] {data/simulink_fc_constellation_matched_rrc.txt};
-                    \addlegendentry{Layer 2}
-            
-                \end{axis}
-            \end{tikzpicture}
+                    tex.print("\\addplot[")
+                    tex.print("    only marks,")
+                    tex.print("    mark=*,")
+                    tex.print("    mark size=1.5pt,")
+                    tex.print("    color=" .. colors[i] .. ",")
+                    tex.print("    opacity=0.4")
+                    tex.print("] table[x index=" .. col_index .. ", y expr=0] {data/simulink_fc_constellation_matched.txt};")
+                    
+                    tex.print("\\addlegendentry{Layer " .. i .. "}")
+                end
+
+                -- Close the environments
+                tex.print("\\end{axis}")
+                tex.print("\\end{tikzpicture}")
+            \end{luacode*}
             \caption{Constellation Diagram of the ideal OTA computation network over an \gls{awgn} channel.}
             \label{fig:simulink_Constellation_ideal}
         \end{subfigure}%
@@ -458,17 +465,7 @@
                         mark size=1.5pt,
                         color=blue,
                         opacity=0.4
-                    ] table[x=ConstellationDiagramNoFilt_Layer1, y expr=0] {data/simulink_fc_constellation_rrc.txt};
-                    \addlegendentry{Layer 1}
-                    
-                    \addplot[
-                        only marks,
-                        mark=*,
-                        mark size=1.5pt,
-                        color=red,
-                        opacity=0.4
-                    ] table[x=ConstellationDiagramNoFilt_Layer2, y expr=0] {data/simulink_fc_constellation_rrc.txt};
-                    \addlegendentry{Layer 2}
+                    ] table[x=ConstellationDiagramNoFilt, y expr=0] {data/simulink_fc_constellation_nofilt.txt};
 
                 \end{axis}
             \end{tikzpicture}
@@ -490,64 +487,10 @@
     shaping, but also to preserving symbol integrity and improving the reliability of the
     recovered OTA estimate.
 
-    \begin{luacode*}
-    
-        function process_dual_eye(input_file, output_file, sps, max_traces)
-            
-            local samples_per_trace = 2 * sps
-            local infile = io.open(input_file, "r")
-            local outfile = io.open(output_file, "w")
-
-            if not infile then
-                tex.print("% Error: Could not open " .. input_file)
-                return
-            end
-
-            -- Write the unified headers for pgfplots
-            outfile:write("Time\tLayer1\tLayer2\n")
-            
-            -- Discard the original header
-            local header = infile:read("*l") 
-
-            local trace_count = 0
-            local sample_count = 0
-
-            for line in infile:lines() do
-                if trace_count >= max_traces then break end
-
-                -- Extract BOTH data columns safely
-                local layer1, layer2 = string.match(line, "^%s*([^%s]+)%s+([^%s]+)")
-                
-                if layer1 and layer2 then
-                    local time_val = sample_count / sps
-                    
-                    -- Output Time, Layer 1, and Layer 2
-                    outfile:write(string.format("%f\t%s\t%s\n", time_val, layer1, layer2))
-                    
-                    sample_count = sample_count + 1
-
-                    -- Insert the blank line for pgfplots to segment the traces
-                    if sample_count >= samples_per_trace then
-                        outfile:write("\n") 
-                        sample_count = 0
-                        trace_count = trace_count + 1
-                    end
-                end
-            end
-
-            infile:close()
-            outfile:close()
-        end
-
-        -- Process both files before rendering the figures.
-        -- (Adjust '100' to match the actual SPS used in your Simulink export)
-        process_dual_eye("data/simulink_fc_eye.txt", "data/processed_nofilt.txt", 8, 40)
-        process_dual_eye("data/simulink_fc_eye_matched_rrc.txt", "data/processed_matched.txt", 8, 40)
-    \end{luacode*}
-
     \begin{figure}[htbp]
         \centering
 
+        % --- Left Subfigure: No Filter ---
         \begin{subfigure}{0.48\linewidth}
             \begin{tikzpicture}
                 \begin{axis}[
@@ -556,28 +499,24 @@
                     ylabel={Amplitude},
                     xmin=0, xmax=2,
                     grid=major,
-                    width=\linewidth, height=0.8\linewidth,
+                    width=\linewidth,
+                    height=0.8\linewidth,
+                    % Style applies to all 150 lines automatically
                     every axis plot/.append style={
                         mark=none,
+                        color=blue,
                         line width=0.4pt,
-                        opacity=0.2 % Slightly higher opacity since layers compete for contrast
-                    },
-                    legend pos=south east,
-                    legend style={fill opacity=0.8, draw opacity=1, text opacity=1}
+                        opacity=0.15 % Phosphor persistence effect
+                    }
                 ]
-                    % Layer 1 (Blue)
-                    \addplot[color=blue] table[x=Time, y=Layer1] {data/processed_nofilt.txt};
-                    \addlegendentry{Layer 1}
-                    
-                    % Layer 2 (Red)
-                    \addplot[color=red] table[x=Time, y=Layer2] {data/processed_nofilt.txt};
-                    \addlegendentry{Layer 2}
+                    \addplot table[x=Time, y=Amplitude] {data/simulink_fc_eye_nofilt.txt};
                 \end{axis}
             \end{tikzpicture}
             \caption{Unfiltered signal.}
-            \label{fig:eye_nofilt}
-        \end{subfigure}% <-- Crucial to prevent wrapping
+            \label{fig:simulink_eye_nofilt}
+        \end{subfigure}%
         \hfill
+        % --- Right Subfigure: Matched Filter ---
         \begin{subfigure}{0.48\linewidth}
             \begin{tikzpicture}
                 \begin{axis}[
@@ -586,30 +525,24 @@
                     ylabel={Amplitude},
                     xmin=0, xmax=2,
                     grid=major,
-                    width=\linewidth, height=0.8\linewidth,
+                    width=\linewidth,
+                    height=0.8\linewidth,
                     every axis plot/.append style={
                         mark=none,
+                        color=red,
                         line width=0.4pt,
-                        opacity=0.2
-                    },
-                    legend pos=south east,
-                    legend style={fill opacity=0.8, draw opacity=1, text opacity=1}
+                        opacity=0.15
+                    }
                 ]
-                    % Layer 1 (Blue)
-                    \addplot[color=blue] table[x=Time, y=Layer1] {data/processed_matched.txt};
-                    \addlegendentry{Layer 1}
-                    
-                    % Layer 2 (Red)
-                    \addplot[color=red] table[x=Time, y=Layer2] {data/processed_matched.txt};
-                    \addlegendentry{Layer 2}
+                    \addplot table[x=Time, y=Amplitude] {data/simulink_fc_eye_matched.txt};
                 \end{axis}
             \end{tikzpicture}
             \caption{Signal after RRC filtering.}
-            \label{fig:eye_matched}
+            \label{fig:simulink_eye_matched}
         \end{subfigure}
 
-        \caption{Comparative eye diagrams demonstrating the signal reconstruction at the fusion center.}
-        \label{fig:eye_comparison}
+        \caption{Native PGFPlots eye diagrams generated from a lightweight 150-trace subset of the Simulink output.}
+        \label{fig:simulink_eye_comparison}
     \end{figure}
 
     % \begin{figure}[htpb]
@@ -673,8 +606,8 @@
     \begin{figure}[htpb]
         \centering
 
-        \includegraphics[width=\linewidth]{img/idealOTA.png}\hfil
-        \includegraphics[width=\linewidth]{img/idealOTA_rrc.png}
+        \includegraphics[width=0.45\linewidth]{img/idealOTA.png}\hfil
+        \includegraphics[width=0.45\linewidth]{img/idealOTA_rrc.png}
 
         \caption{GNU Radio flowgraph for the ideal, Nyquist-compliant scenario.}
         \label{fig:grc_ideal_diagram}
