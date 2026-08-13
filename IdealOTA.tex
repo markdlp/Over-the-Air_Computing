@@ -408,7 +408,7 @@
 
     \begin{figure}[htbp]
         \centering
-        \begin{subfigure}{.45\linewidth}
+        \begin{subfigure}{.48\linewidth}
             \begin{luacode*}
                 -- Start the tikzpicture and axis environments
                 tex.print("\\begin{tikzpicture}")
@@ -447,12 +447,12 @@
             \label{fig:simulink_Constellation_ideal}
         \end{subfigure}%
         \hfill
-        \begin{subfigure}{.45\linewidth}
+        \begin{subfigure}{.48\linewidth}
             \begin{tikzpicture}
                 \begin{axis}[
                     title={\textsf{Constellation Diagram No filter}},
                     xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},
-                    ymin=-0.5, ymax=1.5, xmin=-0.5, xmax=32, grid=major,
+                    ymin=-0.5, ymax=1.5, xmin=-4, xmax=34, grid=major,
                     width=\linewidth, height=0.8\linewidth,
                     legend pos=north east,
                     mark=none, thick
