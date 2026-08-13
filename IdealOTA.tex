@@ -504,7 +504,6 @@
                     title={Fusion Center (No Filter)},
                     xlabel={Time ($T_{sym}$)},
                     ylabel={Amplitude},
-                    xmin=0, xmax=1,
                     grid=major,
                     width=\linewidth,
                     height=0.8\linewidth,
@@ -516,7 +515,7 @@
                         opacity=0.15 % Phosphor persistence effect
                     }
                 ]
-                    \addplot table[x=Time, y=Amplitude] {data/simulink_fc_eye_nofilt.txt};
+                    \addplot table[x=Time, y=Amplitude] {data/simulink_fc_eye_nofilt_3sym.txt};
                 \end{axis}
             \end{tikzpicture}
             \caption{Unfiltered signal.}
@@ -530,8 +529,7 @@
                     title={Fusion Center (Matched Filter)},
                     xlabel={Time ($T_{sym}$)},
                     ylabel={Amplitude},
-                    xmin=0, xmax=2,
-                    grid=major,
+                     grid=major,
                     width=\linewidth,
                     height=0.8\linewidth,
                     every axis plot/.append style={
@@ -541,7 +539,7 @@
                         opacity=0.15
                     }
                 ]
-                    \addplot table[x=Time, y=Amplitude] {data/simulink_fc_eye_matched.txt};
+                    \addplot table[x=Time, y=Amplitude] {data/simulink_fc_eye_matched_3sym.txt};
                 \end{axis}
             \end{tikzpicture}
             \caption{Signal after RRC filtering.}
