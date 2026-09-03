@@ -149,7 +149,7 @@
                         color=blue,
                         mark=square,
                         thick
-                    ] table[x=SNR_dB, y=MSE] {data/IdealBaseline_MSE.txt};
+                    ] table[x=SNR_dB, y=MSE] {data/ideal/mse/ml_ideal_fc_mse.txt};
                     
                     \addlegendentry{Ideal}
                 \end{axis}
@@ -171,7 +171,7 @@
                         mark=*,
                         thick,
                         restrict expr to domain={\thisrow{aleph_array}}{0.49:0.51} 
-                    ] table[x=SNR_dB, y=mse_results] {data/MSEvsSNR_10sps.txt};
+                    ] table[x=SNR_dB, y=mse_results] {data/ideal/mse/ml_rrc_fc_mse_10sps.txt};
 
                     \addlegendentry{sps=$10^1$, $\alpha=0.5$}
 
@@ -241,7 +241,7 @@
                 tex.print("]")
                 
                 -- Ensure this path perfectly matches your MATLAB output
-                tex.print("\\addplot3[surf] table[x=SNR_dB, y=aleph_array, z=mse_results] {data/MSEvsSNR_" .. sps.val .. "sps.txt};")
+                tex.print("\\addplot3[surf] table[x=SNR_dB, y=aleph_array, z=mse_results] {data/ideal/mse/ml_rrc_fc_mse_" .. sps.val .. "sps.txt};")
                 
                 tex.print("\\end{axis}")
                 tex.print("\\end{tikzpicture}")
@@ -255,7 +255,6 @@
         \label{fig:ota_mse_morph}
     \end{figure}
 
-    % REPHRASED SECTION: Observation about SPS scaling
     A particularly noteworthy observation emerges from parametric analysis of the animation in Figure~\ref{fig:ota_mse_morph}: 
     while increasing \gls{sps} generally yields marginal improvements in \gls{mse} performance across the SNR range examined, 
     this enhancement asymptotically approaches a limit and does not constitute convergence toward the theoretical ideal baseline 
@@ -266,13 +265,34 @@
     The eye and constellation diagrams provide valuable insights into the behavior of the ideal OTA system under different 
     SPS configurations. As the number of samples per symbol increases, the eye opening widens, indicating reduced inter-symbol 
     interference and improved signal integrity. Similarly, the constellation points become more distinct and well-separated, 
-    reflecting better performance in terms of error probability and overall system reliability.
+    reflecting better performance in terms of error probability and overall system reliability. 
+ 
+    The span parameter controls the width of the pulse shaping filter, and a larger span results in a more gradual transition band, 
+    leading to a flatter MSE curve across different roll-off factors.
+
 
     \begin{figure}[htbp]
         \centering
 
         \begin{subfigure}{0.45\linewidth}
-            \includegraphics[width=\linewidth, height=0.8\linewidth]{data/fusion_eye_90sps.eps}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    title={Eye Diagram at Fusion Center (RRC Filtered)},
+                    xlabel={Time ($T_{sym}$)},
+                    ylabel={Amplitude},
+                    grid=major,
+                    width=\linewidth, height=0.8\linewidth,
+                    % Style applies to all 150 lines automatically
+                    every axis plot/.append style={
+                        mark=none,
+                        color=blue,
+                        line width=0.4pt,
+                        opacity=0.15 % Phosphor persistence effect
+                    } 
+                ]
+                    \addplot table[x=Time, y=Amplitude] {data/ideal/eye/ml_rrc_fc_eye_90sps.txt};
+                \end{axis}
+            \end{tikzpicture}
             \caption{Eye diagram at 90 SPS}
             \label{fig:fusion_eye_90sps}
         \end{subfigure}%
@@ -293,7 +313,7 @@
                         mark size=1.5pt,
                         color=blue,
                         opacity=0.4 % Adding opacity shows density where points overlap
-                    ] table[x=I_Data, y=Q_Data] {data/fc_constellation_90sps.txt};
+                    ] table[x=I_Data, y=Q_Data] {data/ideal/constellation/ml_rrc_fc_const_90sps.txt};
                 \end{axis}
             \end{tikzpicture}
 
@@ -341,7 +361,7 @@
                         mark size=1.5pt,
                         color=blue,
                         opacity=0.4
-                    ] table[x=ConstellationDiagram, y expr=0] {data/simulink_fc_constellation.txt};
+                    ] table[x=Column1, y expr=0] {data/ideal/constellation/sl_ideal_fc_const_1sps.txt};
             
                 \end{axis}
             \end{tikzpicture}
@@ -365,7 +385,7 @@
                         mark size=1.5pt,
                         color=blue,
                         opacity=0.4
-                    ] table[x=ConstellationDiagramCh, y expr=0] {data/simulink_fc_constellation.txt};
+                    ] table[x=Column1, y expr=0] {data/ideal/constellation/sl_awgn_fc_const_1sps.txt};
 
                 \end{axis}
             \end{tikzpicture}
@@ -434,7 +454,7 @@
                     tex.print("    mark size=1.5pt,")
                     tex.print("    color=" .. colors[i] .. ",")
                     tex.print("    opacity=0.4")
-                    tex.print("] table[x=ConstellationDiagramMatched_Layer" .. i .. ", y expr=0] {data/simulink_fc_constellation_matched.txt};")
+                    tex.print("] table[x=ConstellationDiagramMatched_Layer" .. i .. ", y expr=0] {data/ideal/constellation/sl_rrc_fc_const.txt};")
                     
                     tex.print("\\addlegendentry{Layer " .. i .. "}")
                 end
@@ -463,7 +483,7 @@
                         mark size=1.5pt,
                         color=blue,
                         opacity=0.4
-                    ] table[x=ConstellationDiagramNoFilt, y expr=0] {data/simulink_fc_constellation_nofilt.txt};
+                    ] table[x=ConstellationDiagramNoFilt, y expr=0] {data/ideal/constellation/sl_awgn_fc_const.txt};
 
                 \end{axis}
             \end{tikzpicture}
@@ -515,7 +535,7 @@
                         opacity=0.15 % Phosphor persistence effect
                     }
                 ]
-                    \addplot table[x=Time, y=Amplitude] {data/simulink_fc_eye_nofilt_3sym.txt};
+                    \addplot table[x=Time, y=Amplitude] {data/ideal/eye/sl_fc_eye_nofilt_3sym.txt};
                 \end{axis}
             \end{tikzpicture}
             \caption{Unfiltered signal.}
@@ -528,8 +548,7 @@
                 \begin{axis}[
                     title={Fusion Center (Matched Filter)},
                     xlabel={Time ($T_{sym}$)},
-                    ylabel={Amplitude},
-                     grid=major,
+                    ylabel={Amplitude}, grid=major,
                     width=\linewidth,
                     height=0.8\linewidth,
                     every axis plot/.append style={
@@ -539,7 +558,7 @@
                         opacity=0.15
                     }
                 ]
-                    \addplot table[x=Time, y=Amplitude] {data/simulink_fc_eye_matched_3sym.txt};
+                    \addplot table[x=Time, y=Amplitude] {data/ideal/eye/sl_rrc_fc_eye_matched_3sym.txt};
                 \end{axis}
             \end{tikzpicture}
             \caption{Signal after RRC filtering.}
@@ -590,7 +609,6 @@
 
     % write a paragraph about the flowgraph and the ideal scenario that cannot be implemente in real hardware
 
-
     
 
     % write a paragraph about the flowgraph and the ideal scenario that cannot be implemente in real hardware with the matched RRC filter
@@ -626,6 +644,95 @@
     the group delay inherent to the polyphase interpolating and decimating \gls{fir} filter implementations, 
     necessitating careful calibration for optimal demodulation performance.
     
+    It is also useful to note that the GNU Radio implementation, while functionally equivalent to the MATLAB/Simulink model,
+    introduces additional practical considerations, such as real-time processing constraints and hardware-induced
+    latency. These factors may influence the observed performance metrics, particularly in scenarios where the
+    system is subjected to dynamic channel conditions or when operating near the limits of the hardware's processing
+    capabilities. Therefore, while the idealized models provide a valuable theoretical benchmark, real-world deployments
+    must account for these additional complexities to ensure robust and reliable operation.
+
+    The circuit equivalent of the ideal OTA computation network is depicted in Figure~\ref{fig:idealOTA_circuit}. This representation
+    abstracts the wireless channel into a simplified electrical model, where each sensor's transmission is treated as
+    a voltage source, and the fusion center aggregates these signals through a common load. The circuit
+
+    \begin{figure}
+        \centering
+        
+        % \usetikzlibrary {arrows.meta}
+        \begin{circuitikz}[line width=0.8pt]
+
+            % ==========================================
+            % SENSOR NODE 1
+            % ==========================================
+            % Baseband Voltage Source
+            \draw (0, 6) to[sV, l=$v_1(t)$] (0, 4)
+            % Internal Impedance
+            to[R, l=$R_{S1}$] (2, 4)
+            % Antenna RLC Equivalent
+            to[L, l=$L_{A1}$] (3.5, 4)
+            to[C, l=$C_{A1}$] (5, 4)
+            to[R, l=$R_{rad1}$] (5, 6) -- (0, 6);
+            
+            \node at (2.5, 6.5) {\textbf{Sensor Node 1 (Tx)}};
+            
+            % Wireless Channel 1 (Transmission Line)
+            \draw (5.5, 5) node[right] {Channel $h_1$};
+            \draw (5, 5) -- node[above] {$\tau_1 \ \angle\theta_1$} (9, 5);
+
+
+            % ==========================================
+            % SENSOR NODE 2
+            % ==========================================
+            % Baseband Voltage Source
+            \draw (0, 2) to[sV, l=$v_2(t)$] (0, 0)
+            % Internal Impedance
+            to[R, l=$R_{S2}$] (2, 0)
+            % Antenna RLC Equivalent
+            to[L, l=$L_{A2}$] (3.5, 0)
+            to[C, l=$C_{A2}$] (5, 0)
+            to[R, l=$R_{rad2}$] (5, 2) -- (0, 2);
+            
+            \node at (2.5, 2.5) {\textbf{Sensor Node 2 (Tx)}};
+
+            % Wireless Channel 2 (Transmission Line)
+            \draw (5.5, 1) node[right] {Channel $h_2$};
+            \draw (5, 1) -- node[above] {$\tau_2 \ \angle\theta_2$} (9, 1);
+
+
+            % ==========================================
+            % FUSION CENTER (Rx) - THE OTA SUPERPOSITION
+            % ==========================================
+            % The electromagnetic waves combine at the Rx antenna
+            \draw (9, 5) -- (10, 5) -- (10, 4.5);
+            \draw (9, 1) -- (10, 1) -- (10, 1.5);
+            
+            % Rx Antenna RLC Equivalent
+            \draw (10, 4.5) to[R, l=$R_{rad, Rx}$] (10, 3.5)
+                            to[C, l=$C_{Rx}$] (10, 2.5)
+                            to[L, l=$L_{Rx}$] (10, 1.5);
+                            
+            % Rx Load / ADC Input
+            \draw (10, 4.5) -- (12, 4.5)
+                to[R, l=$Z_{load}$] (12, 1.5) -- (10, 1.5);
+                
+            % Label the Superposition Voltage
+            \draw (12.5, 4.5) node[right] {$+$};
+            \draw (12.5, 1.5) node[right] {$-$};
+            \draw (13, 3) node {\textbf{$y(t) = h_1 v_1(t) + h_2 v_2(t)$}};
+            
+            \node at (11, 5.5) {\textbf{Fusion Center (Rx)}};
+            
+            % Draw dashed boxes around the domains
+            \draw[dashed, gray] (-1.5, 3.5) rectangle (5.5, 7);
+            \draw[dashed, gray] (-1.5, -0.5) rectangle (5.5, 3);
+            \draw[dashed, blue] (9.5, -0.5) rectangle (14, 7);
+
+        \end{circuitikz}
+
+        \caption{Circuit equivalent of the ideal OTA computation network. Each sensor node is modeled as a voltage source with internal impedance, and the fusion center aggregates the received signals through a common load. The wireless channels are represented as transmission lines with associated delays and phase shifts, capturing the effects of propagation in a simplified manner.}
+        \label{fig:idealOTA_circuit}
+    \end{figure}
+
     \ifSubfilesClassLoaded{
         \clearpage
         \printbibliography

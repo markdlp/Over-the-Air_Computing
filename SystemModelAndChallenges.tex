@@ -68,6 +68,98 @@
         establishes the baseline challenge that must be addressed through waveform design
         or digital equalization techniques at the \gls{fc}.
 
+        % ------------------------- Matlab Code Section -------------------------
+        \subsubsection{Matlab Simulation of Multipath Effects}
+        The following Matlab code snippet simulates the multipath channel effects on the
+        transmitted signals and computes the resulting \gls{mse}. The code defines the
+        transmitted sequences, the channel impulse response, and performs the convolution to
+        obtain the received signal. Finally, it calculates the \gls{mse} between the ideal and received signals.
+        
+        \begin{lstlisting}[language=Matlab, caption={Matlab Simulation of Multipath Channel Effects and MSE Calculation}, label={lst:matlab_multipath_simulation}]
+        
+            ...
+
+            % Fractional Delay System Object
+            fracDelay = dsp.VariableFractionalDelay('MaximumDelay', 100);
+
+            % Raised Cosine Filter
+            rcFilter = rcosdesign(aleph, span, sps_val, "sqrt");
+
+            % Aggregate noiseless transmitted signal
+            % Initialized as a column vector to prevent MATLAB matrix expansion bugs
+            rx_agg_signal = zeros(N * sps_val + length(rcFilter) - 1, 1);
+
+            for k = 1:K
+                % The Air acts as an ideal adder (MAC Superposition)
+                tx_sig = conv(txUpSamped(:,k), rcFilter(:)) ;
+
+                % Channel: Multipath fractional delay
+                % h(t) = d(t) + 0.5*d(t - 0.25Ts)
+                % channel_out = conv(tx_sig, h_channel, "same");
+
+                delayed_sig = fracDelay(tx_sig, delay_frac * sps_val);
+                
+                % Force rcFilter to column vector '(:)' for safe 1D convolution
+                rx_agg_signal = rx_agg_signal + tx_sig + 0.5 * delayed_sig ;% eyediagram(node_1_tx, sps_val)
+            end
+
+            ...
+
+        \end{lstlisting}
+
+        In the above code, the `dsp.VariableFractionalDelay` object is used to introduce a fractional delay to simulate multipath effects. The `rcosdesign` function generates a square-root raised cosine filter to shape the transmitted signals. The received signal is computed by convolving the transmitted signals with the channel response, and the \gls{mse} is calculated to quantify the distortion introduced by the multipath channel.
+
+        The \gls{mse} value differes significantly from the ideal case, highlighting the importance of addressing multipath effects in practical \gls{ota} computing systems.
+
+        \begin{figure}[htbp]
+            \centering
+            \begin{subfigure}{.45\linewidth}
+                \begin{tikzpicture}
+                    \begin{axis}[
+                        title={\textsf{Ideal}},
+                        xlabel={SNR (dB)}, ylabel={MSE},
+                        ymode=log, grid=major,
+                        legend pos=north east,
+                    ]
+                        \addplot[
+                            color=blue,
+                            mark=square,
+                            thick
+                        ] table[x=SNR_dB, y=MSE] {data/ideal/mse/ml_ideal_fc_mse.txt};
+                        
+                        \addlegendentry{Ideal}
+                    \end{axis}
+                \end{tikzpicture}
+                \caption{\textsf{Ideal}}
+                \label{plt:idealOTAmse}
+            \end{subfigure}%
+            \hfill
+            \begin{subfigure}{.45\linewidth}
+                \begin{tikzpicture}
+                    \begin{axis}[
+                        title={\textsf{RC-Filtered}},
+                        xlabel={SNR (dB)}, ylabel={MSE},
+                        ymode=log, grid=major,
+                        legend pos=north east,
+                    ]
+                        \addplot[
+                            color=red,
+                            mark=*,
+                            thick,
+                            restrict expr to domain={\thisrow{aleph_array}}{0.49:0.51} 
+                        ] table[x=SNR_dB, y=mse_results] {data/isi/mse/ml_rrc_fc_mse_10sps.txt};
+
+                        \addlegendentry{sps=$10^1$, $\alpha=0.5$}
+
+                    \end{axis}
+                \end{tikzpicture}
+                \caption{\textsf{RC-Filtered}}
+                \label{plt:rcOTAmse}
+            \end{subfigure}
+            \caption{Comparison of MSE performance between the ideal baseline and the Raised Cosine filtered scenario.}
+            \label{fig:mse_comparison}
+        \end{figure}
+
     \subsection{Practical Challenges}
         \subsubsection{Channel State Information (CSI) Imperfection}
         The theoretical model assumes perfect knowledge of the channel impulse response.
