@@ -50,7 +50,7 @@
     script generates normally distributed simulated sensor readings, aligns them perfectly
     in time, and adds \gls{awgn} to emulate the ideal \gls{mac}.
 
-    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB script for ideal OTA computation aggregation.}, label={lst:ideal_ota}]
+    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB script for ideal OTA computation aggregation.}, label={lst:ml_awgn_fc}]
         % Ideal OTA Computation Simulation
         K = 3;                  % Number of sensors
         N = 1000;               % Number of samples
@@ -72,15 +72,15 @@
         MSE = immse(Estimated_Average, mean(X, 1)); fprintf('Ideal Baseline MSE at %d dB SNR: %f\n', SNR_dB, MSE);
     \end{lstlisting}
 
-    While Listing~\ref{lst:ideal_ota} demonstrates the fundamental principle in its unadulterated form, 
+    While Listing~\ref{lst:ml_awgn_fc} demonstrates the fundamental principle in its unadulterated form, 
     practical wireless systems necessitate pulse shaping to satisfy spectral constraints and facilitate 
     signal recovery. Consequently, a more physically realistic model incorporates matched \gls{rc} 
     filtering at both the transmitter and receiver. This architectural refinement introduces 
     additional degrees of freedom—namely, the \gls{sps} parameter and the roll-off 
     factor ($\alpha$)—which materially influence system performance. The enhanced implementation is presented 
-    in Listing~\ref{lst:ideal_ota_rc}.
+    in Listing~\ref{lst:ml_rrc_fc}.
 
-    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB script for OTA computation aggregation using the \gls{rrc} filter.}, label={lst:ideal_ota_rc}]
+    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB script for OTA computation aggregation using the \gls{rrc} filter.}, label={lst:ml_rrc_fc}]
         txUpSamped = upsample(X', sps_val); % phase may need to be set
 
         % Raised Cosine Filter
@@ -107,23 +107,14 @@
         mse_results(snr_idx, a_idx) = immse(Estimated_Average', mean(X, 1));
     \end{lstlisting}
 
-    % As demonstrated by the script, when synchronization is perfect, the MSE is strictly a
-    % function of the \gls{awgn} variance. When however trying to implement a scenario that is closer
-    % to a real world usecase, it appears to be necessary to interject a filter pair like the
-    % raised cosine filter. In order for this to be accomplished, a matched root raised cosine 
-    % filter shall be inserted on each end of channel and by doing that, more degrees of freedom 
-    % shall be taken into account, like \gls{sps} and \gls{rof}. In diagram \ref{plt:rcOTAmse}
-    % the curve can be seen where in diagram \ref{plt:idealOTAmse} the ideal \gls{mse} can
-    % be shown. 
-
-    % As demonstrated by the script's execution, when synchronization is mathematically
-    % perfect, the computational accuracy relies entirely on the noise floor. The \gls{mse}
-    % of the estimation is strictly a function of the \gls{awgn}
-    % variance scaled by the number of transmitting devices, mathematically bounded as
-    % $\text{MSE} \propto \sigma^2/K^2$. This demonstrates that in an ideal \gls{ota}
-    % scenario, increasing the number of sensors actually improves the accuracy of the
-    % computed average due to the noise-averaging effect \cite{sahin_survey_2023,
-    % cao_optimized_2022}.
+    As demonstrated by the script, when synchronization is perfect, the MSE is strictly a
+    function of the \gls{awgn} variance. When however trying to implement a scenario that is closer
+    to a real world usecase, it appears to be necessary to interject a filter pair like the
+    raised cosine filter. In order for this to be accomplished, a matched root raised cosine 
+    filter shall be inserted on each end of channel and by doing that, more degrees of freedom 
+    shall be taken into account, like \gls{sps} and \gls{rof}. In diagram \ref{fig:ml_rrc_fc_mse_10sps_span4}
+    the curve can be seen where in diagram \ref{fig:ml_awgn_fc_mse} the ideal \gls{mse} can
+    be shown.
 
     Computational execution of the aforementioned algorithms reveals a critical distinction between the 
     idealized and practical regimes. When temporal synchronization is mathematically perfect and no filtering 
@@ -138,6 +129,7 @@
     \begin{figure}[htbp]
         \centering
         \begin{subfigure}{.45\linewidth}
+            \tikzsetnextfilename{fig_ml_awgn_fc_mse}            
             \begin{tikzpicture}
                 \begin{axis}[
                     title={\textsf{Ideal}},
@@ -145,20 +137,18 @@
                     ymode=log, grid=major,
                     legend pos=north east,
                 ]
-                    \addplot[
-                        color=blue,
-                        mark=square,
-                        thick
-                    ] table[x=SNR_dB, y=MSE] {data/ideal/mse/ml_ideal_fc_mse.txt};
+                    \addplot[ color=blue, mark=square, thick ] table[x=SNR_dB, y=MSE]
+                    {data/ideal/mse/ml_awgn_fc_mse.txt};
                     
                     \addlegendentry{Ideal}
                 \end{axis}
             \end{tikzpicture}
             \caption{\textsf{Ideal}}
-            \label{plt:idealOTAmse}
+            \label{fig:ml_awgn_fc_mse}
         \end{subfigure}%
         \hfill
         \begin{subfigure}{.45\linewidth}
+            \tikzsetnextfilename{fig_ml_rrc_fc_mse_10sps_span4}
             \begin{tikzpicture}
                 \begin{axis}[
                     title={\textsf{RC-Filtered}},
@@ -166,26 +156,24 @@
                     ymode=log, grid=major,
                     legend pos=north east,
                 ]
-                    \addplot[
-                        color=red,
-                        mark=*,
-                        thick,
-                        restrict expr to domain={\thisrow{aleph_array}}{0.49:0.51} 
-                    ] table[x=SNR_dB, y=mse_results] {data/ideal/mse/ml_rrc_fc_mse_10sps.txt};
+                    \addplot[ 
+                        color=red, mark=*, thick, 
+                        restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51} 
+                    ] table[x=SNR_dB, y=mse_results] {data/ideal/mse/ml_rrc_fc_mse_10sps_span4.txt};
 
                     \addlegendentry{sps=$10^1$, $\alpha=0.5$}
 
                 \end{axis}
             \end{tikzpicture}
-            \caption{\textsf{RC-Filtered}}
-            \label{plt:rcOTAmse}
+            \caption{\textsf{\gls{rrc} Cosine Filtered}}
+            \label{fig:ml_rrc_fc_mse_10sps_span4}
         \end{subfigure}
         \caption{Comparison of MSE performance between the ideal baseline and the Raised Cosine filtered scenario.}
-        \label{fig:mse_comparison}
+        \label{fig:mse_awgn_rrc_comparison}
     \end{figure}
 
-    Figure~\ref{plt:idealOTAmse} presents the theoretical performance floor, wherein the \gls{mse} 
-    is a function solely of \gls{awgn} variance. In contrast, Figure~\ref{plt:rcOTAmse} illustrates 
+    Figure~\ref{fig:ml_awgn_fc_mse} presents the theoretical performance floor, wherein the \gls{mse} 
+    is a function solely of \gls{awgn} variance. In contrast, Figure~\ref{fig:ml_rrc_fc_mse_10sps_span4} illustrates 
     the performance envelope when matched Raised Cosine filters are deployed at both transmitter 
     and receiver, with \gls{sps} and \gls{rof} held constant. Despite the introduction of filtering, 
     the channel remains free of multipath distortion and timing misalignment, ensuring that noise 
@@ -193,69 +181,12 @@
 
     \begin{figure}[htbp]
         \centering
-
-        \begin{luacode*}
-            local sps_data = {
-                {val = "10", label = "1 \\times 10^1"},
-                {val = "20", label = "2 \\times 10^1"},
-                {val = "30", label = "3 \\times 10^1"},
-                {val = "40", label = "4 \\times 10^1"},
-                {val = "50", label = "5 \\times 10^1"},
-                {val = "60", label = "6 \\times 10^1"},
-                {val = "70", label = "7 \\times 10^1"},
-                {val = "80", label = "8 \\times 10^1"},
-                {val = "90", label = "9 \\times 10^1"},
-
-                {val = "100", label = "1 \\times 10^2"},
-                {val = "200", label = "2 \\times 10^2"},
-                {val = "300", label = "3 \\times 10^2"},
-                {val = "400", label = "4 \\times 10^2"},
-                {val = "500", label = "5 \\times 10^2"},
-                {val = "600", label = "6 \\times 10^2"},
-                {val = "700", label = "7 \\times 10^2"},
-                {val = "800", label = "8 \\times 10^2"},
-                {val = "900", label = "9 \\times 10^2"},
-            }
-
-            local angle = 0 -- in degrees
-
-            tex.print("\\begin{animateinline}[controls, autoplay, loop]{1.5}")
-            for i, sps in ipairs(sps_data) do
-                
-                if i > 1 then
-                    tex.print("\\newframe")
-                end
-
-                tex.print("\\begin{tikzpicture}")
-                tex.print("\\begin{axis}[")
-                tex.print("    title={Over-The-Air Computing MSE Profile (sps = $" .. sps.label .. "$)},")
-                tex.print("    xlabel={SNR (dB)},")
-                tex.print("    ylabel={Roll-off factor ($\\alpha$)},")
-                tex.print("    zlabel={MSE},")
-                tex.print("    zmode=log,")
-                tex.print("    zmin=0.1, zmax=8000,") 
-                tex.print("    view={" .. 45 + angle % 135 .. "}{30},")
-                tex.print("    grid=major,")
-                tex.print("    colorbar,")
-                tex.print("    colormap name=viridis")
-                tex.print("]")
-                
-                -- Ensure this path perfectly matches your MATLAB output
-                tex.print("\\addplot3[surf] table[x=SNR_dB, y=aleph_array, z=mse_results] {data/ideal/mse/ml_rrc_fc_mse_" .. sps.val .. "sps.txt};")
-                
-                tex.print("\\end{axis}")
-                tex.print("\\end{tikzpicture}")
-
-                angle = angle + 5
-            end
-            tex.print("\\end{animateinline}")
-        \end{luacode*}
-
-        \caption{Interactive OTA computing animation demonstrating the architectural impact of Samples Per Symbol ($sps$) scaling.}
-        \label{fig:ota_mse_morph}
+        \animategraphics[autoplay, loop, width=0.85\linewidth]{1.5}{figures/IdealOTA_mse_span_comparison}{}{}
+        \caption{Synchronous 3D animation comparing the Over-The-Air MSE surface across $sps$ scaling for filter span 4 (left) versus span 12 (right).}
+        \label{fig:ota_mse_span_comparison}
     \end{figure}
 
-    A particularly noteworthy observation emerges from parametric analysis of the animation in Figure~\ref{fig:ota_mse_morph}: 
+    A particularly noteworthy observation emerges from parametric analysis of the animation in Figure~\ref{fig:ota_mse_span_comparison}: 
     while increasing \gls{sps} generally yields marginal improvements in \gls{mse} performance across the SNR range examined, 
     this enhancement asymptotically approaches a limit and does not constitute convergence toward the theoretical ideal baseline 
     (absent pulse shaping). This behavior underscores a fundamental trade-off inherent to practical pulse-shaping implementations: 
@@ -270,60 +201,123 @@
     The span parameter controls the width of the pulse shaping filter, and a larger span results in a more gradual transition band, 
     leading to a flatter MSE curve across different roll-off factors.
 
-
     \begin{figure}[htbp]
         \centering
 
-        \begin{subfigure}{0.45\linewidth}
+        % ==================== LEFT SUBFIGURE: STATIC BASELINE ====================
+        \begin{subfigure}{0.48\linewidth}
+            \tikzsetnextfilename{fig_ml_awgn_fc_const}
             \begin{tikzpicture}
                 \begin{axis}[
-                    title={Eye Diagram at Fusion Center (RRC Filtered)},
-                    xlabel={Time ($T_{sym}$)},
-                    ylabel={Amplitude},
-                    grid=major,
-                    width=\linewidth, height=0.8\linewidth,
-                    % Style applies to all 150 lines automatically
-                    every axis plot/.append style={
-                        mark=none,
-                        color=blue,
-                        line width=0.4pt,
-                        opacity=0.15 % Phosphor persistence effect
-                    } 
-                ]
-                    \addplot table[x=Time, y=Amplitude] {data/ideal/eye/ml_rrc_fc_eye_90sps.txt};
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Eye diagram at 90 SPS}
-            \label{fig:fusion_eye_90sps}
-        \end{subfigure}%
-        \hfill
-        \begin{subfigure}{0.45\linewidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    title={Constellation Diagram at Fusion Center},
+                    title={\textsf{No Filter ($\text{SNR} = 20\text{ dB}$)}},
                     xlabel={In-Phase (I)},
                     ylabel={Quadrature (Q)},
-                    ymin=-1, ymax=1, grid=major,% Lock the Y-axis since Q is always 0
-                    width=\linewidth, height=0.8\linewidth
+                    ymin=-1, ymax=1,
+                    grid=major,
+                    width=\linewidth,
+                    height=0.8\linewidth,
+                    ticklabel style={font=\tiny},
+                    label style={font=\scriptsize},
+                    title style={font=\small}
                 ]
-                    % Use 'only marks' to create a scatter plot instead of lines
+                    % Static scatter plot of the unfiltered baseline at 20 dB
                     \addplot[
                         only marks,
                         mark=*,
-                        mark size=1.5pt,
+                        mark size=1pt,
                         color=blue,
-                        opacity=0.4 % Adding opacity shows density where points overlap
-                    ] table[x=I_Data, y=Q_Data] {data/ideal/constellation/ml_rrc_fc_const_90sps.txt};
+                        opacity=0.35
+                    ] table[x=I_Data, y expr=0] {data/ideal/constellation/ml_awgn_fc_const.txt};
                 \end{axis}
             \end{tikzpicture}
-
-            \caption{Native scatter plot of the real-valued symbol constellation at 90 SPS.}
-            \label{fig:fusion_constellation_90sps}
+            \caption{Unfiltered channel baseline.}
+            \label{fig:ml_awgn_fc_const}
+        \end{subfigure}%
+        \hfill
+        % ==================== RIGHT SUBFIGURE: ANIMATED ALPHA ====================
+        \begin{subfigure}{0.48\linewidth}
+            \animategraphics[autoplay, loop, width=\linewidth]{1.5}{figures/IdealOTA_ml_rrc_fc_const}{}{}
+            \caption{Matched filter dynamic response across roll-off $\alpha$.}
+            \label{fig:ml_rrc_fc_const}
         \end{subfigure}
 
-        \caption{Signal integrity analysis at the Fusion Center. Left: Eye diagram illustrating Inter-Symbol Interference bounds. Right: Native scatter plot of the real-valued symbol constellation.}
-        \label{fig:signal_integrity}
+        \caption{Constellation diagram comparison at $\text{SNR} = 20\text{ dB}$. Left: Unfiltered AWGN channel. Right: Animation demonstrating the suppression of truncation-induced ISI as $\alpha$ scales from $0.00$ to $1.00$ ($\text{span} = 12$, $sps = 60$).}
+        \label{fig:ml_awgnANDrrc_fc_const}
     \end{figure}
+
+    The constellation diagrams in Figure~\ref{fig:ml_awgnANDrrc_fc_const} provide a visual representation of the received signal's
+    integrity under both unfiltered and filtered conditions. The left subfigure illustrates the dispersion of constellation points 
+    in the absence of filtering, indicating potential symbol overlap and increased error probability. In contrast, the right subfigure 
+    demonstrates the effect of matched RRC filtering, where the constellation points are more tightly clustered, reflecting improved 
+    symbol separation and reduced inter-symbol interference. This visual evidence reinforces the quantitative findings from the MSE 
+    analysis, highlighting the critical role of pulse shaping in enhancing system performance.
+
+    What is particularly noteworthy is that the constellation diagram with RRC filtering exhibits a more compact and well-defined 
+    symbol distribution. This is because in the unfiltered scenario no upsampling takes place, and the symbols are transmitted at 
+    the symbol rate. Matlab measures the average power like in \ref{eq:signal_power} and at $20dB$ for instance the noise variance
+    is injected as \ref{eq:awgn_variance} so the standard deviation is $\sigma_{\text{noise}} = \sqrt{2916} \approx 54$. The estimation
+    average is $\text{Estimated\_Average} = \frac{\text{Ideal\_Sum} + w}{K} = 27 + \frac{w}{20}$ and the standard deviation of the average 
+    is $\sigma_{\text{Estimated\_Average}} = \frac{\sigma_{\text{noise}}}{K} = \frac{54}{20} = 2.7$.
+    
+    In contrast, the \gls{rrc} filtered scenario employs upsampling, so the \gls{rrc} filter is normalized to unit energy 
+    $\sum g[n]^2 = 1$. When the convolution happens with the upsampled signal, the energy is spread across the \gls{sps} 
+    samples, resulting in a lower effective noise variance per sample. In greater detail, the noise variance after 
+    filtering is $\sigma_{\text{noise, filtered}}^2 = \frac{\sigma_{\text{noise}}^2}{\text{sps}} = \frac{2916}{10} = 291.6$,
+    and given the normalization of the filter, the standard deviation of the estimated average is 
+    $\sigma_{\text{Estimated\_Average, filtered}} = \frac{\sigma_{\text{noise, filtered}}}{K} = \frac{\sqrt{291.6}}{20} \approx 0.85$.
+
+    \begin{equation}
+        P_{\text{signal}} = \frac{1}{N} \sum (\text{Ideal\_Sum})^2 \approx 540^2 = 291600 \label{eq:signal_power}
+    \end{equation}    
+
+    \begin{equation}
+        \sigma_{\text{noise}}^2 = \frac{P_{\text{signal}}}{100} = \frac{291600}{100} = 2916 \label{eq:awgn_variance}
+    \end{equation}    
+
+    \begin{figure}[htbp]
+        \centering
+        \animategraphics[autoplay, loop, width=0.85\linewidth]{1.5}{figures/IdealOTA_ml_rrc_fc_eye_span_comparison}{}{}
+        \caption{Eye diagram evolution for fixed roll-off $\alpha = 0.70$.}
+        \label{fig:ml_fc_rrc_eye_span_comparison}
+    \end{figure}
+
+    The eye diagram animation in Figure~\ref{fig:ml_fc_rrc_eye_span_comparison} illustrates the temporal evolution of the received signal's
+    integrity as the number of samples per symbol varies. The left subfigure, corresponding to a truncated filter with $\text{span} = 4$, 
+    shows that as $sps$ increases, the eye opening becomes wider, indicating improved timing margins and reduced inter-symbol interference. 
+    The right subfigure, with an extended filter of $\text{span} = 12$, demonstrates that even at lower $sps$ values, the eye remains relatively 
+    open due to the longer filter length, which provides better pulse shaping and mitigates ISI effects. This visual evidence reinforces the 
+    quantitative findings from the MSE analysis, highlighting the critical role of both $sps$ and filter span in enhancing system performance.
+
+    If we take a closer look near the top of each diagram \ref{fig:ml_fc_rrc_eye_span_comparison_zoomed} we see that the aggregated amplitude can take any real value, there are no voltage levels,
+    and the eye diagram is not a square shape, but rather a continuous distribution of amplitudes. This is because the transmitted signals are
+    analog values, and the superposition of these signals results in a continuous range of possible amplitudes at the receiver. The eye diagram
+    reflects this continuous nature, showing the variations in amplitude over time and the impact of noise on the received signal. The eye opening
+    indicates the time intervals where the signal is most stable and least affected by noise, which is crucial for accurate symbol detection in an
+    analog \gls{ota} computation scenario.
+
+    \begin{figure}[htbp]
+        \centering
+        \animategraphics[autoplay, loop, width=0.85\linewidth]{1.5}{figures/IdealOTA_ml_rrc_fc_eye_span_comparison_zoomed}{}{}
+        \caption{ Zoomed eye diagram evolution for fixed roll-off $\alpha = 0.70$. }
+        \label{fig:ml_fc_rrc_eye_span_comparison_zoomed}
+    \end{figure}
+
+    Unlike digital slicers that require an open eye mask, \gls{ota} computation systems rely on the continuous nature of the received signal.
+    In an ideal Nyquist system the derivative of every pulse passes through zero at the sampling instant, resulting in flat trajectory slopes at $t/T_s = 1.0$,
+    In \ref{fig:ml_fc_rrc_eye_span_comparison_zoomed} the trajectories either reach a peak, a trough, or an inflection point where the slopes flatten out,
+    in other words the derivative of the pulse is constant at the Nyquist strobe point \ref{eq:nyquist_derivative}.
+
+    \begin{equation}
+        \left. \frac{d p(t)}{dt} \right \vert{}_{t = 0} = 0 \label{eq:nyquist_derivative}
+    \end{equation}
+
+    In \gls{ota}, timing margin is quantified by the curvature (second derivative) around the strobe instant \ref{eq:strobe_instant_curvature}. 
+    The bundle's tightness around $t/T\_s = 1.0$ shows the receiver's sensitivity to clock drift: a wider, flatter plateau around $t/T\_s = 1.0$ 
+    means small timing misalignments will not severely degrade the estimated mean.
+
+    \begin{equation}
+        y(T\_s + \Delta t) \approx y(T\_s) + \frac{1}{2} y''(T\_s) \Delta t^2 \label{eq:strobe_instant_curvature}
+    \end{equation}
 
     \subsection{MATLAB Simulink Architecture}
     Transitioning from raw code to a block-level architecture, MATLAB Simulink provides a
@@ -333,7 +327,7 @@
 
     \begin{figure}[htpb]
         \centering
-        \includegraphics[width=\linewidth]{flowgraphs/idealOTA_simulink.pdf}        
+        \includegraphics[width=\linewidth]{flowgraphs/sl_ideal_awgn.pdf}        
         \caption{Simulink block diagram representing the ideal OTA computation network over an \gls{awgn} channel.}
         \label{fig:idealOTA_simulink}
     \end{figure}
@@ -343,62 +337,9 @@
     employs matched filtering pairs at both transmission and reception stages, enabling quantitative assessment 
     of performance degradation attributable to finite symbol-rate sampling and spectral roll-off constraints.
 
-    \begin{figure}[htbp]
-        \centering
-        \begin{subfigure}{.45\linewidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    title={\textsf{Constellation Diagram without a channel}},
-                    xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},
-                    ymin=-0.5, ymax=1.5, grid=major,
-                    width=\linewidth, height=0.8\linewidth,
-                    legend pos=north east,
-                    mark=none, thick
-                ]
-                    \addplot[
-                        only marks,
-                        mark=*,
-                        mark size=1.5pt,
-                        color=blue,
-                        opacity=0.4
-                    ] table[x=Column1, y expr=0] {data/ideal/constellation/sl_ideal_fc_const_1sps.txt};
-            
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Constellation Diagram of the ideal OTA computation network over an \gls{awgn} channel.}
-            \label{fig:simulink_Constellation_no_ch}
-        \end{subfigure}%
-        \hfill
-        \begin{subfigure}{.45\linewidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    title={\textsf{Constellation Diagram with a channel}},
-                    xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},
-                    ymin=-0.5, ymax=1.5, grid=major,
-                    width=\linewidth, height=0.8\linewidth,
-                    legend pos=north east,
-                    mark=none, thick
-                ]
-                    \addplot[
-                        only marks,
-                        mark=*,
-                        mark size=1.5pt,
-                        color=blue,
-                        opacity=0.4
-                    ] table[x=Column1, y expr=0] {data/ideal/constellation/sl_awgn_fc_const_1sps.txt};
-
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Constellation Diagram of the Raised Cosine filtered OTA computation network over an \gls{awgn} channel.}
-            \label{fig:simulink_Constellation_ch}
-        \end{subfigure}
-        \caption{Simulink Constellation Diagrams}
-        \label{fig:simulink_constellation_comparison}
-    \end{figure}
-
     \begin{figure}[htpb]
         \centering
-        \includegraphics[width=\linewidth]{flowgraphs/idealOTA_simulink_rrc.pdf}        
+        \includegraphics[width=\linewidth]{flowgraphs/sl_ideal_rrc.pdf}        
         \caption{Simulink block diagram representing the ideal OTA computation network over an \gls{awgn} channel.}
         \label{fig:idealOTA_simulink_rrc} 
     \end{figure}
@@ -410,9 +351,6 @@
     \gls{fir} filtering inherently requires symbol-rate sampling and subsequent interpolation. Consequently, 
     systems employing matched filter pairs necessitate carefully synchronized symbol generation to avoid 
     spurious transient responses.
-
-    % Consider adding a figure from the Simulink simulation showing the MSE over time or SNR to visually 
-    % reinforce the performance analysis.
 
     The constellation diagrams provide a clear visual confirmation of the role played by
     pulse shaping in the received signal. The plot corresponding to the fusion center
@@ -426,74 +364,6 @@
     preserving symbol integrity and improving the reliability of the recovered OTA
     estimate.
 
-    \begin{figure}[htbp]
-        \centering
-        \begin{subfigure}{.48\linewidth}
-            \begin{luacode*}
-                -- Start the tikzpicture and axis environments
-                tex.print("\\begin{tikzpicture}")
-                tex.print("\\begin{axis}[")
-                tex.print("    title={\\textsf{Constellation Diagram Matched Filter}},")
-                tex.print("    xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},")
-                tex.print("    ymin=-0.5, ymax=1.5, grid=major,")
-                tex.print("    width=\\linewidth, height=0.8\\linewidth,")
-                tex.print("    legend pos=north east,")
-                tex.print("    legend columns=2,")
-                tex.print("    legend style={font=\\scriptsize}")
-                tex.print("]")
-
-                -- Define an array of 8 distinct colors
-                local colors = {"blue", "red", "green", "orange", "purple", "cyan", "magenta", "brown"}
-                
-                -- Loop through the 8 layers
-                for i = 1, 8 do
-                    
-                    tex.print("\\addplot[")
-                    tex.print("    only marks,")
-                    tex.print("    mark=*,")
-                    tex.print("    mark size=1.5pt,")
-                    tex.print("    color=" .. colors[i] .. ",")
-                    tex.print("    opacity=0.4")
-                    tex.print("] table[x=ConstellationDiagramMatched_Layer" .. i .. ", y expr=0] {data/ideal/constellation/sl_rrc_fc_const.txt};")
-                    
-                    tex.print("\\addlegendentry{Layer " .. i .. "}")
-                end
-
-                -- Close the environments
-                tex.print("\\end{axis}")
-                tex.print("\\end{tikzpicture}")
-            \end{luacode*}
-            \caption{Constellation Diagram of the ideal OTA computation network over an \gls{awgn} channel.}
-            \label{fig:simulink_Constellation_ideal}
-        \end{subfigure}%
-        \hfill
-        \begin{subfigure}{.48\linewidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    title={\textsf{Constellation Diagram No filter}},
-                    xlabel={In-phase Amplitude}, ylabel={Quadrature Amplitude},
-                    ymin=-0.5, ymax=1.5, xmin=-4, xmax=34, grid=major,
-                    width=\linewidth, height=0.8\linewidth,
-                    legend pos=north east,
-                    mark=none, thick
-                ]
-                    \addplot[
-                        only marks,
-                        mark=*,
-                        mark size=1.5pt,
-                        color=blue,
-                        opacity=0.4
-                    ] table[x=ConstellationDiagramNoFilt, y expr=0] {data/ideal/constellation/sl_awgn_fc_const.txt};
-
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Constellation Diagram of the Raised Cosine filtered OTA computation network over an \gls{awgn} channel.}
-            \label{fig:simulink_Constellation_rc}
-        \end{subfigure}
-        \caption{Simulink Constellation Diagrams}
-        \label{fig:simulink_constellation}
-    \end{figure}
-
     When an \gls{rrc} filter is generated using MATLAB/Simulink's underlying
     rcosdesign math, the filter is normalized for Energy, not Peak Amplitude.The algorithm
     guarantees that the sum of the squares of the filter taps equals $1.0$ ($\sum h[n]^2 =
@@ -502,6 +372,56 @@
     through the Tx \gls{rrc} filter, travels through the air, and passes through the Rx \gls{rrc}
     matched filter, the continuous-time math is perfect, but the discrete-time convolution
     sum inherently scales the output by a factor related to the \gls{sps}.
+
+    \begin{figure}[htbp]
+        \centering
+
+        \begin{subfigure}{0.48\linewidth}
+            \tikzsetnextfilename{fig_sl_fc_eye_nofilt}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    title={Eye Diagram at Fusion Center (Unfiltered)},
+                    xlabel={Time ($T_{sym}$)}, ylabel={Amplitude},
+                    grid=major, width=\linewidth, height=0.8\linewidth,
+                    % Style applies to all 150 lines automatically
+                    every axis plot/.append style={
+                        mark=none, color=blue, line width=0.4pt, opacity=0.15
+                    }
+                ]
+                    \addplot table[x=Time, y=Amplitude] {data/ideal/eye/sl_fc_eye_nofilt_3sym.txt};
+
+                \end{axis}
+            \end{tikzpicture}
+            \caption{Eye diagram without filtering.}
+            \label{fig:sl_fc_eye_nofilt}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}{0.48\linewidth}
+            \tikzsetnextfilename{fig_sl_rrc_fc_eye_matched}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    title={Fusion Center (Matched Filter)},
+                    xlabel={Time ($T_{sym}$)},
+                    ylabel={Amplitude}, grid=major,
+                    width=\linewidth,
+                    height=0.8\linewidth,
+                    every axis plot/.append style={
+                        mark=none, color=red, line width=0.4pt, opacity=0.15
+                    }
+                ]
+                    \addplot table[x=Time, y=Amplitude] {data/ideal/eye/sl_rrc_fc_eye_matched_3sym.txt};
+
+                    \addlegendentry{sps=10, span=4, $\alpha=0.0$}
+
+                \end{axis}
+            \end{tikzpicture}
+            \caption{Eye diagram with RRC filtering.}
+            \label{fig:sl_rrc_fc_eye_matched}
+        \end{subfigure}
+
+        \caption{Eye Diagrams with and without filtering.}
+        \label{fig:sl_awgnANDrrc_fc_eye}
+    \end{figure}
 
     The eye diagrams further illustrate the impact of pulse shaping on the received
     signal. The eye diagram corresponding to the fusion center observation after the
@@ -513,76 +433,6 @@
     comparison highlights that the matched RRC filter contributes not only to spectral
     shaping, but also to preserving symbol integrity and improving the reliability of the
     recovered OTA estimate.
-
-    \begin{figure}[htbp]
-        \centering
-
-        % --- Left Subfigure: No Filter ---
-        \begin{subfigure}{0.48\linewidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    title={Fusion Center (No Filter)},
-                    xlabel={Time ($T_{sym}$)},
-                    ylabel={Amplitude},
-                    grid=major,
-                    width=\linewidth,
-                    height=0.8\linewidth,
-                    % Style applies to all 150 lines automatically
-                    every axis plot/.append style={
-                        mark=none,
-                        color=blue,
-                        line width=0.4pt,
-                        opacity=0.15 % Phosphor persistence effect
-                    }
-                ]
-                    \addplot table[x=Time, y=Amplitude] {data/ideal/eye/sl_fc_eye_nofilt_3sym.txt};
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Unfiltered signal.}
-            \label{fig:simulink_eye_nofilt}
-        \end{subfigure}%
-        \hfill
-        % --- Right Subfigure: Matched Filter ---
-        \begin{subfigure}{0.48\linewidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    title={Fusion Center (Matched Filter)},
-                    xlabel={Time ($T_{sym}$)},
-                    ylabel={Amplitude}, grid=major,
-                    width=\linewidth,
-                    height=0.8\linewidth,
-                    every axis plot/.append style={
-                        mark=none,
-                        color=red,
-                        line width=0.4pt,
-                        opacity=0.15
-                    }
-                ]
-                    \addplot table[x=Time, y=Amplitude] {data/ideal/eye/sl_rrc_fc_eye_matched_3sym.txt};
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Signal after RRC filtering.}
-            \label{fig:simulink_eye_matched}
-        \end{subfigure}
-
-        \caption{Native PGFPlots eye diagrams generated from a lightweight 150-trace subset of the Simulink output.}
-        \label{fig:simulink_eye_comparison}
-    \end{figure}
-
-    % \begin{figure}[htpb]
-    %     \centering
-    %     \begin{tabular}{ccc}
-    %         \videogriditem{0.31\linewidth}{video/E_Zmax1_027e2MHz.mkv}{E_Zmax1_027e2MHz.png} &
-    %         \videogriditem{0.31\linewidth}{video/E_Zmax1_077e2MHz.mkv}{E_Zmax1_077e2MHz.png} &
-    %         \videogriditem{0.31\linewidth}{video/E_Zmax1_127e2MHz.mkv}{E_Zmax1_127e2MHz.png} \\[1ex]
-    %         
-    %         \videogriditem{0.31\linewidth}{video/E_Zmax2_027e2MHz.mkv}{E_Zmax2_027e2MHz.png} &
-    %         \videogriditem{0.31\linewidth}{video/E_Zmax2_077e2MHz.mkv}{E_Zmax2_077e2MHz.png} &
-    %         \videogriditem{0.31\linewidth}{video/E_Zmax2_127e2MHz.mkv}{E_Zmax2_127e2MHz.png} \\
-    %     \end{tabular}
-    %     \caption{Electrical Field for 2.7, 7.7, and 12.7 GHz $Z_{max}$.}
-    %     \label{img:E}
-    % \end{figure}
 
     \subsection{GNU Radio Validation}
     Finally, the ideal model is verified using a \gls{sdr} environment
@@ -601,21 +451,36 @@
 
     \begin{figure}[htpb]
         \centering
-        \includegraphics[width=\linewidth]{flowgraphs/idealOTA_grc.pdf}
+        \includegraphics[width=\linewidth]{flowgraphs/grc_ideal_awgn.pdf}
 
         \caption{GNU Radio flowgraph for the ideal, Nyquist-compliant scenario.}
         \label{fig:grc_ideal}
     \end{figure}
 
-    % write a paragraph about the flowgraph and the ideal scenario that cannot be implemente in real hardware
-
     
-
-    % write a paragraph about the flowgraph and the ideal scenario that cannot be implemente in real hardware with the matched RRC filter
+    The 26.4 Amplitude Drop: Filter Normalization. 
+    The matched filter perfectly recovered the symbol, but the amplitude fell short (26.4 instead of 27.4).
+    The one-unit reduction in amplitude results from a
+    fundamental property of Raised Cosine (RC) filters when calculating \gls{mse}.
+    When a \gls{rrc} filter is generated using MATLAB/Simulink's
+    underlying rcosdesign math, the filter is normalized for Energy, not Peak
+    Amplitude. The algorithm guarantees that the sum of the squares of the filter taps
+    equals $1.0$ ($\sum h[n]^2 = 1$). However, in discrete-time DSP, when a signal passes
+    through an interpolation filter, the energy is spread out across the $SPS$
+    samples. When the signal passes through the Tx \gls{rrc} filter, travels through the air, and
+    passes through the Rx \gls{rrc} matched filter, the continuous-time math is perfect, but the
+    discrete-time convolution sum inherently scales the output by a factor related to the
+    \gls{sps}. 
+    
+    In commercial transceivers, the filters are not expected to perfectly preserve the raw
+    voltage scale. Instead, a static scalar multiplier (Gain block) is applied at the receiver,
+    or an Automatic Gain Control (AGC) loop is used, to rescale the discrete digital values
+    back to physical analogue units (such as Volts or Celsius) before the data reaches the
+    Constellation Diagram or the Fusion Center average calculation.
 
     \begin{figure}[htpb]
         \centering
-        \includegraphics[width=\linewidth]{flowgraphs/idealOTA_grc_rrc.pdf}
+        \includegraphics[width=\linewidth]{flowgraphs/grc_ideal_rrc.pdf}
 
         \caption{GNU Radio flowgraph for the ideal, Nyquist-compliant scenario.}
         \label{fig:grc_ideal_rrc}
@@ -676,9 +541,8 @@
             \node at (2.5, 6.5) {\textbf{Sensor Node 1 (Tx)}};
             
             % Wireless Channel 1 (Transmission Line)
-            \draw (5.5, 5) node[right] {Channel $h_1$};
+            \draw (5.5, 4.5) node[right] {Channel $h_1$};
             \draw (5, 5) -- node[above] {$\tau_1 \ \angle\theta_1$} (9, 5);
-
 
             % ==========================================
             % SENSOR NODE 2
@@ -695,7 +559,7 @@
             \node at (2.5, 2.5) {\textbf{Sensor Node 2 (Tx)}};
 
             % Wireless Channel 2 (Transmission Line)
-            \draw (5.5, 1) node[right] {Channel $h_2$};
+            \draw (5.5, 0.5) node[right] {Channel $h_2$};
             \draw (5, 1) -- node[above] {$\tau_2 \ \angle\theta_2$} (9, 1);
 
 
@@ -718,9 +582,9 @@
             % Label the Superposition Voltage
             \draw (12.5, 4.5) node[right] {$+$};
             \draw (12.5, 1.5) node[right] {$-$};
-            \draw (13, 3) node {\textbf{$y(t) = h_1 v_1(t) + h_2 v_2(t)$}};
+            \draw (12, 1) node {\textbf{$y(t) = h_1 v_1(t) + h_2 v_2(t)$}};
             
-            \node at (11, 5.5) {\textbf{Fusion Center (Rx)}};
+            \node at (12, 5.5) {\textbf{Fusion Center (Rx)}};
             
             % Draw dashed boxes around the domains
             \draw[dashed, gray] (-1.5, 3.5) rectangle (5.5, 7);

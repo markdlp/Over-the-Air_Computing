@@ -1,7 +1,8 @@
 {
     "latex-workshop.latex.recipe.default": "latexmk (lualatexmk)",
     "latex-workshop.latex.autoBuild.cleanAndRetry.enabled": false,
-    "latex-workshop.latex.autoBuild.run":"onSave",
+    "latex-workshop.latex.autoBuild.run":"onFileChange",
+    "latex-workshop.latex.autoBuild.delay": 3000,
     "latex-workshop.message.badbox.show":"both",
     // "latex-workshop.formatting.latex":"latexindent",
     "latex-workshop.formatting.tex-fmt.path":"lib/tex-fmt.exe",
@@ -29,6 +30,7 @@
                 "-synctex=1",
                 "-interaction=nonstopmode",
                 "-file-line-error",
+                "-shell-escape",
                 "-lualatex",
                 "-aux-directory=tmp",
                 "-outdir=%OUTDIR%",
@@ -150,11 +152,7 @@
     "latex-workshop.latex.recipes": [
         {
             "name": "latexmk (lualatexmk)",
-            "tools": [
-                "lualatexmk",
-                "bib2gls",
-                "lualatexmk",
-            ]
+            "tools": [ "lualatexmk" ]
         }
     ],
     "cSpell.language": "en,el",

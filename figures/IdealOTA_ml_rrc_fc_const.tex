@@ -1,0 +1,61 @@
+% IdealOTA_ml_rrc_fc_const.tex
+\documentclass[multi=tikzpicture]{standalone}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\usepackage{luacode}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+    \begin{luacode*}
+        local alpha_list = {
+            {val = "0.00", label = "0.00"},
+            {val = "0.10", label = "0.10"},
+            {val = "0.20", label = "0.20"},
+            {val = "0.30", label = "0.30"},
+            {val = "0.40", label = "0.40"},
+            {val = "0.50", label = "0.50"},
+            {val = "0.60", label = "0.60"},
+            {val = "0.70", label = "0.70"},
+            {val = "0.80", label = "0.80"},
+            {val = "0.90", label = "0.90"},
+            {val = "1.00", label = "1.00"}
+        }
+
+        local sps_val  = 64
+        local span_val = 12
+        local base_dir = "../data/ideal/constellation/"
+
+        for i, item in ipairs(alpha_list) do
+            local file_path = string.format(
+                "%sml_rrc_fc_const_%dsps_span%d_alpha%s.txt",
+                base_dir, sps_val, span_val, item.val
+            )
+
+            tex.print("\\begin{tikzpicture}")
+            tex.print("\\begin{axis}[")
+            tex.print("    title={\\textsf{Matched RRC ($\\alpha = " .. item.label .. "$, $\\text{SNR} = 20\\text{ dB}$)}},")
+            tex.print("    xlabel={In-Phase (I)},")
+            tex.print("    ylabel={Quadrature (Q)},")
+            tex.print("    xmin=-5, xmax=34,")
+            tex.print("    ymin=-1, ymax=1,")
+            tex.print("    grid=major,")
+            tex.print("    width=\\linewidth,")
+            tex.print("    height=0.8\\linewidth,")
+            tex.print("    ticklabel style={font=\\tiny},")
+            tex.print("    label style={font=\\scriptsize},")
+            tex.print("    title style={font=\\small}")
+            tex.print("]")
+            tex.print("\\addplot[")
+            tex.print("    only marks,")
+            tex.print("    mark=*,")
+            tex.print("    mark size=1pt,")
+            tex.print("    color=red!80!black,")
+            tex.print("    opacity=0.35")
+            tex.print("] table[x=I_Data, y expr=0] {" .. file_path .. "};")
+            tex.print("\\end{axis}")
+            tex.print("\\end{tikzpicture}")
+        end
+    \end{luacode*}
+    
+\end{document}

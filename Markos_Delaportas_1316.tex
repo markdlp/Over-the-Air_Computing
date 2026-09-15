@@ -10,7 +10,6 @@
     headheight=33pt,
     includeheadfoot
 }
-
 \usepackage[parfill]{parskip}  % Activate to begin paragraphs with an
 % empty line rather than an indent
 
@@ -31,6 +30,16 @@
 
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
+
+% \directlua{
+%   local lfs = require("lfs")
+%   lfs.mkdir("tmp")
+%   lfs.mkdir("tmp/figures-cache")
+% }
+
+\usepgfplotslibrary{external}
+\tikzset{external/system call={lualatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
+\tikzexternalize[prefix=figures-cache/]
 
 \usepackage{amssymb}
 \usepackage{enumitem}
