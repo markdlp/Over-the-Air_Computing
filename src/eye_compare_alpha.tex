@@ -1,0 +1,50 @@
+\documentclass[multi=tikzpicture]{standalone}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\usepackage{luacode}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+    \begin{tikzpicture}
+            \begin{axis}[
+                width=10cm, height=6.5cm,
+                grid=both,
+                grid style={line width=0.1pt, draw=gray!25},
+                xlabel={Normalized Time ($t/T_s$)},
+                ylabel={Received Amplitude Deviation (V)},
+                xmin=0, xmax=3,
+                ymin=-10, ymax=10, % Symmetrical around 0 due to zero-mean transmission
+                legend pos=south west,
+                legend cell align={left},
+                every axis plot/.append style={
+                    mark=none,
+                    line width=0.1pt,
+                    opacity=0.08,
+                    line cap=round,
+                    line join=round
+                }
+            ]
+            
+            % Alpha = 0.5 Traces (Blue)
+            \foreach \t in {1,...,30} {
+                \addplot[color=blue!75!black] 
+                table [x=Time, y=Amplitude] {../data/ideal/eye/96sps/ml_rrc_fc_eye_96sps_span12_alpha0.50.txt};
+            }
+
+            % Alpha = 1.0 Traces (Red)
+            \foreach \t in {1,...,30} {
+                \addplot[color=red!80!black] 
+                table [x=Time, y=Amplitude] {../data/ideal/eye/96sps/ml_rrc_fc_eye_96sps_span12_alpha1.00.txt};
+            }
+
+            % Dummy legend entries (since opacity affects legend patches)
+            \addlegendimage{line width=1pt, color=blue!75!black}
+            \addlegendentry{$\alpha = 0.5$}
+            \addlegendimage{line width=1pt, color=red!80!black}
+            \addlegendentry{$\alpha = 1.0$}
+
+        \end{axis}
+    \end{tikzpicture}
+
+\end{document}

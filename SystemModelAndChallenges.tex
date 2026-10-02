@@ -2,7 +2,7 @@
 
 \begin{document}    
     
-        \section{System Model and Practical Challenges in \texorpdfstring{\gls{ota}}{ }} A
+    \section{Intersymbol Interference in \texorpdfstring{\gls{ota}}{ }} A
         system that utilizes \gls{ota} computing can be modeled in various ways depending
         on the specific use case and propagation environment. Most architectures involve a
         set of \gls{ed}s that transmit concurrently to a \gls{fc} or \gls{es}. The
@@ -14,21 +14,33 @@
         mitigate these effects, optimization strategies including power management,
         transceiver design, and equalization must be employed.
 
-        \subsection{System Architecture and Channel Model}
+    \subsection{System Architecture and Channel Model}
         To mathematically formulate the impact of channel impairments on \gls{ota}
         computing, we consider a discrete-time network model consisting of multiple
         \gls{ed}s deployed in an agricultural environment. These devices utilize 
         \gls{pam} to transmit local temperature readings to a central \gls{fc}. 
 
-        Let $x_i[n]$ denote the discrete-time signal transmitted by the $i$-th sensor. For
+        Let $x_i[n]$ denote the discrete-time signal transmitted by the $i$-th sensor, as
+        defined in \cref{eq:transmitted_signal}. For
         an illustrative scenario involving two sensors, the transmitted sequences are
         defined as:
-        \begin{align}
-            x_1[n] &= [2, -1, 1] \\
-            x_2[n] &= [1, 2, -1]
-        \end{align}
+    
+        \begin{equation}
+            x_i[n] \text{ denotes the signal transmitted by sensor } i
+            \label{eq:transmitted_signal}
+        \end{equation}
 
-        \subsubsection{The Ideal Target Function}
+        \begin{equation}
+            x_1[n] = [2, -1, 1]
+            \label{eq:transmitted_sequence_one}
+        \end{equation}
+
+        \begin{equation}
+            x_2[n] = [1, 2, -1]
+            \label{eq:transmitted_sequence_two}
+        \end{equation}
+
+    \subsubsection{The Ideal Target Function}
         The primary objective of \gls{ota} computing is to leverage the multiple access
         channel (MAC) superposition property to aggregate data natively in the air.
         Assuming a flat-fading, noise-free, and perfectly synchronized channel, the ideal
@@ -36,32 +48,54 @@
         the transmitted signals:
         \begin{equation}
             s[n] = \sum_{i=1}^{K} x_i[n]
+            \label{eq:ideal_aggregate}
         \end{equation}
         where $K$ is the total number of transmitting devices. For the given sensor data,
-        the ideal aggregated sequence is evaluated as $s[n] = [3, 1, 0]$.
+        the ideal aggregated sequence is evaluated as \cref{eq:ideal_aggregate_sequence}.
 
-        \subsubsection{Multipath Channel Distortion}
+        \begin{equation}
+            s[n] = [3, 1, 0]
+            \label{eq:ideal_aggregate_sequence}
+        \end{equation}
+
+    \subsubsection{Multipath Channel Distortion}
         In practical agricultural deployments, the physical environment exhibits multipath
         characteristics (e.g., reflections from terrain or machinery). This is modeled as
-        a Finite Impulse Response (FIR) filter. Assuming a channel impulse response $h[n]$
-        with a span of three taps, defined as $h[n] = [1.0, 0.5, -0.2]$, the actual
+        a Finite Impulse Response (FIR) filter. Assuming the three-tap channel response in
+        \cref{eq:channel_impulse_response}, the actual
         received signal $y[n]$ is the convolution of the ideal aggregated signal with the
         channel response:
         \begin{equation}
-            y[n] = s[n] * h[n] = \sum_{k=0}^{n} s[k] h[n-k]
+            h[n] = [1.0, 0.5, -0.2]
+            \label{eq:channel_impulse_response}
         \end{equation}
-        Evaluating this convolution yields the distorted sequence $y[n] = [3.0, 2.5, -0.1,
-        -0.2, 0.0]$. The extension of the sequence length from three to five symbols
+
+        \begin{equation}
+            y[n] = s[n] * h[n] = \sum_{k=0}^{n} s[k] h[n-k]
+            \label{eq:multipath_convolution}
+        \end{equation}
+        Evaluating this convolution yields the distorted sequence in
+        \cref{eq:distorted_sequence}. The extension of the sequence length from three to five symbols
         mathematically illustrates the presence of \gls{isi},
         wherein previous and future symbols bleed into the current sampling instance.
 
-        \subsubsection{Mean Squared Error (MSE) Evaluation}
+        \begin{equation}
+            y[n] = [3.0, 2.5, -0.1, -0.2, 0.0]
+            \label{eq:distorted_sequence}
+        \end{equation}
+
+    \subsubsection{Mean Squared Error (MSE) Evaluation}
         To quantify the degradation caused by the multipath channel, the \gls{mse} is calculated between the ideal target function $s[n]$ and the
         actual received signal $y[n]$. The error at each discrete time step is given by
-        $e[n] = y[n] - s[n]$. For a sequence of length $N$, the overall \gls{mse} is
-        defined as:
+        \cref{eq:discrete_error}. For a
+        sequence of length $N$, the overall \gls{mse} is defined as:
         \begin{equation}
-            \text{MSE} = \frac{1}{N} \sum_{n=0}^{N-1} (y[n] - s[n])^2
+            e[n] = y[n] - s[n]
+            \label{eq:discrete_error}
+        \end{equation}
+        \begin{equation}
+            \operatorname{MSE} = \frac{1}{N} \sum_{n=0}^{N-1} (y[n] - s[n])^2
+            \label{eq:multipath_mse}
         \end{equation}
         For the evaluated sequences, the discrepancy between the ideal sum and the
         ISI-corrupted signal results in an $\text{MSE} = 0.46$. This theoretical error
@@ -69,7 +103,7 @@
         or digital equalization techniques at the \gls{fc}.
 
         % ------------------------- Matlab Code Section -------------------------
-        \subsubsection{Matlab Simulation of Multipath Effects}
+    \subsubsection{Matlab Simulation of Multipath Effects}
         The following Matlab code snippet simulates the multipath channel effects on the
         transmitted signals and computes the resulting \gls{mse}. The code defines the
         transmitted sequences, the channel impulse response, and performs the convolution to
@@ -114,27 +148,13 @@
         \begin{figure}[htbp]
             \centering
             \begin{subfigure}{.45\linewidth}
-                \begin{tikzpicture}
-                    \begin{axis}[
-                        title={\textsf{Ideal}},
-                        xlabel={SNR (dB)}, ylabel={MSE},
-                        ymode=log, grid=major,
-                        legend pos=north east,
-                    ]
-                        \addplot[
-                            color=blue,
-                            mark=square,
-                            thick
-                        ] table[x=SNR_dB, y=MSE] {data/ideal/mse/ml_ideal_fc_mse.txt};
-                        
-                        \addlegendentry{Ideal}
-                    \end{axis}
-                \end{tikzpicture}
+                \includegraphics[width=\linewidth]{figures-cache/fig_ml_awgn_fc_mse.pdf}
                 \caption{\textsf{Ideal}}
-                \label{plt:idealOTAmse}
+                \label{fig:ml_ideal_fc_mse}
             \end{subfigure}%
             \hfill
             \begin{subfigure}{.45\linewidth}
+                \tikzsetnextfilename{fig_ml_isi_rrc_fc_mse_12sps}
                 \begin{tikzpicture}
                     \begin{axis}[
                         title={\textsf{RC-Filtered}},
@@ -146,19 +166,98 @@
                             color=red,
                             mark=*,
                             thick,
-                            restrict expr to domain={\thisrow{aleph_array}}{0.49:0.51} 
-                        ] table[x=SNR_dB, y=mse_results] {data/isi/mse/ml_rrc_fc_mse_10sps.txt};
+                            restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51} 
+                        ] table[x=SNR_dB, y=mse_results] {data/isi/multipath/mse/ml_isi_rrc_fc_mse_12sps_span12.txt};
 
                         \addlegendentry{sps=$10^1$, $\alpha=0.5$}
 
                     \end{axis}
                 \end{tikzpicture}
                 \caption{\textsf{RC-Filtered}}
-                \label{plt:rcOTAmse}
+                \label{fig:ml_isi_rrc_fc_mse_12sps}
             \end{subfigure}
-            \caption{Comparison of MSE performance between the ideal baseline and the Raised Cosine filtered scenario.}
+            \caption{
+                Comparison of MSE performance between the ideal baseline and the Raised
+                Cosine filtered scenario with multipath ISI.
+            }
             \label{fig:mse_comparison}
         \end{figure}
+
+        As in the previous chapter the \ref{fig:ml_ideal_fc_mse} shows the ideal \gls{mse}
+        performance, while \ref{fig:ml_isi_rrc_fc_mse_12sps} illustrates the degradation
+        due to multipath effects and raised cosine filtering. It is evident that the
+        presence of \gls{isi} significantly increases the \gls{mse}, especially at lower
+        SNR levels. The results emphasize the need for advanced signal processing
+        techniques to mitigate ISI and improve overall system performance in practical
+        \gls{ota} computing scenarios.
+
+        \begin{figure}[htbp]
+            \centering
+            \animategraphics[autoplay, loop, width=0.85\linewidth]{1.5}
+            {figures/ml_multipath_rrc_fc_mse_span_comparison}{}{}
+            \caption{
+                Synchronous 3D animation comparing the Over-The-Air MSE surface across $sps$
+                scaling for filter span 4 (left) versus span 12 (right).
+            }
+            \label{fig:isi_mse_span_comparison}
+        \end{figure}
+
+        In an ideal over-the-air computation (AirComp) network with $K$ sensors, the
+        receiver estimates the arithmetic mean $\mu[n] = \frac{1}{K}\sum_{k=1}^K x_k[n]$.
+        When a multipath component with fractional delay $\tau$ and gain $g$ is
+        introduced, the received symbol-sampled signal after matched filtering is:
+
+        \begin{equation}
+            y[n] = \sum_{k=1}^K x_k[n] + g \sum_{k=1}^K \sum_{m} x_k[m] \, r_{pp}((n-m)T_s -
+        \tau) + \tilde{w}[n]
+            \label{eq:multipath_received_signal}    
+        \end{equation}
+        
+        where $r_{pp}(t)$ is the raised cosine pulse autocorrelation (the cascade of both
+        RRC filters) and $\tilde{w}[n]$ is the filtered AWGN with variance $\sigma_w^2$.
+
+        Normalizing by $K$ at the fusion center yields the computation error $e[n] =
+        \frac{y[n]}{K} - \mu[n]$:
+
+        \begin{equation}
+            e[n] = g \sum_{m} \mu[m] \, r_{pp}((n-m)T_s - \tau) + \frac{\tilde{w}[n]}{K}
+            \label{eq:multipath_computation_error}    
+        \end{equation}
+        
+        Assuming the transmit data across symbols are zero-mean with variance $\sigma_x^2
+        = 1$ and uncorrelated over time, the total mean squared error decomposes into two
+        decoupled terms:
+
+        \begin{equation}
+            \text{MSE}(g, \text{SNR}) =
+            \underbrace{\frac{10^{-\text{SNR}_{\text{dB}}/10}}{K}}_{\text{AWGN Noise
+            Component}} + \underbrace{\frac{g^2}{K} \sum_{l=-\infty}^{\infty} r_{pp}^2(l T_s -
+            \tau)}_{\text{Irreducible Multipath ISI Floor}}
+            \label{eq:multipath_mse_decomposition}
+        \end{equation}
+
+        \begin{itemize}
+            \item \textbf{At low SNR:} The noise term $\frac{\sigma_w^2}{K}$ dominates, causing all
+        curves across different values of $g$ to converge to the standard $1/\text{SNR}$
+        slope.
+            \item \textbf{At high SNR:} The noise vanishes ($\sigma_w^2 \to 0$), causing the MSE to hit
+        a plateau determined strictly by $g^2$ and the energy of the sampled pulse tails
+        at offset $\tau$.
+            \item \textbf{At $g = 0$:} The ISI floor collapses, recovering the ideal single-path
+        AirComp bound.
+        \end{itemize}
+
+        In simulink, the multipath channel is modeled as a two-tap FIR filter with a fractional delay of
+        $\tau = 0.25 T_s$ and a gain of $g = 0.5$. The raised cosine filter is designed with
+        a roll-off factor of $\alpha = 0.5$ and a span of 12 symbols. The simulation results
+        are consistent with the theoretical analysis, demonstrating the impact of multipath
+        propagation on the MSE performance of over-the-air computation systems. The presence
+        of multipath components introduces an irreducible error floor, which can be mitigated
+        through advanced signal processing techniques, such as equalization or adaptive filtering.
+
+        
+
+
 
     \subsection{Practical Challenges}
         \subsubsection{Channel State Information (CSI) Imperfection}
@@ -168,6 +267,8 @@
         \cite{sahin_survey_2023,yang_federated_2020,evgenidis_waveform_2025}. Obsolete or
         noisy CSI severely limits the ability to pre-distort signals, exacerbating the
         \gls{mse}.
+
+
 
         \subsubsection{Waveform and Filter Design}
         As demonstrated by the sequence expansion in the multipath model, standard digital
