@@ -31,14 +31,15 @@
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 
-% \directlua{
-%   local lfs = require("lfs")
-%   lfs.mkdir("tmp")
-%   lfs.mkdir("tmp/figures-cache")
-% }
-
 \usepgfplotslibrary{external}
-\tikzset{external/system call={lualatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
+\directlua{
+    local lfs = require("lfs")
+    lfs.mkdir("tmp")
+    lfs.mkdir("tmp/figures-cache")
+}
+\tikzset{external/system call={lualatex \tikzexternalcheckshellescape
+        -halt-on-error -interaction=batchmode -output-directory=tmp -jobname
+"\image" "\texsource"}}
 \tikzexternalize[prefix=figures-cache/]
 
 \usepackage{amssymb}
@@ -77,9 +78,16 @@
     filecolor=magenta,
 urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
 
-% Load glossaries-extra with 'record' (triggers bib2gls) and 'abbreviations' support
+% Suppress datatool / tracklang warning for monotonic Greek dialect
+\makeatletter
+\@namedef{tracklang@datatool@elmonoton}{}
+\makeatother
+
+% Load glossaries-extra with 'record' (triggers bib2gls) and
+% 'abbreviations' support
 % stylemods=long allows us to use table-based styles
-\usepackage[record, abbreviations, acronym, stylemods={long}]{glossaries-extra}
+\usepackage[record, abbreviations, acronym, stylemods={long},
+translate=false]{glossaries-extra}
 
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
 \crefname{equation}{Eq.}{Eqs.}
@@ -90,8 +98,8 @@ urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
 
 % Load your external .bib file
 \GlsXtrLoadResources[
-  src={acronyms}, % The name of your .bib file without extension
-  sort={en-US}    % Sort according to English rules
+    src={acronyms}, % The name of your .bib file without extension
+    sort={en-US}    % Sort according to English rules
 ]
 
 \usepackage[ backend=biber, bibencoding=utf8, style=ieee, sorting=nyt]{biblatex}
@@ -167,7 +175,8 @@ urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
     style=Matlab-editor,           % Use standard MATLAB highlighting
     basicstyle=\ttfamily\small,    % Use the Consolas font defined above
     backgroundcolor=\color{codebg},% Grey background
-    frame=none,                    % No black border (optional, remove if you want one)
+    frame=none,                    % No black border (optional,
+    % remove if you want one)
     numbers=left,                  % Line numbers on the left
     numberstyle=\tiny\color{gray}, % Line numbers are small and grey
     numbersep=10pt,                % Space between line numbers and code
@@ -175,17 +184,18 @@ urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
     % This block forces numbers in the code to use the Math Font
     % and ensures they are "Lining Figures" (aligned on the baseline)
     literate=%
-        {0}{{$0$}}1
-        {1}{{$1$}}1
-        {2}{{$2$}}1
-        {3}{{$3$}}1
-        {4}{{$4$}}1
-        {5}{{$5$}}1
-        {6}{{$6$}}1
-        {7}{{$7$}}1
-        {8}{{$8$}}1
-        {9}{{$9$}}1
-        {.}{{.}}1                  % Optional: make decimal points look like math too
+    {0}{{$0$}}1
+    {1}{{$1$}}1
+    {2}{{$2$}}1
+    {3}{{$3$}}1
+    {4}{{$4$}}1
+    {5}{{$5$}}1
+    {6}{{$6$}}1
+    {7}{{$7$}}1
+    {8}{{$8$}}1
+    {9}{{$9$}}1
+    {.}{{.}}1                  % Optional: make decimal points look
+    % like math too
 }
 
 \title{ \textsf{Over The Air Computing}\\
@@ -199,15 +209,22 @@ urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
 
 \maketitle
 
-\textbf{ 
+\textbf{
     \textit{Abstract} -- \gls{ota} is an emerging technique that leverages the
-    superposition property of wireless channels to perform computations directly during
-    the transmission process. This approach has the potential to significantly reduce
-    latency and energy consumption in distributed systems, making it particularly suitable
-    for applications in Internet of Things (\gls{iot}) networks, edge computing, and
-    real-time data processing. This thesis explores the theoretical foundations of
-    \gls{ota}, including channel modeling, signal processing techniques, and error
-    analysis. Practical implementations and case studies demonstrating the effectiveness
+    superposition property of wireless channels to perform
+    computations directly during
+    the transmission process. This approach has the potential to
+    significantly reduce
+    latency and energy consumption in distributed systems, making it
+    particularly suitable
+    for applications in Internet of Things (\gls{iot}) networks, edge
+    computing, and
+    real-time data processing. This thesis explores the theoretical
+    foundations of
+    \gls{ota}, including channel modeling, signal processing
+    techniques, and error
+    analysis. Practical implementations and case studies
+    demonstrating the effectiveness
     of \gls{ota} in various scenarios are also presented.
 }
 
@@ -215,26 +232,27 @@ urlcolor=black, pdftitle={Markos Delaportas 1316 Thesis} }
 %\tableofcontents
 
 % Add the Acronyms List here
-\printunsrtglossary[type=abbreviations, title={List of Acronyms and Abbreviations}]
+\printunsrtglossary[type=abbreviations, title={List of Acronyms and
+Abbreviations}]
 %\printglossary[type=\acronymtype, title=List of Abbreviations]
 \clearpage
 
-    
-    \IfFileExists{Introduction.tex}{\subfile{Introduction}}{}
-    \IfFileExists{IdealOTA.tex}{\subfile{IdealOTA}}{}
-     % \IfFileExists{otaFoundationsAndTechniques.tex}{\subfile{otaFoundationsAndTechniques}}{}
-    \IfFileExists{SystemModelAndChallenges.tex}{\subfile{SystemModelAndChallenges}}{}
-    \IfFileExists{ExperimentalImplementation.tex}{\subfile{ExperimentalImplementation}}{}
-    \IfFileExists{ResultsAndDiscussion.tex}{\subfile{ResultsAndDiscussion}}{}
-    \IfFileExists{ConclusionAndFutureWork.tex}{\subfile{ConclusionAndFutureWork}}{}
 
-    \begin{appendices}
-        % (Changes A.a to A.1)
-        \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
-        
-        \IfFileExists{Appendix_A.tex}{\subfile{Appendix_A}}{}
-    \end{appendices}
+\IfFileExists{Introduction.tex}{\subfile{Introduction}}{}
+\IfFileExists{IdealOTA.tex}{\subfile{IdealOTA}}{}
+% \IfFileExists{otaFoundationsAndTechniques.tex}{\subfile{otaFoundationsAndTechniques}}{}
+\IfFileExists{SystemModelAndChallenges.tex}{\subfile{SystemModelAndChallenges}}{}
+\IfFileExists{ExperimentalImplementation.tex}{\subfile{ExperimentalImplementation}}{}
+\IfFileExists{ResultsAndDiscussion.tex}{\subfile{ResultsAndDiscussion}}{}
+\IfFileExists{ConclusionAndFutureWork.tex}{\subfile{ConclusionAndFutureWork}}{}
 
-    \printbibliography
+\begin{appendices}
+    % (Changes A.a to A.1)
+    \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+
+    \IfFileExists{Appendix_A.tex}{\subfile{Appendix_A}}{}
+\end{appendices}
+
+\printbibliography
 
 \end{document}

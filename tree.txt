@@ -1,0 +1,1102 @@
+Folder PATH listing
+Volume serial number is 6C3F-4A28
+C:.
+|   .gitattributes
+|   .gitignore
+|   .latexmkrc
+|   acronyms.bib
+|   AGENTS.md
+|   Appendix_A.pdf
+|   Appendix_A.synctex.gz
+|   Appendix_A.tex
+|   ConclusionAndFutureWork.pdf
+|   ConclusionAndFutureWork.synctex.gz
+|   ConclusionAndFutureWork.tex
+|   ExperimentalImplementation.pdf
+|   ExperimentalImplementation.synctex.gz
+|   ExperimentalImplementation.tex
+|   IdealOTA.pdf
+|   IdealOTA.synctex.gz
+|   IdealOTA.tex
+|   Introduction.pdf
+|   Introduction.synctex.gz
+|   Introduction.tex
+|   Markos_Delaportas_1316.pdf
+|   Markos_Delaportas_1316.synctex.gz.sum.synctex
+|   Markos_Delaportas_1316.tex
+|   otaFoundationsAndTechniques.pdf
+|   otaFoundationsAndTechniques.synctex.gz
+|   otaFoundationsAndTechniques.tex
+|   README.md
+|   ref.bib
+|   ResultsAndDiscussion.tex
+|   SystemModelAndChallenges.pdf
+|   SystemModelAndChallenges.tex
+|
++---.vscode
+|       settings.json
+|       workspace.code-workspace
+|       
++---data
+|   |   ml_noChannel_mse.txt
+|   |   
+|   +---ideal
+|   |   +---constellation
+|   |   |   |   ml_awgn_am_fc_const.txt
+|   |   |   |   ml_awgn_fc_const.txt
+|   |   |   |   
+|   |   |   +---alpha0.00
+|   |   |   |       ml_rrc_fc_const_12sps_span12_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_const_12sps_span4_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span12_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span4_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span12_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span4_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span12_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span4_alpha0.00.txt
+|   |   |   |       
+|   |   |   +---alpha0.10
+|   |   |   |       ml_rrc_fc_const_12sps_span12_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_const_12sps_span4_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span12_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span4_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span12_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span4_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span12_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span4_alpha0.10.txt
+|   |   |   |       
+|   |   |   +---alpha0.20
+|   |   |   |       ml_rrc_fc_const_12sps_span12_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_const_12sps_span4_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span12_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span4_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span12_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span4_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span12_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span4_alpha0.20.txt
+|   |   |   |       
+|   |   |   +---alpha0.30
+|   |   |   |       ml_rrc_fc_const_12sps_span12_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_const_12sps_span4_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span12_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span4_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span12_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span4_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span12_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span4_alpha0.30.txt
+|   |   |   |       
+|   |   |   +---alpha0.40
+|   |   |   |       ml_rrc_fc_const_12sps_span12_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_const_12sps_span4_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span12_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span4_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span12_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span4_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span12_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span4_alpha0.40.txt
+|   |   |   |       
+|   |   |   +---alpha0.50
+|   |   |   |       ml_rrc_fc_const_12sps_span12_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_const_12sps_span4_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span12_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span4_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span12_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span4_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span12_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span4_alpha0.50.txt
+|   |   |   |       sl_awgn_fc_const_12sps_span12_alpha0.50.txt
+|   |   |   |       sl_awgn_fc_const_24sps_span12_alpha0.50.txt
+|   |   |   |       sl_awgn_fc_const_48sps_span12_alpha0.50.txt
+|   |   |   |       sl_awgn_fc_const_96sps_span12_alpha0.50.txt
+|   |   |   |       sl_rrc_fc_const_12sps_span12_alpha0.50.txt
+|   |   |   |       sl_rrc_fc_const_24sps_span12_alpha0.50.txt
+|   |   |   |       sl_rrc_fc_const_48sps_span12_alpha0.50.txt
+|   |   |   |       sl_rrc_fc_const_96sps_span12_alpha0.50.txt
+|   |   |   |       
+|   |   |   +---alpha0.60
+|   |   |   |       ml_rrc_fc_const_12sps_span12_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_const_12sps_span4_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span12_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span4_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span12_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span4_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span12_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span4_alpha0.60.txt
+|   |   |   |       
+|   |   |   +---alpha0.70
+|   |   |   |       ml_rrc_fc_const_12sps_span12_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_const_12sps_span4_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span12_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span4_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span12_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span4_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span12_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span4_alpha0.70.txt
+|   |   |   |       
+|   |   |   +---alpha0.80
+|   |   |   |       ml_rrc_fc_const_12sps_span12_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_const_12sps_span4_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span12_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span4_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span12_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span4_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span12_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span4_alpha0.80.txt
+|   |   |   |       
+|   |   |   +---alpha0.90
+|   |   |   |       ml_rrc_fc_const_12sps_span12_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_const_12sps_span4_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span12_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span4_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span12_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span4_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span12_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span4_alpha0.90.txt
+|   |   |   |       
+|   |   |   +---alpha1.00
+|   |   |   |       ml_rrc_fc_const_12sps_span12_alpha1.00.txt
+|   |   |   |       ml_rrc_fc_const_12sps_span4_alpha1.00.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span12_alpha1.00.txt
+|   |   |   |       ml_rrc_fc_const_24sps_span4_alpha1.00.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span12_alpha1.00.txt
+|   |   |   |       ml_rrc_fc_const_48sps_span4_alpha1.00.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span12_alpha1.00.txt
+|   |   |   |       ml_rrc_fc_const_96sps_span4_alpha1.00.txt
+|   |   |   |       
+|   |   |   \---noAM
+|   |   |           sl_awgn_fc_const_12sps.txt
+|   |   |           sl_awgn_fc_const_24sps.txt
+|   |   |           sl_awgn_fc_const_48sps.txt
+|   |   |           sl_awgn_fc_const_6sps.txt
+|   |   |           sl_awgn_fc_const_96sps.txt
+|   |   |           sl_rrc_fc_const_12sps.txt
+|   |   |           sl_rrc_fc_const_24sps.txt
+|   |   |           sl_rrc_fc_const_48sps.txt
+|   |   |           sl_rrc_fc_const_6sps.txt
+|   |   |           sl_rrc_fc_const_96sps.txt
+|   |   |           
+|   |   +---eye
+|   |   |   |   ml_awgn_am_fc_eye_16sps.txt
+|   |   |   |   
+|   |   |   +---12sps
+|   |   |   |       ml_rrc_fc_eye_12sps_span12_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span12_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span12_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span12_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span12_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span12_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span12_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span12_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span12_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span12_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span12_alpha1.00.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span4_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span4_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span4_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span4_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span4_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span4_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span4_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span4_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span4_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span4_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_eye_12sps_span4_alpha1.00.txt
+|   |   |   |       sl_awgn_fc_eye_12sps_span12_alpha0.50.txt
+|   |   |   |       sl_rrc_fc_eye_12sps_span12_alpha0.50.txt
+|   |   |   |       
+|   |   |   +---24sps
+|   |   |   |       ml_rrc_fc_eye_24sps_span12_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span12_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span12_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span12_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span12_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span12_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span12_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span12_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span12_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span12_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span12_alpha1.00.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span4_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span4_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span4_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span4_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span4_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span4_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span4_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span4_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span4_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span4_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_eye_24sps_span4_alpha1.00.txt
+|   |   |   |       sl_awgn_fc_eye_24sps_span12_alpha0.50.txt
+|   |   |   |       sl_rrc_fc_eye_24sps_span12_alpha0.50.txt
+|   |   |   |       
+|   |   |   +---48sps
+|   |   |   |       ml_rrc_fc_eye_48sps_span12_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span12_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span12_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span12_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span12_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span12_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span12_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span12_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span12_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span12_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span12_alpha1.00.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span4_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span4_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span4_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span4_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span4_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span4_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span4_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span4_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span4_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span4_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_eye_48sps_span4_alpha1.00.txt
+|   |   |   |       sl_awgn_fc_eye_48sps_span12_alpha0.50.txt
+|   |   |   |       sl_rrc_fc_eye_48sps_span12_alpha0.50.txt
+|   |   |   |       
+|   |   |   +---96sps
+|   |   |   |       ml_rrc_fc_eye_96sps_span12_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span12_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span12_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span12_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span12_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span12_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span12_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span12_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span12_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span12_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span12_alpha1.00.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span4_alpha0.00.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span4_alpha0.10.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span4_alpha0.20.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span4_alpha0.30.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span4_alpha0.40.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span4_alpha0.50.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span4_alpha0.60.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span4_alpha0.70.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span4_alpha0.80.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span4_alpha0.90.txt
+|   |   |   |       ml_rrc_fc_eye_96sps_span4_alpha1.00.txt
+|   |   |   |       sl_awgn_fc_eye_96sps_span12_alpha0.50.txt
+|   |   |   |       sl_rrc_fc_eye_96sps_span12_alpha0.50.txt
+|   |   |   |       
+|   |   |   \---noAM
+|   |   |           sl_awgn_fc_eye_12sps.txt
+|   |   |           sl_awgn_fc_eye_24sps.txt
+|   |   |           sl_awgn_fc_eye_48sps.txt
+|   |   |           sl_awgn_fc_eye_6sps.txt
+|   |   |           sl_awgn_fc_eye_96sps.txt
+|   |   |           sl_rrc_fc_eye_12sps.txt
+|   |   |           sl_rrc_fc_eye_24sps.txt
+|   |   |           sl_rrc_fc_eye_48sps.txt
+|   |   |           sl_rrc_fc_eye_6sps.txt
+|   |   |           sl_rrc_fc_eye_96sps.txt
+|   |   |           
+|   |   +---mse
+|   |   |   |   ml_awgn_am_fc_mse.txt
+|   |   |   |   ml_awgn_fc_mse.txt
+|   |   |   |   ml_rrc_fc_mse_12sps_span12.txt
+|   |   |   |   ml_rrc_fc_mse_12sps_span4.txt
+|   |   |   |   ml_rrc_fc_mse_24sps_span12.txt
+|   |   |   |   ml_rrc_fc_mse_24sps_span4.txt
+|   |   |   |   ml_rrc_fc_mse_48sps_span12.txt
+|   |   |   |   ml_rrc_fc_mse_48sps_span4.txt
+|   |   |   |   ml_rrc_fc_mse_96sps_span12.txt
+|   |   |   |   ml_rrc_fc_mse_96sps_span4.txt
+|   |   |   |   sl_rrc_fc_mse_12sps_span12_alpha0.50.txt
+|   |   |   |   sl_rrc_fc_mse_24sps_span12_alpha0.50.txt
+|   |   |   |   sl_rrc_fc_mse_48sps_span12_alpha0.50.txt
+|   |   |   |   sl_rrc_fc_mse_96sps_span12_alpha0.50.txt
+|   |   |   |   sl_rrc_fc_mse_mesh_span12_alpha0.50.txt
+|   |   |   |   
+|   |   |   \---noAM
+|   |   |           sl_awgn_vs_rrc_snr_sweep.txt
+|   |   |           sl_rrc_fc_mse_6sps_span12_alpha0.50.txt
+|   |   |           
+|   |   \---waveform
+|   |           ml_awgn_am_waveform.txt
+|   |           
+|   \---isi
+|       +---async
+|       \---multipath
+|           +---constellation
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.05.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.15.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.25.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.35.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.45.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.55.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.65.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.75.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.85.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha0.95.txt
+|           |       ml_isi_rrc_fc_const_10sps_span12_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_12sps_span12_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_12sps_span12_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_12sps_span12_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_12sps_span12_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_12sps_span12_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_12sps_span12_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_12sps_span12_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_12sps_span12_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_12sps_span12_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_12sps_span12_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_12sps_span12_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_12sps_span4_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_12sps_span4_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_12sps_span4_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_12sps_span4_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_12sps_span4_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_12sps_span4_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_12sps_span4_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_12sps_span4_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_12sps_span4_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_12sps_span4_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_12sps_span4_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_192sps_span12_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_192sps_span12_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_192sps_span12_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_192sps_span12_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_192sps_span12_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_192sps_span12_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_192sps_span12_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_192sps_span12_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_192sps_span12_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_192sps_span12_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_192sps_span12_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_192sps_span4_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_192sps_span4_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_192sps_span4_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_192sps_span4_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_192sps_span4_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_192sps_span4_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_192sps_span4_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_192sps_span4_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_192sps_span4_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_192sps_span4_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_192sps_span4_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.05.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.15.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.25.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.35.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.45.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.55.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.65.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.75.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.85.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha0.95.txt
+|           |       ml_isi_rrc_fc_const_20sps_span12_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_24sps_span12_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_24sps_span12_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_24sps_span12_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_24sps_span12_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_24sps_span12_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_24sps_span12_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_24sps_span12_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_24sps_span12_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_24sps_span12_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_24sps_span12_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_24sps_span12_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_24sps_span4_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_24sps_span4_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_24sps_span4_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_24sps_span4_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_24sps_span4_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_24sps_span4_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_24sps_span4_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_24sps_span4_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_24sps_span4_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_24sps_span4_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_24sps_span4_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.05.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.15.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.25.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.35.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.45.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.55.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.65.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.75.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.85.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha0.95.txt
+|           |       ml_isi_rrc_fc_const_30sps_span12_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.05.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.15.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.25.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.35.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.45.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.55.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.65.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.75.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.85.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha0.95.txt
+|           |       ml_isi_rrc_fc_const_40sps_span12_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_48sps_span12_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_48sps_span12_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_48sps_span12_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_48sps_span12_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_48sps_span12_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_48sps_span12_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_48sps_span12_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_48sps_span12_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_48sps_span12_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_48sps_span12_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_48sps_span12_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_48sps_span4_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_48sps_span4_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_48sps_span4_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_48sps_span4_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_48sps_span4_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_48sps_span4_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_48sps_span4_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_48sps_span4_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_48sps_span4_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_48sps_span4_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_48sps_span4_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.05.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.15.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.25.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.35.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.45.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.55.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.65.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.75.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.85.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha0.95.txt
+|           |       ml_isi_rrc_fc_const_50sps_span12_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_6sps_span12_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_6sps_span12_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_6sps_span12_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_6sps_span12_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_6sps_span12_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_6sps_span12_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_6sps_span12_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_6sps_span12_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_6sps_span12_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_6sps_span12_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_6sps_span12_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_6sps_span4_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_6sps_span4_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_6sps_span4_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_6sps_span4_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_6sps_span4_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_6sps_span4_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_6sps_span4_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_6sps_span4_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_6sps_span4_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_6sps_span4_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_6sps_span4_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_96sps_span12_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_96sps_span12_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_96sps_span12_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_96sps_span12_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_96sps_span12_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_96sps_span12_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_96sps_span12_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_96sps_span12_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_96sps_span12_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_96sps_span12_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_96sps_span12_alpha1.00.txt
+|           |       ml_isi_rrc_fc_const_96sps_span4_alpha0.00.txt
+|           |       ml_isi_rrc_fc_const_96sps_span4_alpha0.10.txt
+|           |       ml_isi_rrc_fc_const_96sps_span4_alpha0.20.txt
+|           |       ml_isi_rrc_fc_const_96sps_span4_alpha0.30.txt
+|           |       ml_isi_rrc_fc_const_96sps_span4_alpha0.40.txt
+|           |       ml_isi_rrc_fc_const_96sps_span4_alpha0.50.txt
+|           |       ml_isi_rrc_fc_const_96sps_span4_alpha0.60.txt
+|           |       ml_isi_rrc_fc_const_96sps_span4_alpha0.70.txt
+|           |       ml_isi_rrc_fc_const_96sps_span4_alpha0.80.txt
+|           |       ml_isi_rrc_fc_const_96sps_span4_alpha0.90.txt
+|           |       ml_isi_rrc_fc_const_96sps_span4_alpha1.00.txt
+|           |       sl_awgn_fc_const_12sps.txt
+|           |       sl_awgn_fc_const_24sps.txt
+|           |       sl_awgn_fc_const_48sps.txt
+|           |       sl_awgn_fc_const_6sps.txt
+|           |       sl_awgn_fc_const_96sps.txt
+|           |       sl_isi_awgn_fc_const.txt
+|           |       sl_isi_rrc_fc_const.txt
+|           |       sl_multipath_awgn_fc_const.txt
+|           |       sl_multipath_fc_const_12sps.txt
+|           |       sl_multipath_fc_const_24sps.txt
+|           |       sl_multipath_fc_const_48sps.txt
+|           |       sl_multipath_fc_const_6sps.txt
+|           |       sl_multipath_fc_const_96sps.txt
+|           |       sl_multipath_fc_const_gain0.00.txt
+|           |       sl_multipath_fc_const_gain0.05.txt
+|           |       sl_multipath_fc_const_gain0.10.txt
+|           |       sl_multipath_fc_const_gain0.20.txt
+|           |       sl_multipath_fc_const_gain0.30.txt
+|           |       sl_multipath_fc_const_gain0.50.txt
+|           |       sl_multipath_rrc_fc_const.txt
+|           |       sl_ref_fc_const_gain0.00.txt
+|           |       sl_ref_fc_const_gain0.05.txt
+|           |       sl_ref_fc_const_gain0.10.txt
+|           |       sl_ref_fc_const_gain0.20.txt
+|           |       sl_ref_fc_const_gain0.30.txt
+|           |       sl_ref_fc_const_gain0.50.txt
+|           |       sl_rrc_fc_const_12sps.txt
+|           |       sl_rrc_fc_const_24sps.txt
+|           |       sl_rrc_fc_const_48sps.txt
+|           |       sl_rrc_fc_const_6sps.txt
+|           |       sl_rrc_fc_const_96sps.txt
+|           |       
+|           +---eye
+|           |   |   sl_awgn_fc_eye_12sps.txt
+|           |   |   sl_awgn_fc_eye_24sps.txt
+|           |   |   sl_awgn_fc_eye_48sps.txt
+|           |   |   sl_awgn_fc_eye_6sps.txt
+|           |   |   sl_awgn_fc_eye_96sps.txt
+|           |   |   sl_isi_awgn_fc_eye.txt
+|           |   |   sl_isi_rrc_fc_eye.txt
+|           |   |   sl_multipath_awgn_fc_eye.txt
+|           |   |   sl_multipath_fc_eye_12sps.txt
+|           |   |   sl_multipath_fc_eye_24sps.txt
+|           |   |   sl_multipath_fc_eye_48sps.txt
+|           |   |   sl_multipath_fc_eye_6sps.txt
+|           |   |   sl_multipath_fc_eye_96sps.txt
+|           |   |   sl_multipath_fc_eye_gain0.00.txt
+|           |   |   sl_multipath_fc_eye_gain0.05.txt
+|           |   |   sl_multipath_fc_eye_gain0.10.txt
+|           |   |   sl_multipath_fc_eye_gain0.20.txt
+|           |   |   sl_multipath_fc_eye_gain0.30.txt
+|           |   |   sl_multipath_fc_eye_gain0.50.txt
+|           |   |   sl_multipath_rrc_fc_eye.txt
+|           |   |   sl_ref_fc_eye_gain0.00.txt
+|           |   |   sl_ref_fc_eye_gain0.05.txt
+|           |   |   sl_ref_fc_eye_gain0.10.txt
+|           |   |   sl_ref_fc_eye_gain0.20.txt
+|           |   |   sl_ref_fc_eye_gain0.30.txt
+|           |   |   sl_ref_fc_eye_gain0.50.txt
+|           |   |   sl_rrc_fc_eye_12sps.txt
+|           |   |   sl_rrc_fc_eye_24sps.txt
+|           |   |   sl_rrc_fc_eye_48sps.txt
+|           |   |   sl_rrc_fc_eye_6sps.txt
+|           |   |   sl_rrc_fc_eye_96sps.txt
+|           |   |   
+|           |   +---10sps
+|           |   |       ml_isi_rrc_fc_eye_10sps_span12_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_10sps_span12_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_10sps_span12_alpha1.00.txt
+|           |   |       
+|           |   +---12sps
+|           |   |       ml_isi_rrc_fc_eye_12sps_span12_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span12_alpha0.10.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span12_alpha0.20.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span12_alpha0.30.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span12_alpha0.40.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span12_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span12_alpha0.60.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span12_alpha0.70.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span12_alpha0.80.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span12_alpha0.90.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span12_alpha1.00.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span4_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span4_alpha0.10.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span4_alpha0.20.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span4_alpha0.30.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span4_alpha0.40.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span4_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span4_alpha0.60.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span4_alpha0.70.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span4_alpha0.80.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span4_alpha0.90.txt
+|           |   |       ml_isi_rrc_fc_eye_12sps_span4_alpha1.00.txt
+|           |   |       
+|           |   +---192sps
+|           |   |       ml_isi_rrc_fc_eye_192sps_span12_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span12_alpha0.10.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span12_alpha0.20.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span12_alpha0.30.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span12_alpha0.40.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span12_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span12_alpha0.60.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span12_alpha0.70.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span12_alpha0.80.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span12_alpha0.90.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span12_alpha1.00.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span4_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span4_alpha0.10.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span4_alpha0.20.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span4_alpha0.30.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span4_alpha0.40.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span4_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span4_alpha0.60.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span4_alpha0.70.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span4_alpha0.80.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span4_alpha0.90.txt
+|           |   |       ml_isi_rrc_fc_eye_192sps_span4_alpha1.00.txt
+|           |   |       
+|           |   +---20sps
+|           |   |       ml_isi_rrc_fc_eye_20sps_span12_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_20sps_span12_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_20sps_span12_alpha1.00.txt
+|           |   |       
+|           |   +---24sps
+|           |   |       ml_isi_rrc_fc_eye_24sps_span12_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span12_alpha0.10.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span12_alpha0.20.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span12_alpha0.30.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span12_alpha0.40.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span12_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span12_alpha0.60.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span12_alpha0.70.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span12_alpha0.80.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span12_alpha0.90.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span12_alpha1.00.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span4_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span4_alpha0.10.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span4_alpha0.20.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span4_alpha0.30.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span4_alpha0.40.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span4_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span4_alpha0.60.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span4_alpha0.70.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span4_alpha0.80.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span4_alpha0.90.txt
+|           |   |       ml_isi_rrc_fc_eye_24sps_span4_alpha1.00.txt
+|           |   |       
+|           |   +---30sps
+|           |   |       ml_isi_rrc_fc_eye_30sps_span12_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_30sps_span12_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_30sps_span12_alpha1.00.txt
+|           |   |       
+|           |   +---40sps
+|           |   |       ml_isi_rrc_fc_eye_40sps_span12_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_40sps_span12_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_40sps_span12_alpha1.00.txt
+|           |   |       
+|           |   +---48sps
+|           |   |       ml_isi_rrc_fc_eye_48sps_span12_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span12_alpha0.10.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span12_alpha0.20.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span12_alpha0.30.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span12_alpha0.40.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span12_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span12_alpha0.60.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span12_alpha0.70.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span12_alpha0.80.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span12_alpha0.90.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span12_alpha1.00.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span4_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span4_alpha0.10.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span4_alpha0.20.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span4_alpha0.30.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span4_alpha0.40.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span4_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span4_alpha0.60.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span4_alpha0.70.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span4_alpha0.80.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span4_alpha0.90.txt
+|           |   |       ml_isi_rrc_fc_eye_48sps_span4_alpha1.00.txt
+|           |   |       
+|           |   +---50sps
+|           |   |       ml_isi_rrc_fc_eye_50sps_span12_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_50sps_span12_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_50sps_span12_alpha1.00.txt
+|           |   |       
+|           |   +---60sps
+|           |   +---6sps
+|           |   |       ml_isi_rrc_fc_eye_6sps_span12_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span12_alpha0.10.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span12_alpha0.20.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span12_alpha0.30.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span12_alpha0.40.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span12_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span12_alpha0.60.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span12_alpha0.70.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span12_alpha0.80.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span12_alpha0.90.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span12_alpha1.00.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span4_alpha0.00.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span4_alpha0.10.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span4_alpha0.20.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span4_alpha0.30.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span4_alpha0.40.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span4_alpha0.50.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span4_alpha0.60.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span4_alpha0.70.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span4_alpha0.80.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span4_alpha0.90.txt
+|           |   |       ml_isi_rrc_fc_eye_6sps_span4_alpha1.00.txt
+|           |   |       
+|           |   +---70sps
+|           |   +---80sps
+|           |   +---90sps
+|           |   \---96sps
+|           |           ml_isi_rrc_fc_eye_96sps_span12_alpha0.00.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span12_alpha0.10.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span12_alpha0.20.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span12_alpha0.30.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span12_alpha0.40.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span12_alpha0.50.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span12_alpha0.60.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span12_alpha0.70.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span12_alpha0.80.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span12_alpha0.90.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span12_alpha1.00.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span4_alpha0.00.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span4_alpha0.10.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span4_alpha0.20.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span4_alpha0.30.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span4_alpha0.40.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span4_alpha0.50.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span4_alpha0.60.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span4_alpha0.70.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span4_alpha0.80.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span4_alpha0.90.txt
+|           |           ml_isi_rrc_fc_eye_96sps_span4_alpha1.00.txt
+|           |           
+|           \---mse
+|                   ml_isi_rrc_fc_mse_12sps_span12.txt
+|                   ml_isi_rrc_fc_mse_12sps_span4.txt
+|                   ml_isi_rrc_fc_mse_192sps_span12.txt
+|                   ml_isi_rrc_fc_mse_192sps_span4.txt
+|                   ml_isi_rrc_fc_mse_24sps_span12.txt
+|                   ml_isi_rrc_fc_mse_24sps_span4.txt
+|                   ml_isi_rrc_fc_mse_48sps_span12.txt
+|                   ml_isi_rrc_fc_mse_48sps_span4.txt
+|                   ml_isi_rrc_fc_mse_6sps_span12.txt
+|                   ml_isi_rrc_fc_mse_6sps_span4.txt
+|                   ml_isi_rrc_fc_mse_96sps_span12.txt
+|                   ml_isi_rrc_fc_mse_96sps_span4.txt
+|                   mse_awgn_vs_rrc.txt
+|                   sl_awgn_vs_rrc_snr_sweep.txt
+|                   sl_awgn_vs_rrc_timing_sensitivity_scurve.txt
+|                   sl_multipath_fc_mse_gain0.00_sps12.txt
+|                   sl_multipath_fc_mse_gain0.05_sps12.txt
+|                   sl_multipath_fc_mse_gain0.10_sps12.txt
+|                   sl_multipath_fc_mse_gain0.20_sps12.txt
+|                   sl_multipath_fc_mse_gain0.30_sps12.txt
+|                   sl_multipath_fc_mse_gain0.50_sps12.txt
+|                   sl_multipath_fc_mse_mesh_sps12.txt
+|                   sl_rrc_fc_mse_12sps_span12_alpha0.50.txt
+|                   sl_rrc_fc_mse_24sps_span12_alpha0.50.txt
+|                   sl_rrc_fc_mse_48sps_span12_alpha0.50.txt
+|                   sl_rrc_fc_mse_6sps_span12_alpha0.50.txt
+|                   sl_rrc_fc_mse_96sps_span12_alpha0.50.txt
+|                   sl_rrc_fc_mse_mesh_span12.txt
+|                   
++---figures
+|   |   IdealOTA_ml_rrc_fc_const.aux
+|   |   IdealOTA_ml_rrc_fc_const.log
+|   |   IdealOTA_ml_rrc_fc_const.pdf
+|   |   IdealOTA_ml_rrc_fc_const.tex
+|   |   IdealOTA_ml_rrc_fc_eye_span_comparison.aux
+|   |   IdealOTA_ml_rrc_fc_eye_span_comparison.log
+|   |   IdealOTA_ml_rrc_fc_eye_span_comparison.pdf
+|   |   IdealOTA_ml_rrc_fc_eye_span_comparison.tex
+|   |   IdealOTA_mse_span_comparison.aux
+|   |   IdealOTA_mse_span_comparison.log
+|   |   IdealOTA_mse_span_comparison.pdf
+|   |   IdealOTA_mse_span_comparison.tex
+|   |   ml_multipath_rrc_fc_const.aux
+|   |   ml_multipath_rrc_fc_const.log
+|   |   ml_multipath_rrc_fc_const.pdf
+|   |   ml_multipath_rrc_fc_const.tex
+|   |   ml_multipath_rrc_fc_eye_span_comparison.aux
+|   |   ml_multipath_rrc_fc_eye_span_comparison.log
+|   |   ml_multipath_rrc_fc_eye_span_comparison.pdf
+|   |   ml_multipath_rrc_fc_eye_span_comparison.tex
+|   |   ml_multipath_rrc_fc_mse_span_comparison.pdf
+|   |   ml_multipath_rrc_fc_mse_span_comparison.synctex.gz
+|   |   ml_multipath_rrc_fc_mse_span_comparison.tex
+|   |   sl_multipath_mse_mesh.aux
+|   |   sl_multipath_mse_mesh.log
+|   |   sl_multipath_mse_mesh.pdf
+|   |   sl_multipath_mse_mesh.tex
+|   |   
+|   \---tmp
+|           IdealOTA_ml_fc_rrc_eye_span_comparison.aux
+|           IdealOTA_ml_fc_rrc_eye_span_comparison.fdb_latexmk
+|           IdealOTA_ml_fc_rrc_eye_span_comparison.fls
+|           IdealOTA_ml_fc_rrc_eye_span_comparison.log
+|           IdealOTA_ml_rrc_fc_const.aux
+|           IdealOTA_ml_rrc_fc_const.fdb_latexmk
+|           IdealOTA_ml_rrc_fc_const.fls
+|           IdealOTA_ml_rrc_fc_const.log
+|           IdealOTA_ml_rrc_fc_eye_span_comparison.aux
+|           IdealOTA_ml_rrc_fc_eye_span_comparison.fdb_latexmk
+|           IdealOTA_ml_rrc_fc_eye_span_comparison.fls
+|           IdealOTA_ml_rrc_fc_eye_span_comparison.log
+|           IdealOTA_ml_rrc_fc_eye_span_comparison_zoomed.aux
+|           IdealOTA_ml_rrc_fc_eye_span_comparison_zoomed.fdb_latexmk
+|           IdealOTA_ml_rrc_fc_eye_span_comparison_zoomed.fls
+|           IdealOTA_ml_rrc_fc_eye_span_comparison_zoomed.log
+|           IdealOTA_mse_span_comparison.aux
+|           IdealOTA_mse_span_comparison.fdb_latexmk
+|           IdealOTA_mse_span_comparison.fls
+|           IdealOTA_mse_span_comparison.log
+|           ml_multipath_rrc_fc_mse_span_comparison.aux
+|           ml_multipath_rrc_fc_mse_span_comparison.fdb_latexmk
+|           ml_multipath_rrc_fc_mse_span_comparison.fls
+|           ml_multipath_rrc_fc_mse_span_comparison.log
+|           texput.fls
+|           texput.log
+|           
++---flowgraphs
+|       grc_ideal_awgn.pdf
+|       grc_ideal_rrc.pdf
+|       grc_ideal_rrc_bpsk.pdf
+|       grc_isi_rrc.pdf
+|       sl_awgn.pdf
+|       sl_multipath_rrc.pdf
+|       sl_rrc.pdf
+|       
++---font
+|       LibertinusKeyboard-Regular.otf
+|       LibertinusMath-Regular.otf
+|       LibertinusMono-Regular.otf
+|       LibertinusSans-Bold.otf
+|       LibertinusSans-Italic.otf
+|       LibertinusSans-Regular.otf
+|       LibertinusSerif-Bold.otf
+|       LibertinusSerif-BoldItalic.otf
+|       LibertinusSerif-Italic.otf
+|       LibertinusSerif-Regular.otf
+|       LibertinusSerif-Semibold.otf
+|       LibertinusSerif-SemiboldItalic.otf
+|       LibertinusSerifDisplay-Regular.otf
+|       LibertinusSerifInitials-Regular.otf
+|       
++---img
+|       ece.png
+|       idealOTA.png
+|       idealOTA_rrc.png
+|       idealOTA_rrc_shutter.png
+|       ota&isi_matched.png
+|       uowm.png
+|       
++---lib
+|   |   interactiveplotmanual.tex
+|   |   signalflowlibrary.zip
+|   |   tex-fmt.exe
+|   |   
+|   \---signalflowlibrary
+|           macros.sty
+|           signalflowdiagram.sty
+|           tikzlibrarysignalflowarrows.code.tex
+|           tikzlibrarysignalflowblocks.code.tex
+|           tikzlibrarysignalflowdiagram.code.tex
+|           tikzlibrarysignalflowoperators.code.tex
+|           
++---src
+|   |   appendix_code.tex
+|   |   asynch.m
+|   |   eg.sty
+|   |   eye_compare_alpha.pdf
+|   |   eye_compare_alpha.synctex.gz
+|   |   eye_compare_alpha.tex
+|   |   ml_awgn.ipynb
+|   |   ml_awgn_rrc.ipynb
+|   |   runSim_rrc.ipynb
+|   |   threeDimentionalMSE.txt
+|   |   
+|   \---tmp
+|           eye_compare_alpha.aux
+|           eye_compare_alpha.fdb_latexmk
+|           eye_compare_alpha.fls
+|           eye_compare_alpha.log
+|           
+\---tmp
+    |   ExperimentalImplementation.aux
+    |   ExperimentalImplementation.auxlock
+    |   ExperimentalImplementation.bbl
+    |   ExperimentalImplementation.bcf
+    |   ExperimentalImplementation.blg
+    |   ExperimentalImplementation.fdb_latexmk
+    |   ExperimentalImplementation.fls
+    |   ExperimentalImplementation.glg
+    |   ExperimentalImplementation.glstex
+    |   ExperimentalImplementation.log
+    |   ExperimentalImplementation.out
+    |   ExperimentalImplementation.run.xml
+    |   IdealOTA.aux
+    |   IdealOTA.auxlock
+    |   IdealOTA.bbl
+    |   IdealOTA.bbl-SAVE-ERROR
+    |   IdealOTA.bcf
+    |   IdealOTA.bcf-SAVE-ERROR
+    |   IdealOTA.blg
+    |   IdealOTA.fdb_latexmk
+    |   IdealOTA.fls
+    |   IdealOTA.glg
+    |   IdealOTA.glstex
+    |   IdealOTA.log
+    |   IdealOTA.out
+    |   IdealOTA.run.xml
+    |   Markos_Delaportas_1316.aux
+    |   Markos_Delaportas_1316.auxlock
+    |   Markos_Delaportas_1316.bbl-SAVE-ERROR
+    |   Markos_Delaportas_1316.bcf
+    |   Markos_Delaportas_1316.bcf-SAVE-ERROR
+    |   Markos_Delaportas_1316.blg
+    |   Markos_Delaportas_1316.fdb_latexmk
+    |   Markos_Delaportas_1316.fls
+    |   Markos_Delaportas_1316.glg
+    |   Markos_Delaportas_1316.glstex
+    |   Markos_Delaportas_1316.log
+    |   Markos_Delaportas_1316.out
+    |   Markos_Delaportas_1316.run.xml
+    |   Markos_Delaportas_1316.toc
+    |   SystemModelAndChallenges.aux
+    |   SystemModelAndChallenges.auxlock
+    |   SystemModelAndChallenges.bbl
+    |   SystemModelAndChallenges.bbl-SAVE-ERROR
+    |   SystemModelAndChallenges.bcf
+    |   SystemModelAndChallenges.bcf-SAVE-ERROR
+    |   SystemModelAndChallenges.blg
+    |   SystemModelAndChallenges.fdb_latexmk
+    |   SystemModelAndChallenges.fls
+    |   SystemModelAndChallenges.glg
+    |   SystemModelAndChallenges.glstex
+    |   SystemModelAndChallenges.log
+    |   SystemModelAndChallenges.out
+    |   SystemModelAndChallenges.run.xml
+    |   
+    \---figures-cache
+            fig_ml_awgn_am_fc_eye.dep
+            fig_ml_awgn_am_fc_eye.dpth
+            fig_ml_awgn_am_fc_eye.log
+            fig_ml_awgn_am_fc_eye.md5
+            fig_ml_awgn_am_fc_eye.pdf
+            fig_ml_awgn_am_fc_eye.run.xml
+            fig_ml_awgn_fc_const.dep
+            fig_ml_awgn_fc_const.dpth
+            fig_ml_awgn_fc_const.log
+            fig_ml_awgn_fc_const.md5
+            fig_ml_awgn_fc_const.pdf
+            fig_ml_awgn_fc_const.run.xml
+            fig_ml_awgn_fc_mse.dep
+            fig_ml_awgn_fc_mse.dpth
+            fig_ml_awgn_fc_mse.log
+            fig_ml_awgn_fc_mse.md5
+            fig_ml_awgn_fc_mse.pdf
+            fig_ml_awgn_fc_mse.run.xml
+            fig_ml_ideal_fc_mse_standalone.dep
+            fig_ml_ideal_fc_mse_standalone.dpth
+            fig_ml_ideal_fc_mse_standalone.log
+            fig_ml_ideal_fc_mse_standalone.md5
+            fig_ml_ideal_fc_mse_standalone.pdf
+            fig_ml_ideal_fc_mse_standalone.run.xml
+            fig_ml_isi_rrc_fc_mse_10sps.dpth
+            fig_ml_isi_rrc_fc_mse_10sps.log
+            fig_ml_isi_rrc_fc_mse_10sps.md5
+            fig_ml_isi_rrc_fc_mse_10sps.pdf
+            fig_ml_isi_rrc_fc_mse_12sps.dep
+            fig_ml_isi_rrc_fc_mse_12sps.dpth
+            fig_ml_isi_rrc_fc_mse_12sps.log
+            fig_ml_isi_rrc_fc_mse_12sps.md5
+            fig_ml_isi_rrc_fc_mse_12sps.pdf
+            fig_ml_isi_rrc_fc_mse_12sps.run.xml
+            fig_ml_isi_rrc_fc_mse_12sps_standalone.dep
+            fig_ml_isi_rrc_fc_mse_12sps_standalone.dpth
+            fig_ml_isi_rrc_fc_mse_12sps_standalone.log
+            fig_ml_isi_rrc_fc_mse_12sps_standalone.md5
+            fig_ml_isi_rrc_fc_mse_12sps_standalone.pdf
+            fig_ml_isi_rrc_fc_mse_12sps_standalone.run.xml
+            fig_ml_rrc_fc_mse_12sps_span4.dep
+            fig_ml_rrc_fc_mse_12sps_span4.dpth
+            fig_ml_rrc_fc_mse_12sps_span4.log
+            fig_ml_rrc_fc_mse_12sps_span4.md5
+            fig_ml_rrc_fc_mse_12sps_span4.pdf
+            fig_ml_rrc_fc_mse_12sps_span4.run.xml
+            fig_ml_rrc_fc_mse_comparison.dep
+            fig_ml_rrc_fc_mse_comparison.dpth
+            fig_ml_rrc_fc_mse_comparison.log
+            fig_ml_rrc_fc_mse_comparison.md5
+            fig_ml_rrc_fc_mse_comparison.pdf
+            fig_ml_rrc_fc_mse_comparison.run.xml
+            fig_sl_awgn_fc_eye.dep
+            fig_sl_awgn_fc_eye.dpth
+            fig_sl_awgn_fc_eye.log
+            fig_sl_awgn_fc_eye.md5
+            fig_sl_awgn_fc_eye.pdf
+            fig_sl_awgn_fc_eye.run.xml
+            fig_sl_multipath_const_g0.dep
+            fig_sl_multipath_const_g0.dpth
+            fig_sl_multipath_const_g0.log
+            fig_sl_multipath_const_g0.md5
+            fig_sl_multipath_const_g0.pdf
+            fig_sl_multipath_const_g0.run.xml
+            fig_sl_multipath_const_g50.dep
+            fig_sl_multipath_const_g50.dpth
+            fig_sl_multipath_const_g50.log
+            fig_sl_multipath_const_g50.md5
+            fig_sl_multipath_const_g50.pdf
+            fig_sl_multipath_const_g50.run.xml
+            fig_sl_multipath_fc_mse_gains.dep
+            fig_sl_multipath_fc_mse_gains.dpth
+            fig_sl_multipath_fc_mse_gains.log
+            fig_sl_multipath_fc_mse_gains.md5
+            fig_sl_multipath_fc_mse_gains.pdf
+            fig_sl_multipath_fc_mse_gains.run.xml
+            fig_sl_rrc_fc_eye.dep
+            fig_sl_rrc_fc_eye.dpth
+            fig_sl_rrc_fc_eye.log
+            fig_sl_rrc_fc_eye.md5
+            fig_sl_rrc_fc_eye.pdf
+            fig_sl_rrc_fc_eye.run.xml
+            IdealOTA-figure0.dep
+            IdealOTA-figure0.dpth
+            IdealOTA-figure0.log
+            IdealOTA-figure0.md5
+            IdealOTA-figure0.pdf
+            IdealOTA-figure0.run.xml
+            Markos_Delaportas_1316-figure0.dep
+            Markos_Delaportas_1316-figure0.dpth
+            Markos_Delaportas_1316-figure0.log
+            Markos_Delaportas_1316-figure0.md5
+            Markos_Delaportas_1316-figure0.pdf
+            Markos_Delaportas_1316-figure0.run.xml
+            

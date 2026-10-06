@@ -1,4 +1,4 @@
-% IdealOTA_ml_rrc_fc_eye_span_comparison.tex
+% ml_multipath_rrc_fc_eye_span_comparison.tex
 \documentclass[multi=minipage]{standalone}
 \usepackage{amsmath}
 \usepackage{pgfplots}
@@ -8,7 +8,6 @@
 \begin{document}
 
     \begin{luacode*}
-        -- Define the sps range matching existing folder names (12sps, 24sps, 48sps, 96sps)
         local sps_list = {
             {folder = "12sps", val = "12", label = "12"},
             {folder = "24sps", val = "24", label = "24"},
@@ -16,35 +15,30 @@
             {folder = "96sps", val = "96", label = "96"},
         }
 
-        -- Set the fixed roll-off factor to track
         local alpha_str = "0.70" 
-
-        -- Base path to the directories
-        local base_path = "../data/ideal/eye/"
+        local base_path = "../data/isi/multipath/eye/"
 
         for i, item in ipairs(sps_list) do
 
-            -- Construct relative filepaths for both spans
             local file_span4 = string.format(
-                "%s%s/ml_rrc_fc_eye_%ssps_span4_alpha%s.txt", 
+                "%s%s/ml_isi_rrc_fc_eye_%ssps_span4_alpha%s.txt", 
                 base_path, item.folder, item.val, alpha_str
             )
             local file_span12 = string.format(
-                "%s%s/ml_rrc_fc_eye_%ssps_span12_alpha%s.txt", 
+                "%s%s/ml_isi_rrc_fc_eye_%ssps_span12_alpha%s.txt", 
                 base_path, item.folder, item.val, alpha_str
             )
 
             tex.print("\\begin{minipage}{18cm}")
 
-            -- ==================== LEFT PLOT: SPAN 4 ====================
+            -- LEFT PLOT: SPAN 4
             tex.print("\\begin{tikzpicture}")
             tex.print("\\begin{axis}[")
             tex.print("    title={\\textsf{Span = 4 ($sps = " .. item.label .. "$)}},")
             tex.print("    xlabel={Time ($T_{sym}$)},")
             tex.print("    ylabel={Amplitude},")
             tex.print("    xmin=0, xmax=3,")
-            -- Set ymin and ymax to encompass zero-mean signal bundle
-            tex.print("    ymin=-18, ymax=18,")
+            tex.print("    ymin=-25, ymax=25,")
             tex.print("    grid=major,")
             tex.print("    width=0.49\\linewidth,")
             tex.print("    height=0.42\\linewidth,")
@@ -53,7 +47,7 @@
             tex.print("    title style={font=\\small},")
             tex.print("    every axis plot/.append style={")
             tex.print("        mark=none,")
-            tex.print("        color=blue!75!black,")
+            tex.print("        color=red!75!black,")
             tex.print("        line width=0.1pt,")
             tex.print("        opacity=0.08,")
             tex.print("        line cap=round,")
@@ -65,14 +59,14 @@
             tex.print("\\end{tikzpicture}%")
             tex.print("\\hfill%")
 
-            -- ==================== RIGHT PLOT: SPAN 12 ====================
+            -- RIGHT PLOT: SPAN 12
             tex.print("\\begin{tikzpicture}")
             tex.print("\\begin{axis}[")
             tex.print("    title={\\textsf{Span = 12 ($sps = " .. item.label .. "$)}},")
             tex.print("    xlabel={Time ($T_{sym}$)},")
             tex.print("    ylabel={Amplitude},")
             tex.print("    xmin=0, xmax=3,")
-            tex.print("    ymin=-18, ymax=18,")
+            tex.print("    ymin=-25, ymax=25,")
             tex.print("    grid=major,")
             tex.print("    width=0.49\\linewidth,")
             tex.print("    height=0.42\\linewidth,")
@@ -81,7 +75,7 @@
             tex.print("    title style={font=\\small},")
             tex.print("    every axis plot/.append style={")
             tex.print("        mark=none,")
-            tex.print("        color=blue!75!black,")
+            tex.print("        color=red!75!black,")
             tex.print("        line width=0.1pt,")
             tex.print("        opacity=0.08,")
             tex.print("        line cap=round,")
@@ -97,5 +91,4 @@
 
     \end{luacode*}
     
-\end{document}
 \end{document}

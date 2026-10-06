@@ -9,12 +9,10 @@
 
     \begin{luacode*}
         local sps_data = {
-            {val = "6", label = "6"},
             {val = "12", label = "12"},
             {val = "24", label = "24"},
             {val = "48", label = "48"},
             {val = "96", label = "96"},
-            {val = "192", label = "192"},
         }
 
         for i, sps in ipairs(sps_data) do
@@ -24,12 +22,12 @@
             -- ==================== LEFT PLOT: SPAN 4 ====================
             tex.print("\\begin{tikzpicture}")
             tex.print("\\begin{axis}[")
-            tex.print("    title={Span = 4 ($sps = " .. sps.label .. "$)},")
+            tex.print("    title={\\textsf{Span = 4 ($sps = " .. sps.label .. "$)}},")
             tex.print("    xlabel={SNR (dB)},")
             tex.print("    ylabel={$\\alpha$},")
             tex.print("    zlabel={MSE},")
             tex.print("    zmode=log,")
-            tex.print("    zmin=0.1, zmax=8000,") 
+            tex.print("    zmin=1e-5, zmax=1,") 
             tex.print("    view={135}{30},")
             tex.print("    grid=major,")
             tex.print("    colormap name=viridis,")
@@ -38,7 +36,7 @@
             tex.print("    label style={font=\\scriptsize},")
             tex.print("    title style={font=\\small}")
             tex.print("]")
-            tex.print("\\addplot3[surf] table[x=SNR_dB, y=alpha_array, z=mse_results] {../data/ideal/mse/ml_rrc_fc_mse_" .. sps.val .. "sps_span4.txt};")
+            tex.print("\\addplot3[surf, mesh/rows=21] table[x=SNR_dB, y=alpha_array, z=mse_results] {../data/ideal/mse/ml_rrc_fc_mse_" .. sps.val .. "sps_span4.txt};")
             tex.print("\\end{axis}")
             tex.print("\\end{tikzpicture}%")
             tex.print("\\hfill%")
@@ -46,12 +44,12 @@
             -- ==================== RIGHT PLOT: SPAN 12 ====================
             tex.print("\\begin{tikzpicture}")
             tex.print("\\begin{axis}[")
-            tex.print("    title={Span = 12 ($sps = " .. sps.label .. "$)},")
+            tex.print("    title={\\textsf{Span = 12 ($sps = " .. sps.label .. "$)}},")
             tex.print("    xlabel={SNR (dB)},")
             tex.print("    ylabel={$\\alpha$},")
             tex.print("    zlabel={MSE},")
             tex.print("    zmode=log,")
-            tex.print("    zmin=0.1, zmax=8000,") 
+            tex.print("    zmin=1e-5, zmax=1,") 
             tex.print("    view={135}{30},")
             tex.print("    grid=major,")
             tex.print("    colormap name=viridis,")
@@ -60,7 +58,7 @@
             tex.print("    label style={font=\\scriptsize},")
             tex.print("    title style={font=\\small}")
             tex.print("]")
-            tex.print("\\addplot3[surf] table[x=SNR_dB, y=alpha_array, z=mse_results] {../data/ideal/mse/ml_rrc_fc_mse_" .. sps.val .. "sps_span12.txt};")
+            tex.print("\\addplot3[surf, mesh/rows=21] table[x=SNR_dB, y=alpha_array, z=mse_results] {../data/ideal/mse/ml_rrc_fc_mse_" .. sps.val .. "sps_span12.txt};")
             tex.print("\\end{axis}")
             tex.print("\\end{tikzpicture}")
             
@@ -68,4 +66,5 @@
         end
     \end{luacode*}
     
+\end{document}
 \end{document}

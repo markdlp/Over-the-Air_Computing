@@ -5,6 +5,7 @@ tmp/
 figures/tmp/
 font/
 data/
+src/
 
 ### LaTeX ###
 ## Core latex/pdflatex auxiliary files:
@@ -336,3 +337,5 @@ TSWLatexianTemp*
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/latex,visualstudiocode
+
+AGENTS.md

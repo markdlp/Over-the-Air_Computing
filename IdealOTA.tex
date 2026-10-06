@@ -2,713 +2,1014 @@
 
 \begin{document}
 
-    \section{Ideal Over-the-Air Computation Baseline}
-    Before introducing the practical impairments inherent to wireless channels, such as
-    \gls{isi}, multipath fading, and time synchronization errors, it is essential to
-    establish a baseline model of \gls{ota} computation under ideal
-    conditions. The foundational premise of \gls{ota} computing is its ability to reduce
-    the communication latency of data aggregation from the linear complexity
-    shown in \cref{eq:ota_latency_complexity} to the constant complexity made
-    possible by allowing $K$ devices to transmit simultaneously
-    \cite{sahin_survey_2023}. 
+\section{Ideal Over-the-Air Computation Baseline}
+\label{sec:ideal_ota_baseline}
+Before introducing the practical impairments inherent to physical
+wireless channels—such as
+multipath delay spread, intersymbol interference, carrier frequency
+offsets, and time
+synchronization errors—it is essential to establish an analytical and
+simulation baseline of
+\gls{ota} computation under ideal conditions. The foundational
+premise of \gls{ota}
+computing is its ability to overcome the communication bottleneck of
+distributed wireless sensor
+aggregation. In conventional orthogonal multi-access protocols (e.g.,
+\gls{tdma} or \gls{ofdm}),
+the time required to collect readings from $K$ distributed \gls{ed}s
+scales linearly with the
+network size, incurring a latency complexity of $\mathcal{O}(K)$. By
+contrast, \gls{ota} computing
+exploits the superposition property of the wireless \gls{mac} to
+execute nomographic function
+aggregation directly across the physical propagation medium in a
+single time slot:
+\begin{equation}
+    \mathcal{O}(K) \longrightarrow \mathcal{O}(1)
+    \label{eq:ota_latency_complexity}
+\end{equation}
 
-    \begin{equation}
-        \mathcal{O}(K) \longrightarrow \mathcal{O}(1)
-        \label{eq:ota_latency_complexity}
-    \end{equation}
-    
-    In this idealized scenario, the wireless medium is assumed to be perfectly
-    synchronized, lacking frequency-selective fading, and corrupted solely by \gls{awgn}.
-    This chapter aggregates the mathematical formulation,
-    algorithmic MATLAB modeling, block-level Simulink architecture, and GNU Radio
-    flowgraphs that demonstrate this ideal, unimpaired baseline. Establishing this
-    benchmark is critical for quantifying the exact degradation caused by physical channel 
-    constraints in subsequent chapters.
+In this idealized baseline scenario, all transmitting nodes are
+assumed to be perfectly synchronized
+in carrier frequency, phase, and symbol timing. The propagation
+channel is modeled as a non-dispersive,
+flat-fading medium corrupted solely by \gls{awgn}. This chapter
+presents an end-to-end multi-tiered
+experimental workflow that demonstrates this unimpaired baseline:
+\begin{enumerate}[label=(\roman*)]
+    \item The physical principles and electrical circuit equivalent
+        of electromagnetic superposition;
+    \item The continuous-time and passband \gls{am} mathematical formulation;
+    \item Algorithmic discrete-time MATLAB modeling and multi-rate
+        pulse-shaping code;
+    \item Mean squared error and constellation diagnostic evaluations;
+    \item Analog eye diagram analysis comparing MATLAB and Simulink dynamics;
+    \item Multi-rate block-level Simulink dynamical modeling; and
+    \item Software-Defined Radio (\gls{sdr}) realization and
+        polyphase filter calibration in GNU Radio.
+\end{enumerate}
+Establishing this rigorous benchmark provides the mathematical
+reference and experimental framework
+repeated throughout subsequent chapters to evaluate model impurities
+and channel imperfections.
 
-    \subsection{Mathematical Formulation of the Ideal Channel}
-    Consider a distributed wireless sensor network consisting of $K$ \gls{ed}s
-    transmitting local analog values to a central \gls{fc}. Let $x_k(t)$ denote
-    the continuous-time, real-valued signal transmitted by the $k$-th device. For analog
-    \gls{ota} computation, uncoded \gls{pam} is widely
-    considered the optimal transmission scheme, as it linearly maps the sensor readings
-    directly to the amplitude of the transmitted waveform \cite{goldenbaum_robust_2013,
-    zhu_one-bit_2021}.
+\subsection{Physical Principles and Electrical Circuit Equivalent of
+Electromagnetic Superposition}
+\label{subsec:physical_circuit_superposition}
+In conventional digital signal processors, arithmetic computation is
+executed through Boolean logic
+gates constructed from semiconductor transistors. In \gls{ota}
+computation, however, arithmetic addition
+is performed natively by free space through Maxwell's electrodynamic equations.
 
-    In an ideal \gls{mac}, we assume perfect \gls{csi} at the transmitters, which allows 
-    for flawless pre-equalization of phase shifts
-    and path loss attenuation. Consequently, the electromagnetic waves superimpose
-    perfectly at the receiving antenna of the \gls{fc}. The received baseband signal $y(t)$ is
-    mathematically expressed as the linear sum of the transmitted signals plus noise:
-    \begin{equation}
-        y(t) = \sum_{k=1}^{K} x_k(t) + n(t) \label{eq:mac_sum}
-    \end{equation}
-    where the \gls{awgn} model is specified by \cref{eq:awgn_model}. Because there is no
-    multipath delay spread in this baseline model, the channel impulse response is
-    effectively the Dirac delta function in \cref{eq:ideal_impulse_response}. This implies
-    that the current symbol is entirely unaffected by past or
-    future symbols, resulting in zero \gls{isi}. To extract the arithmetic average of the
-    $K$ sensor readings, the \gls{fc} simply applies a post-processing scaling factor of $1/K$
-    to the received aggregated signal $y(t)$.
+When $K$ distributed sensor nodes concurrently radiate
+radio-frequency currents through their respective
+antennas, the emitted electric field vectors
+$\mathbf{E}_k(\mathbf{r}, t)$ superimpose linearly in the
+spatial continuum according to the principle of electromagnetic superposition:
+\begin{equation}
+    \mathbf{E}_{\text{total}}(\mathbf{r}, t) = \sum_{k=1}^{K}
+    \mathbf{E}_k(\mathbf{r}, t)
+    \label{eq:maxwell_superposition}
+\end{equation}
+At the receive antenna aperture of the central \gls{fc}, the incident
+electric field induces an open-circuit
+terminal voltage proportional to the spatial integral of the field
+weighted by the antenna's effective vector length.
 
-    \begin{equation}
-        n(t) \sim \mathcal{N}(0, \sigma^2)
-        \label{eq:awgn_model}
-    \end{equation}
+\begin{figure}[htbp]
+    \centering
+    \tikzsetnextfilename{fig_ideal_circuit_equivalent}
+    \begin{circuitikz}[line width=0.8pt]
 
-    \begin{equation}
-        h(t) = \delta(t)
-        \label{eq:ideal_impulse_response}
-    \end{equation}
+        % ==========================================
+        % SENSOR NODE 1
+        % ==========================================
+        % Baseband Voltage Source
+        \draw (0, 6) to[sV, l=$v_1(t)$] (0, 4)
+        % Internal Impedance
+        to[R, l=$R_{S1}$] (2, 4)
+        % Antenna RLC Equivalent
+        to[L, l=$L_{A1}$] (3.5, 4)
+        to[C, l=$C_{A1}$] (5, 4)
+        to[R, l=$R_{\text{rad}1}$] (5, 6) -- (0, 6);
 
-    \subsection{MATLAB Simulation and Code Analysis}
-    To validate this superposition principle, the ideal environment can be modeled using MATLAB. 
-    The following
-    script generates normally distributed simulated sensor readings, aligns them perfectly
-    in time, and adds \gls{awgn} to emulate the ideal \gls{mac}.
+        \node at (2.5, 6.5) {\textbf{Sensor Node 1 (Tx)}};
 
-    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB script for ideal OTA computation aggregation.}, label={lst:ml_awgn_fc}]
-        % Ideal OTA Computation Simulation
-        K = 3;                  % Number of sensors
-        N = 1000;               % Number of samples
-        SNR_dB = 20;            % Signal-to-Noise Ratio
+        % Wireless Channel 1 (Transmission Line)
+        \draw (5.5, 4.5) node[right] {Channel $h_1$};
+        \draw (5, 5) -- node[above] {$\tau_1 \ \angle\theta_1$} (9, 5);
 
-        % Generate random temperature readings around 27 degrees
-        X = 27 + randn(K, N); 
+        % ==========================================
+        % SENSOR NODE 2
+        % ==========================================
+        % Baseband Voltage Source
+        \draw (0, 2) to[sV, l=$v_2(t)$] (0, 0)
+        % Internal Impedance
+        to[R, l=$R_{S2}$] (2, 0)
+        % Antenna RLC Equivalent
+        to[L, l=$L_{A2}$] (3.5, 0)
+        to[C, l=$C_{A2}$] (5, 0)
+        to[R, l=$R_{\text{rad}2}$] (5, 2) -- (0, 2);
 
-        % The Air acts as an ideal adder (MAC Superposition)
+        \node at (2.5, 2.5) {\textbf{Sensor Node 2 (Tx)}};
+
+        % Wireless Channel 2 (Transmission Line)
+        \draw (5.5, 0.5) node[right] {Channel $h_2$};
+        \draw (5, 1) -- node[above] {$\tau_2 \ \angle\theta_2$} (9, 1);
+
+        % ==========================================
+        % FUSION CENTER (Rx) - THE OTA SUPERPOSITION
+        % ==========================================
+        % The electromagnetic waves combine at the Rx antenna
+        \draw (9, 5) -- (10, 5) -- (10, 4.5);
+        \draw (9, 1) -- (10, 1) -- (10, 1.5);
+
+        % Rx Antenna RLC Equivalent
+        \draw (10, 4.5) to[R, l=$R_{\text{rad, Rx}}$] (10, 3.5)
+        to[C, l=$C_{\text{Rx}}$] (10, 2.5)
+        to[L, l=$L_{\text{Rx}}$] (10, 1.5);
+
+        % Rx Load / ADC Input
+        \draw (10, 4.5) -- (12, 4.5)
+        to[R, l=$Z_{\text{load}}$] (12, 1.5) -- (10, 1.5);
+
+        % Label the Superposition Voltage
+        \draw (12.5, 4.5) node[right] {$+$};
+        \draw (12.5, 1.5) node[right] {$-$};
+        \draw (12, 1) node {\textbf{$y(t) = h_1 v_1(t) + h_2 v_2(t) + n(t)$}};
+
+        \node at (12, 5.5) {\textbf{Fusion Center (Rx)}};
+
+        % Draw dashed boxes around the domains
+        \draw[dashed, gray] (-1.5, 3.5) rectangle (5.5, 7);
+        \draw[dashed, gray] (-1.5, -0.5) rectangle (5.5, 3);
+        \draw[dashed, blue] (9.5, -0.5) rectangle (14, 7);
+
+    \end{circuitikz}
+    \caption{Equivalent electrical circuit model of the Over-the-Air
+        computation network. Each sensor node is represented by a
+        Thévenin voltage source with source resistance $R_S$ and antenna
+        resonant impedance ($L_A, C_A, R_{\text{rad}}$). The wireless
+        propagation medium acts as a multi-access transmission channel,
+        developing an aggregate terminal voltage across the receiver load
+    impedance $Z_{\text{load}}$ via Kirchhoff's laws.}
+    \label{fig:idealOTA_circuit}
+\end{figure}
+
+This electrodynamic mechanism is formalized electrically in
+\cref{fig:idealOTA_circuit}. Each sensor node
+is modeled as a Thévenin equivalent source generating an
+information-bearing voltage $v_k(t)$ with internal
+impedance $R_{Sk}$. The radiating element is characterized by an
+equivalent resonant $RLC$ circuit with antenna
+radiation resistance $R_{\text{rad}, k}$. The wireless medium behaves
+as an unguided transmission system imparting
+attenuation and propagation phase shift. At the \gls{fc}, the
+incoming electromagnetic wavefronts excite currents
+in the receiver antenna ($R_{\text{rad, Rx}}, C_{\text{Rx}},
+L_{\text{Rx}}$), developing a superposition terminal
+voltage across the input impedance $Z_{\text{load}}$ of the
+analog-to-digital front-end. Under ideal transmitter
+pre-equalization ($h_k \to 1$), the terminal voltage equals the
+direct arithmetic sum of the transmitted waveforms
+plus thermal receiver noise, establishing the electrical foundation
+for analog AirComp.
+
+\subsection{Mathematical Formulation of the Ideal Multiple-Access Channel}
+\label{subsec:mathematical_formulation_ideal}
+Consider a distributed sensory network comprising $K$ edge devices
+transmitting local continuous-valued measurements
+to a central \gls{fc}. Let $x_k[m]$ denote the discrete information
+symbol emitted by the $k$-th device at symbol index $m$.
+In uncoded analog \gls{pam}, each sensor maps its measurement
+directly to the amplitude of a transmitted continuous-time pulse.
+Information-theoretic analysis confirms that uncoded \gls{pam}
+achieves the optimal distortion exponent for computing
+nomographic sums over Gaussian \gls{mac} channels
+\cite{nazer_reliable_nodate, goldenbaum_robust_2013}.
+
+To ensure finite spectral occupancy and satisfy regulatory bandwidth
+constraints, each transmitting device shapes its
+symbol sequence with a \gls{rrc} pulse $p(t)$ having roll-off factor
+$\alpha \in [0, 1]$ and symbol period $T_s$. The pulse
+satisfies unit-energy normalization:
+\begin{equation}
+    \int_{-\infty}^{\infty} p^2(t) \, dt = 1
+    \label{eq:rrc_continuous_unit_energy}
+\end{equation}
+The continuous-time baseband waveform radiated by sensor $k$ is given by:
+\begin{equation}
+    s_k(t) = \sum_{m=-\infty}^{\infty} x_k[m] \, p(t - m T_s)
+    \label{eq:single_node_baseband_signal}
+\end{equation}
+
+\subsubsection{Passband Double-Sideband Amplitude Modulation}
+\label{subsubsec:passband_am_formulation}
+In practical radio frequency systems, baseband waveforms are
+upconverted to a carrier frequency $f_c \gg 1/T_s$ via
+Double-Sideband Amplitude Modulation (\gls{am}). Because the carrier
+mixer is linear with respect to amplitude, each
+sensor modulates its baseband pulse train onto an in-phase carrier:
+\begin{equation}
+    s_k^{\text{RF}}(t) = s_k(t) \cos(2\pi f_c t) = \left[
+    \sum_{m=-\infty}^{\infty} x_k[m] \, p(t - m T_s) \right] \cos(2\pi f_c t)
+    \label{eq:passband_transmitted_signal}
+\end{equation}
+Assuming full synchronization and ideal channel pre-equalization
+($h_k(t) = \delta(t)$), the transmitted RF waveforms
+superimpose instantaneously over the wireless medium:
+\begin{equation}
+    r_{\text{RF}}(t) = \sum_{k=1}^K s_k^{\text{RF}}(t) +
+    w_{\text{RF}}(t) = \left( \sum_{k=1}^K s_k(t) \right) \cos(2\pi
+    f_c t) + w_{\text{RF}}(t)
+    \label{eq:passband_superposition}
+\end{equation}
+where $w_{\text{RF}}(t)$ denotes zero-mean bandpass \gls{awgn} with
+two-sided power spectral density $N_0 / 2$.
+
+\subsubsection{Coherent Demodulation and Matched Filtering}
+\label{subsubsec:coherent_demodulation_matched_filter}
+At the \gls{fc}, coherent synchronous demodulation is performed by
+mixing the incoming RF signal with a local oscillator
+tuned to $2\cos(2\pi f_c t)$:
+\begin{equation}
+    2 r_{\text{RF}}(t) \cos(2\pi f_c t) = \left( \sum_{k=1}^K s_k(t)
+    \right) \left[ 1 + \cos(4\pi f_c t) \right] + 2 w_{\text{RF}}(t)
+    \cos(2\pi f_c t)
+    \label{eq:coherent_mixing}
+\end{equation}
+The double-frequency component at $2f_c$ is rejected by the
+subsequent filtering stage. The baseband composite waveform
+then passes through a matched filter identical to the transmitter
+pulse shape, $p^*(-t) = p(t)$. The cascade of the transmit
+and receive \gls{rrc} filters forms the full Nyquist Raised Cosine
+(\gls{rc}) filter $r_c(t) = (p * p)(t)$:
+\begin{equation}
+    r_c(t) = \operatorname{sinc}\left(\frac{t}{T_s}\right)
+    \frac{\cos\left(\frac{\pi \alpha t}{T_s}\right)}{1 -
+    \left(\frac{2\alpha t}{T_s}\right)^2}
+    \label{eq:nyquist_rc_pulse}
+\end{equation}
+The continuous-time output of the matched filter before sampling is:
+\begin{equation}
+    y(t) = \sum_{k=1}^K \sum_{m=-\infty}^{\infty} x_k[m] \, r_c(t - m
+    T_s) + \tilde{w}(t)
+    \label{eq:matched_filter_output_continuous}
+\end{equation}
+where $\tilde{w}(t) = (w_{\text{bb}} * p)(t)$ is the filtered
+Gaussian noise process. Sampling $y(t)$ at the symbol strobe
+instants $t = n T_s$ yields:
+\begin{equation}
+    y[n] = \sum_{k=1}^K x_k[n] \, r_c(0) + \sum_{k=1}^K \sum_{m \neq
+    n} x_k[m] \, r_c((n-m)T_s) + \tilde{w}[n]
+    \label{eq:sampled_matched_output}
+\end{equation}
+Because the Nyquist pulse satisfies the zero-\gls{isi} property
+($r_c(0) = 1$ and $r_c(l T_s) = 0$ for all non-zero integers $l \neq 0$),
+the intersymbol cross-terms vanish identically:
+\begin{equation}
+    y[n] = \sum_{k=1}^K x_k[n] + \tilde{w}[n]
+    \label{eq:mac_sum}
+\end{equation}
+where $\tilde{w}[n] \sim \mathcal{N}(0, \sigma_w^2)$. To compute the
+desired arithmetic average of the $K$ sensor readings,
+the \gls{fc} applies an unweighted post-processing scaling factor of $1/K$:
+\begin{equation}
+    \hat{\mu}[n] = \frac{1}{K} y[n] = \frac{1}{K} \sum_{k=1}^K x_k[n]
+    + \frac{\tilde{w}[n]}{K}
+    \label{eq:fc_estimated_average}
+\end{equation}
+
+\subsubsection{Theoretical Mean Squared Error Scaling}
+\label{subsubsec:theoretical_mse_scaling}
+The instantaneous estimation error at symbol index $n$ is defined as
+the deviation between the reconstructed sample mean
+and the true arithmetic average:
+\begin{equation}
+    e[n] = \hat{\mu}[n] - \frac{1}{K} \sum_{k=1}^K x_k[n] =
+    \frac{\tilde{w}[n]}{K}
+    \label{eq:estimation_error_definition}
+\end{equation}
+The statistical \gls{mse} of the ideal Over-the-Air computation
+system is obtained by taking the mathematical expectation:
+\begin{equation}
+    \operatorname{MSE} = \mathbb{E}\left[ |e[n]|^2 \right] =
+    \mathbb{E}\left[ \left|\frac{\tilde{w}[n]}{K}\right|^2 \right] =
+    \frac{\sigma_w^2}{K^2}
+    \label{eq:ideal_mse_scaling}
+\end{equation}
+\Cref{eq:ideal_mse_scaling} reveals the fundamental cooperative
+advantage of \gls{ota} aggregation: while individual sensor
+signals add coherently, thermal noise adds non-coherently, resulting
+in an inverse-quadratic noise suppression factor of $1/K^2$
+relative to the unweighted channel noise variance
+\cite{sahin_survey_2023, cao_optimized_2022}.
+
+\subsubsection{Distributive and Linear Time-Invariant Equivalence}
+\label{subsubsec:distributive_lti_proof}
+A vital property of the ideal baseline concerns the mathematical
+equivalence between synthesizing each sensor's modulated waveform
+individually versus modulating the aggregated sequence directly. Let
+$u_k(t) = \sum_m x_k[m] \delta(t - m T_s)$ represent the
+ideal impulse train of sensor $k$. In the physical network, each
+sensor performs pulse shaping and passband mixing locally prior
+to transmission:
+\begin{equation}
+    r_{\text{agg}}(t) = \sum_{k=1}^K \Big( \big( u_k(t) * p(t) \big)
+    \cos(2\pi f_c t) \Big)
+    \label{eq:per_sensor_pipeline}
+\end{equation}
+Because all sensors share an identical carrier frequency and phase,
+the carrier waveform factors out of the sum:
+\begin{equation}
+    r_{\text{agg}}(t) = \left( \sum_{k=1}^K \big( u_k(t) * p(t) \big)
+    \right) \cos(2\pi f_c t)
+    \label{eq:factored_carrier}
+\end{equation}
+Furthermore, convolution is a linear operator that distributes over addition:
+\begin{equation}
+    \sum_{k=1}^K \big( u_k(t) * p(t) \big) = \left( \sum_{k=1}^K
+    u_k(t) \right) * p(t)
+    \label{eq:lti_distributive}
+\end{equation}
+Substituting \cref{eq:lti_distributive} into
+\cref{eq:factored_carrier} yields the optimized equivalent representation:
+\begin{equation}
+    r_{\text{agg}}(t) = \left( \left[ \sum_{k=1}^K u_k(t) \right] *
+    p(t) \right) \cos(2\pi f_c t)
+    \label{eq:optimized_equivalent_pipeline}
+\end{equation}
+This proof demonstrates that under ideal synchronization and
+identical channel gains, the order of operations commutes
+completely. This property enables substantial computational
+acceleration in discrete-time simulations: the algorithmic complexity
+scales from $\mathcal{O}(K \cdot N \cdot \text{sps} \cdot
+L_{\text{filt}})$ down to $\mathcal{O}(N \cdot \text{sps} \cdot
+L_{\text{filt}})$,
+achieving a $K$-fold reduction in runtime and memory allocation.
+
+\subsection{Algorithmic MATLAB Implementation and Code Listings}
+\label{subsec:matlab_implementation}
+To evaluate these theoretical principles numerically, two distinct
+discrete-time simulation architectures are modeled in MATLAB:
+\begin{enumerate}
+    \item An unmodulated, single-sample-per-symbol baseline that
+        isolates the pure mathematical summation under \gls{awgn}
+        (\cref{lst:ml_awgn_fc}); and
+    \item A physically complete multi-rate pipeline incorporating
+        upsampling, matched \gls{rrc} pulse shaping, Double-Sideband
+        \gls{am}, and coherent demodulation (\cref{lst:ml_rrc_fc}).
+\end{enumerate}
+
+    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB script for ideal unmodulated OTA computation baseline.}, label={lst:ml_awgn_fc}]
+        % Ideal OTA Computation Simulation - Unmodulated Baseline
+        K = 20;                 % Number of sensor nodes
+        N = 4000;               % Number of symbols
+        SNR_dB = 20;            % Signal-to-Noise Ratio (dB)
+
+        % Generate agricultural temperature readings around 27 deg C
+        X = 27 + randn(K, N);
+
+        % Over-The-Air superposition (Physical MAC Adder)
         Ideal_Sum = sum(X, 1);
 
-        % Add AWGN
+        % Add AWGN according to measured average signal power
         Received_Signal = awgn(Ideal_Sum, SNR_dB, 'measured');
 
-        % Calculate the Fusion Center Average
+        % Fusion Center arithmetic average calculation
         Estimated_Average = Received_Signal / K;
 
-        % Display Mean Squared Error (MSE)
-        MSE = immse(Estimated_Average, mean(X, 1)); fprintf('Ideal Baseline MSE at %d dB SNR: %f\n', SNR_dB, MSE);
+        % Empirical Mean Squared Error computation
+        MSE = immse(Estimated_Average, mean(X, 1));
+        fprintf('Ideal Baseline MSE at %d dB SNR: %e\n', SNR_dB, MSE);
     \end{lstlisting}
 
-    While Listing~\ref{lst:ml_awgn_fc} demonstrates the fundamental principle in its unadulterated form, 
-    practical wireless systems necessitate pulse shaping to satisfy spectral constraints and facilitate 
-    signal recovery. Consequently, a more physically realistic model incorporates matched \gls{rc} 
-    filtering at both the transmitter and receiver. This architectural refinement introduces 
-    additional degrees of freedom—namely, the \gls{sps} parameter and the roll-off 
-    factor ($\alpha$)—which materially influence system performance. The enhanced implementation is presented 
-    in Listing~\ref{lst:ml_rrc_fc}.
+While \cref{lst:ml_awgn_fc} demonstrates the fundamental principle in
+its abstract discrete-time form, practical wireless
+transceivers mandate bandlimiting and RF upconversion.
+\Cref{lst:ml_rrc_fc} presents the complete multi-rate architecture.
+The discrete symbol sequence is upsampled by an integer factor
+\texttt{sps\_val}, convolved with a unit-energy normalized
+\gls{rrc} filter, modulated onto carrier frequency $F_c = F_s / 4$,
+corrupted by channel noise, coherently demodulated with
+a matched \gls{rrc} filter, and downsampled at the calibrated strobe instant.
 
-    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB script for OTA computation aggregation using the \gls{rrc} filter.}, label={lst:ml_rrc_fc}]
-        txUpSamped = upsample(X', sps_val); % phase may need to be set
+    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB multi-rate script for OTA computation with matched RRC filtering and coherent AM.}, label={lst:ml_rrc_fc}]
+        % Multi-Rate OTA Computation with Matched RRC and AM
+        txUpSampled = upsample(X', sps_val)'; % Dimension: K x (N * sps)
 
-        % Raised Cosine Filter
-        rcFilter = rcosdesign(aleph, span, sps_val, "sqrt");
+        % Design Root Raised Cosine filter with unit energy normalization
+        rcFilter = rcosdesign(aleph, span, sps_val, 'sqrt');
 
-        rx_agg_signal = zeros(N * sps_val + length(rcFilter) - 1, 1);
+        % Commutative superposition: pulse-shape aggregate impulse sequence
+        agg_impulses = sum(txUpSampled, 1);
+        tx_baseband  = conv(agg_impulses, rcFilter, 'same');
 
-        for k = 1:K
-            rx_agg_signal = rx_agg_signal + conv(txUpSamped(:,k), rcFilter(:));
-        end
+        % Double-Sideband Amplitude Modulation (Fc = Fs / 4)
+        t = (0:length(tx_baseband)-1) / Fs;
+        carrier = cos(2 * pi * Fc * t);
+        tx_passband = tx_baseband .* carrier;
 
-        Received_Signal = awgn(rx_agg_signal, current_snr, 'measured');
+        % AWGN channel addition
+        rx_passband = awgn(tx_passband, current_snr, 'measured');
 
-        matchedSignal = conv(Received_Signal, flipud(rcFilter(:)), 'same');
+        % Coherent demodulation and receiver matched filtering
+        rx_mixed = rx_passband .* (2 * carrier);
+        rx_matched = conv(rx_mixed, rcFilter, 'same');
 
-        rxMatched = downsample(matchedSignal, sps_val);
+        % Downsample at optimal symbol strobe instant
+        rx_strobed = rx_matched(1:sps_val:end);
 
-        start_idx = floor(span/2); stop_idx = floor(span/2) + mod(span,2) + 1;
+        % Truncate transient filter edges (span / 2 symbols on each boundary)
+        guard = ceil(span / 2);
+        valid_idx = (guard + 1):(N - guard);
+        Estimated_Average = rx_strobed(valid_idx) / K;
+        True_Average      = mean(X(:, valid_idx), 1);
 
-        % Truncate edges to avoid filter transient errors
-        Estimated_Average = rxMatched(start_idx:end-stop_idx, :) / K;
-
-        % Calculate and store MSE in the matrix
-        mse_results(snr_idx, a_idx) = immse(Estimated_Average', mean(X, 1));
+        % Compute Mean Squared Error
+        mse_results(snr_idx, a_idx) = immse(Estimated_Average, True_Average);
     \end{lstlisting}
 
-    As demonstrated by the script, when synchronization is perfect, the MSE is strictly a
-    function of the \gls{awgn} variance. When however trying to implement a scenario that is closer
-    to a real world usecase, it appears to be necessary to interject a filter pair like the
-    raised cosine filter. In order for this to be accomplished, a matched root raised cosine 
-    filter shall be inserted on each end of channel and by doing that, more degrees of freedom 
-    shall be taken into account, like \gls{sps} and \gls{rof}. In diagram \ref{fig:ml_rrc_fc_mse_12sps_span4}
-    the curve can be seen where in diagram \ref{fig:ml_awgn_fc_mse} the ideal \gls{mse} can
-    be shown.
+\subsection{Mean Squared Error Performance Analysis}
+\label{subsec:mse_analysis}
+The quantitative accuracy of the Over-the-Air aggregation is
+evaluated across both two-dimensional \gls{snr} sweeps and
+three-dimensional parametric surfaces spanning roll-off factor
+($\alpha$) and oversampling ratio (\gls{sps}).
 
-    Computational execution of the aforementioned algorithms reveals a critical distinction between the 
-    idealized and practical regimes. When temporal synchronization is mathematically perfect and no filtering 
-    is applied, the estimation accuracy is entirely governed by the noise floor; the \gls{mse} exhibits 
-    a direct proportionality to the \gls{awgn} variance and inverse quadratic scaling with the number of 
-    transmitting sensors. Mathematically, this relationship is expressed in \cref{eq:mse_scaling}, 
-    which demonstrates the fundamental advantage of cooperative multi-device aggregation \cite{sahin_survey_2023,
-    cao_optimized_2022}. Conversely, when pulse shaping filters are incorporated into the transmission chain, 
-    the interplay between symbol timing parameters (\gls{sps}) and spectral efficiency (\gls{rof}) introduces 
-    measurable deviation from the ideal theoretical bound.
-
-    \begin{equation}
-        \operatorname{MSE} \propto \frac{\sigma^2}{K^2}
-        \label{eq:mse_scaling}
-    \end{equation}
-
-    \begin{figure}[htbp]
-        \centering
-        \begin{subfigure}{.45\linewidth}
-            \tikzsetnextfilename{fig_ml_awgn_fc_mse}            
-            \begin{tikzpicture}
-                \begin{axis}[
-                    title={\textsf{Ideal}},
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{.48\linewidth}
+        \tikzsetnextfilename{fig_ml_awgn_fc_mse}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    title={\textsf{Unfiltered Baseline (AM)}},
                     xlabel={SNR (dB)}, ylabel={MSE},
                     ymode=log, grid=major,
+                    xmin=-20, xmax=20,
+                    ymin=1, ymax=2e4,
                     legend pos=north east,
-                ]
-                    \addplot[ color=blue, mark=square, thick ] table[x=SNR_dB, y=MSE]
-                    {data/ideal/mse/ml_awgn_fc_mse.txt};
-                    
-                    \addlegendentry{Ideal}
-                \end{axis}
-            \end{tikzpicture}
-            \caption{\textsf{Ideal}}
-            \label{fig:ml_awgn_fc_mse}
-        \end{subfigure}%
-        \hfill
-        \begin{subfigure}{.45\linewidth}
-            \tikzsetnextfilename{fig_ml_rrc_fc_mse_12sps_span4}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    title={\textsf{RC-Filtered}},
-                    xlabel={SNR (dB)}, ylabel={MSE},
-                    ymode=log, grid=major,
-                    legend pos=north east,
-                ]
-                    \addplot[ 
-                        color=red, mark=*, thick, 
-                        restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51} 
-                    ] table[x=SNR_dB, y=mse_results] {data/ideal/mse/ml_rrc_fc_mse_12sps_span4.txt};
-
-                    \addlegendentry{sps=$10^1$, $\alpha=0.5$}
-
-                \end{axis}
-            \end{tikzpicture}
-            \caption{\textsf{\gls{rrc} Cosine Filtered}}
-            \label{fig:ml_rrc_fc_mse_12sps_span4}
-        \end{subfigure}
-
-        \caption{Comparison of MSE performance between the ideal baseline and the Raised Cosine filtered scenario.}
-        \label{fig:mse_awgn_rrc_comparison}
-    \end{figure}
-
-    Figure~\ref{fig:ml_awgn_fc_mse} presents the theoretical performance floor, wherein
-    the \gls{mse} is a function solely of \gls{awgn} variance. In contrast,
-    Figure~\ref{fig:ml_rrc_fc_mse_12sps_span4} illustrates the performance envelope when
-    matched Raised Cosine filters are deployed at both transmitter and receiver, with
-    \gls{sps} and \gls{rof} held constant. Despite the introduction of filtering, the
-    channel remains free of multipath distortion and timing misalignment, ensuring that
-    noise contributions remain the dominant performance-limiting factor.
-
-    \begin{figure}[htbp]
-        \centering
-        \animategraphics[autoplay, loop, width=0.85\linewidth]{1.5}{figures/IdealOTA_mse_span_comparison}{}{}
-        \caption{
-            Synchronous 3D animation comparing the Over-The-Air MSE surface across $sps$
-            scaling for filter span 4 (left) versus span 12 (right).
-        }
-        \label{fig:mse_span_comparison}
-    \end{figure}
-
-    A particularly noteworthy observation emerges from parametric analysis of the
-    animation in Figure~\ref{fig:mse_span_comparison}: while increasing \gls{sps}
-    generally yields marginal improvements in \gls{mse} performance across the SNR range
-    examined, this enhancement asymptotically approaches a limit and does not constitute
-    convergence toward the theoretical ideal baseline (absent pulse shaping). This
-    behavior underscores a fundamental trade-off inherent to practical pulse-shaping
-    implementations: enhanced spectral efficiency through reduced \gls{sps} incurs
-    amplified inter-symbol interference, whereas elevated oversampling ratios improve
-    timing robustness at the cost of increased computational complexity and memory
-    consumption.
-
-    The eye and constellation diagrams provide valuable insights into the behavior of the
-    ideal OTA system under different SPS configurations. As the number of samples per
-    symbol increases, the eye opening widens, indicating reduced inter-symbol interference
-    and improved signal integrity. Similarly, the constellation points become more
-    distinct and well-separated, reflecting better performance in terms of error
-    probability and overall system reliability. 
- 
-    The span parameter controls the width of the pulse shaping filter, and a larger span
-    results in a more gradual transition band, leading to a flatter MSE curve across
-    different roll-off factors.
-
-    \begin{figure}[htbp]
-        \centering
-
-        % ==================== LEFT SUBFIGURE: STATIC BASELINE ====================
-        \begin{subfigure}{0.48\linewidth}
-            \tikzsetnextfilename{fig_ml_awgn_fc_const}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    title={\textsf{No Filter ($\text{SNR} = 20\text{ dB}$)}},
-                    xlabel={In-Phase (I)},
-                    ylabel={Quadrature (Q)},
-                    ymin=-1, ymax=1,
-                    grid=major,
-                    width=\linewidth,
-                    height=0.8\linewidth,
+                    width=\linewidth, height=0.82\linewidth,
                     ticklabel style={font=\tiny},
                     label style={font=\scriptsize},
                     title style={font=\small}
                 ]
-                    % Static scatter plot of the unfiltered baseline at 20 dB
-                    \addplot[
-                        only marks,
-                        mark=*,
-                        mark size=1pt,
-                        color=blue,
-                        opacity=0.35
-                    ] table[x=I_Data, y expr=0] {data/ideal/constellation/ml_awgn_fc_const.txt};
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Unfiltered channel baseline.}
-            \label{fig:ml_awgn_fc_const}
-        \end{subfigure}%
-        \hfill
-        % ==================== RIGHT SUBFIGURE: ANIMATED ALPHA ====================
-        \begin{subfigure}{0.48\linewidth}
-            \animategraphics[autoplay, loop, width=\linewidth]{1.5}{figures/IdealOTA_ml_rrc_fc_const}{}{}
-            \caption{Matched filter dynamic response across roll-off $\alpha$.}
-            \label{fig:ml_rrc_fc_const}
-        \end{subfigure}
+                \addplot[ color=blue, mark=square*, mark size=1.2pt,
+                thick ] table[x=SNR_dB_col, y=MSE_col]
+                {data/ideal/mse/ml_awgn_am_fc_mse.txt};
 
-        \caption{Constellation diagram comparison at $\text{SNR} = 20\text{ dB}$. Left: Unfiltered AWGN channel. Right: Animation demonstrating the suppression of truncation-induced ISI as $\alpha$ scales from $0.00$ to $1.00$ ($\text{span} = 12$, $sps = 60$).}
-        \label{fig:ml_awgnANDrrc_fc_const}
-    \end{figure}
-
-    The constellation diagrams in Figure~\ref{fig:ml_awgnANDrrc_fc_const} provide a visual representation of the received signal's
-    integrity under both unfiltered and filtered conditions. The left subfigure illustrates the dispersion of constellation points 
-    in the absence of filtering, indicating potential symbol overlap and increased error probability. In contrast, the right subfigure 
-    demonstrates the effect of matched RRC filtering, where the constellation points are more tightly clustered, reflecting improved 
-    symbol separation and reduced inter-symbol interference. This visual evidence reinforces the quantitative findings from the MSE 
-    analysis, highlighting the critical role of pulse shaping in enhancing system performance.
-
-    What is particularly noteworthy is that the constellation diagram with RRC filtering exhibits a more compact and well-defined 
-    symbol distribution. This is because in the unfiltered scenario no upsampling takes place, and the symbols are transmitted at 
-    the symbol rate. Matlab measures the average power using \cref{eq:signal_power}. At $20dB$, the noise variance
-    is injected according to \cref{eq:awgn_variance}. The resulting standard deviation and average estimate are given by
-    \cref{eq:noise_standard_deviation}, \cref{eq:estimated_average}, and
-    \cref{eq:estimated_average_deviation}.
-
-    \begin{equation}
-        \sigma_{\text{noise}} = \sqrt{2916} \approx 54
-        \label{eq:noise_standard_deviation}
-    \end{equation}
-
-    \begin{equation}
-        \text{Estimated\_Average} = \frac{\text{Ideal\_Sum} + w}{K}
-        = 27 + \frac{w}{20}
-        \label{eq:estimated_average}
-    \end{equation}
-
-    \begin{equation}
-        \sigma_{\text{Estimated\_Average}} = \frac{\sigma_{\text{noise}}}{K}
-        = \frac{54}{20} = 2.7
-        \label{eq:estimated_average_deviation}
-    \end{equation}
-    
-    In contrast, the \gls{rrc} filtered scenario employs upsampling, so the \gls{rrc} filter is normalized to unit energy 
-    \cref{eq:rrc_unit_energy}. When the convolution happens with the upsampled signal, the energy is spread across the \gls{sps} 
-    samples, resulting in a lower effective noise variance per sample. In greater detail, the noise variance after 
-    filtering is described by \cref{eq:filtered_noise_variance}, and the standard deviation of the estimated average is given by
-    \cref{eq:filtered_average_deviation}.
-
-    \begin{equation}
-        \sum_n g[n]^2 = 1
-        \label{eq:rrc_unit_energy}
-    \end{equation}
-
-    \begin{equation}
-        \sigma_{\text{noise, filtered}}^2
-        = \frac{\sigma_{\text{noise}}^2}{\text{sps}}
-        = \frac{2916}{10} = 291.6
-        \label{eq:filtered_noise_variance}
-    \end{equation}
-
-    \begin{equation}
-        \sigma_{\text{Estimated\_Average, filtered}}
-        = \frac{\sigma_{\text{noise, filtered}}}{K}
-        = \frac{\sqrt{291.6}}{20} \approx 0.85
-        \label{eq:filtered_average_deviation}
-    \end{equation}
-
-    \begin{equation}
-        P_{\text{signal}} = \frac{1}{N} \sum (\text{Ideal\_Sum})^2 \approx 540^2 = 291600 \label{eq:signal_power}
-    \end{equation}    
-
-    \begin{equation}
-        \sigma_{\text{noise}}^2 = \frac{P_{\text{signal}}}{100} = \frac{291600}{100} = 2916 \label{eq:awgn_variance}
-    \end{equation}
-
-    The eye diagram animation in Figure~\ref{fig:ml_fc_rrc_eye_span_comparison} illustrates the temporal evolution of the received signal's
-    integrity as the number of samples per symbol varies. The left subfigure, corresponding to a truncated filter with $\text{span} = 4$, 
-    shows that as $sps$ increases, the eye opening becomes wider, indicating improved timing margins and reduced inter-symbol interference. 
-    The right subfigure, with an extended filter of $\text{span} = 12$, demonstrates that even at lower $sps$ values, the eye remains relatively 
-    open due to the longer filter length, which provides better pulse shaping and mitigates ISI effects. This visual evidence reinforces the 
-    quantitative findings from the MSE analysis, highlighting the critical role of both $sps$ and filter span in enhancing system performance.
-
-    If we take a closer look near the top of each diagram \ref{fig:ml_fc_rrc_eye_span_comparison} we see that the aggregated amplitude can take any real value, there are no voltage levels,
-    and the eye diagram is not a square shape, but rather a continuous distribution of amplitudes. This is because the transmitted signals are
-    analog values, and the superposition of these signals results in a continuous range of possible amplitudes at the receiver. The eye diagram
-    reflects this continuous nature, showing the variations in amplitude over time and the impact of noise on the received signal. The eye opening
-    indicates the time intervals where the signal is most stable and least affected by noise, which is crucial for accurate symbol detection in an
-    analog \gls{ota} computation scenario.
-
-    \begin{figure}[htbp]
-        \centering
-        \animategraphics[autoplay, loop, width=0.85\linewidth]{1.5}{figures/IdealOTA_ml_rrc_fc_eye_span_comparison}{}{}
-        \caption{Eye diagram evolution for fixed roll-off $\alpha = 0.70$.}
-        \label{fig:ml_fc_rrc_eye_span_comparison}
-    \end{figure}
-
-    Unlike digital slicers that require an open eye mask, \gls{ota} computation systems rely on the continuous nature of the received signal.
-    In an ideal Nyquist system the derivative of every pulse passes through zero at the sampling instant, resulting in flat trajectory slopes at $t/T_s = 1.0$,
-    In \ref{fig:ml_fc_rrc_eye_span_comparison} the trajectories either reach a peak, a trough, or an inflection point where the slopes flatten out,
-    in other words the derivative of the pulse is constant at the Nyquist strobe point \ref{eq:nyquist_derivative}.
-
-    \begin{equation}
-        \left. \frac{d p(t)}{dt} \right \vert{}_{t = 0} = 0 \label{eq:nyquist_derivative}
-    \end{equation}
-
-    In \gls{ota}, timing margin is quantified by the curvature (second derivative) around the strobe instant \ref{eq:strobe_instant_curvature}. 
-    The bundle's tightness around $t/T\_s = 1.0$ shows the receiver's sensitivity to clock drift: a wider, flatter plateau around $t/T\_s = 1.0$ 
-    means small timing misalignments will not severely degrade the estimated mean.
-
-    \begin{equation}
-        y(T\_s + \Delta t) \approx y(T\_s) + \frac{1}{2} y''(T\_s) \Delta t^2 \label{eq:strobe_instant_curvature}
-    \end{equation}
-
-    \subsection{MATLAB Simulink Architecture}
-    Transitioning from raw code to a block-level architecture, MATLAB Simulink provides a
-    clear visual representation of the feedforward ideal system. In this model, the
-    transmitters use standard \gls{pam} without the need for
-    complex feedback loops or equalizers.
-
-    \begin{figure}[htpb]
-        \centering
-        \includegraphics[width=\linewidth]{flowgraphs/sl_awgn.pdf}        
-        \caption{Simulink block diagram representing the ideal OTA computation network over an \gls{awgn} channel.}
-        \label{fig:idealOTA_simulink}
-    \end{figure}
-
-    To bridge the gap between theory and practical system implementation, an enhanced model incorporating 
-    Raised Cosine pulse shaping is presented in Figure~\ref{fig:idealOTA_simulink_rrc}. This architecture 
-    employs matched filtering pairs at both transmission and reception stages, enabling quantitative assessment 
-    of performance degradation attributable to finite symbol-rate sampling and spectral roll-off constraints.
-
-    \begin{figure}[htpb]
-        \centering
-        \includegraphics[width=\linewidth]{flowgraphs/sl_rrc.pdf}        
-        \caption{Simulink block diagram representing the ideal OTA computation network over an \gls{awgn} channel.}
-        \label{fig:idealOTA_simulink_rrc} 
-    \end{figure}
-
-    Inspection of the \gls{mse} calculation scope output demonstrates the quantitative deviation between 
-    the recovered aggregated estimate and the theoretical true value, reflecting the stochastic influence 
-    of the additive Gaussian noise. It is noteworthy that practical over-the-air computation mandates 
-    time-varying transmission (as opposed to static constant-valued signals), as pulse shaping through 
-    \gls{fir} filtering inherently requires symbol-rate sampling and subsequent interpolation. Consequently, 
-    systems employing matched filter pairs necessitate carefully synchronized symbol generation to avoid 
-    spurious transient responses.
-
-    The constellation diagrams provide a clear visual confirmation of the role played by
-    pulse shaping in the received signal. The plot corresponding to the fusion center
-    observation after the matched RRC filter shows a more compact and well-defined symbol
-    distribution, indicating that the filtering stage has improved temporal alignment and
-    reduced the impact of inter-symbol interference. In contrast, the constellation 
-    associated with the theoretical receiver model without pulse shaping appears more
-    dispersed and less structured, reflecting the absence of the smoothing and
-    energy-concentrating effect provided by the matched filter. This comparison highlights
-    that the matched RRC filter contributes not only to spectral shaping, but also to
-    preserving symbol integrity and improving the reliability of the recovered OTA
-    estimate.
-
-    When an \gls{rrc} filter is generated using MATLAB/Simulink's underlying
-    rcosdesign math, the filter is normalized for Energy, not Peak Amplitude.The algorithm
-    guarantees that the sum of the squares of the filter taps equals $1.0$ ($\sum h[n]^2 =
-    1$). However, in discrete-time \gls{dsp}, when you push a signal through an interpolation
-    filter, the energy gets spread out across the \gls{sps} samples. When the signal passes
-    through the Tx \gls{rrc} filter, travels through the air, and passes through the Rx \gls{rrc}
-    matched filter, the continuous-time math is perfect, but the discrete-time convolution
-    sum inherently scales the output by a factor related to the \gls{sps}.
-
-    \begin{figure}[htbp]
-        \centering
-
-        \begin{subfigure}{0.48\linewidth}
-            \tikzsetnextfilename{fig_sl_awgn_fc_eye}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    title={Eye Diagram at Fusion Center (Unfiltered)},
-                    xlabel={Time ($T_{sym}$)}, ylabel={Amplitude},
-                    grid=major, width=\linewidth, height=0.8\linewidth,
-                    % Style applies to all 150 lines automatically
-                    every axis plot/.append style={
-                        mark=none, color=blue, line width=0.4pt, opacity=0.15
-                    }
-                ]
-                    \addplot table[x=Time, y=Amplitude] {data/ideal/eye/sl_awgn_fc_eye.txt};
-
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Eye diagram without filtering.}
-            \label{fig:sl_awgn_fc_eye}
-        \end{subfigure}%
-        \hfill
-        \begin{subfigure}{0.48\linewidth}
-            \tikzsetnextfilename{fig_sl_rrc_fc_eye}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    title={Fusion Center (Matched Filter)},
-                    xlabel={Time ($T_{sym}$)},
-                    ylabel={Amplitude}, grid=major,
-                    width=\linewidth,
-                    height=0.8\linewidth,
-                    every axis plot/.append style={
-                        mark=none, color=red, line width=0.4pt, opacity=0.15
-                    }
-                ]
-                    \addplot table[x=Time, y=Amplitude] {data/ideal/eye/sl_rrc_fc_eye.txt};
-
-                    \addlegendentry{sps=10, span=4, $\alpha=0.0$}
-
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Eye diagram with RRC filtering.}
-            \label{fig:sl_rrc_fc_eye}
-        \end{subfigure}
-
-        \caption{Eye Diagrams with and without filtering.}
-        \label{fig:sl_awgnANDrrc_fc_eye}
-    \end{figure}
-
-    The eye diagrams further illustrate the impact of pulse shaping on the received
-    signal. The eye diagram corresponding to the fusion center observation after the
-    matched RRC filter shows a more open and well-defined eye pattern, indicating that the
-    filtering stage has improved temporal alignment and reduced inter-symbol interference.
-    In contrast, the eye diagram associated with the theoretical receiver model without
-    pulse shaping appears more closed and less structured, reflecting the absence of the
-    smoothing and energy-concentrating effect provided by the matched filter. This
-    comparison highlights that the matched RRC filter contributes not only to spectral
-    shaping, but also to preserving symbol integrity and improving the reliability of the
-    recovered OTA estimate.
-
-    \begin{figure}[htbp]
-        \centering
-        \begin{tikzpicture}
-            \begin{axis}[
-            width=9.5cm, height=6cm,
-            grid=both,
-            grid style={line width=0.1pt, draw=gray!30},
-            xlabel={Sampling Phase Offset ($\tau_e / T_s$)},
-            ylabel={Computation $\mathrm{MSE}$},
-            ymode=log,
-            ymin=1e-6, ymax=1e3,
-            xmin=-0.5, xmax=0.5,
-            ticklabel style={font=\footnotesize},
-            label style={font=\small}
-            ]
-            \addplot[thick, color=blue!80!black, mark=*] 
-                table [x=tau_norm, y=mse_aligned] {data/ideal/mse/sl_awgn_vs_rrc_timing_sensitivity_scurve.txt};
+                \addlegendentry{Unfiltered AM}
             \end{axis}
         \end{tikzpicture}
-        \caption{
-            S-Curve of \gls{ota} computation to symbol timing synchronization error
-            ($\mathrm{sps}=8$).
-        }
-        \label{fig:aircomp_timing_sensitivity}
-    \end{figure}
+        \caption{Unfiltered passband AM baseline.}
+        \label{fig:ml_awgn_fc_mse}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{.48\linewidth}
+        \tikzsetnextfilename{fig_ml_rrc_fc_mse_comparison}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    title={\textsf{Matched RRC Filtered ($\alpha=0.50$)}},
+                    xlabel={SNR (dB)}, ylabel={MSE},
+                    ymode=log, grid=major,
+                    xmin=-20, xmax=20,
+                    ymin=1e-5, ymax=10,
+                    legend pos=north east,
+                    width=\linewidth, height=0.82\linewidth,
+                    ticklabel style={font=\tiny},
+                    label style={font=\scriptsize},
+                    title style={font=\small}
+                ]
+                \addplot[
+                    color=red!80!black, mark=*, mark size=1.2pt, thick,
+                    restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51}
+                ] table[x=SNR_dB, y=mse_results]
+                {data/ideal/mse/ml_rrc_fc_mse_12sps_span4.txt};
+                \addlegendentry{MATLAB ($\text{span}=4$)}
 
-    In Figure~\ref{fig:aircomp_timing_sensitivity}, the sensitivity of the Over-the-Air
-    Computation system to symbol timing synchronization error is depicted. The plot
-    illustrates that at the optimal strobe instant ($\tau_e = 0$), the Nyquist ISI
-    cancellation effectively minimizes the error floor to $10^{-5}$. However, even a
-    slight clock drift of $0.25 T_s$ results in a dramatic increase in error, exceeding
-    seven orders of magnitude. This underscores the critical importance of precise timing
-    synchronization in maintaining the integrity and accuracy of OTA computations,
-    particularly in systems employing pulse shaping and matched filtering.
+                \addplot[
+                    color=teal, mark=triangle*, mark size=1.2pt, thick,
+                    restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51}
+                ] table[x=SNR_dB, y=mse_results]
+                {data/ideal/mse/ml_rrc_fc_mse_12sps_span12.txt};
+                \addlegendentry{MATLAB ($\text{span}=12$)}
 
-    \begin{equation}
-        \text{MSE}(\phi) \quad \text{for } \phi \in \{0, 1, \dots, 7\}
-        \label{eq:mse_sensitivity_function}
-    \end{equation}
+                \addplot[
+                    color=orange!90!black, mark=diamond*, mark
+                    size=1.5pt, thick, dashed
+                ] table[x=Column1, y=current_mse]
+                {data/ideal/mse/sl_rrc_fc_mse_12sps_span12_alpha0.50.txt};
+                \addlegendentry{Simulink ($\text{span}=12$)}
 
-    \begin{equation}
-        \sum_{k=1}^K x_k(t - \tau_k)
-        \label{eq:mac_sum}
-    \end{equation}
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Matched RRC filtered regimes.}
+        \label{fig:ml_rrc_fc_mse_comparison}
+    \end{subfigure}
 
-    \begin{equation}
-        \text{MSE}(\tau_e) = \frac{1}{N} \sum_{n=1}^{N} \left( \hat{x}(n, \tau_e) - x(n) \right)^2
-        \label{eq:mse_timing_error}
-    \end{equation}
+    \caption{Two-dimensional MSE comparison between the unfiltered
+        baseline and the matched RRC filtered systems across SNR
+        ($-20\text{ dB}$ to $+20\text{ dB}$). Both configurations exhibit
+        log-linear error decay without an error floor, confirming pure
+    AWGN limitation.}
+    \label{fig:mse_awgn_rrc_comparison}
+\end{figure}
 
-    \subsection{GNU Radio Validation}
-    Finally, the ideal model is verified using a \gls{sdr} environment
-    in GNU Radio. To maintain the ideal conditions mathematically defined in (\ref{eq:mac_sum}),
-    the Root Raised Cosine (RRC) filters are perfectly matched. Specifically, the
-    interpolation rate at the transmitters and the decimation rate at the receiver are
-    identically matched to the symbol design rate (\texttt{sps\_actual = sps\_design =
-    6}). In other words the upsampling rate of the \gls{fir} filters matches the spacing between
-    sample generation.
+\Cref{fig:mse_awgn_rrc_comparison} illustrates the empirical
+\gls{mse} performance as a function of \gls{snr}. In both the
+unfiltered baseline (\cref{fig:ml_awgn_fc_mse}) and the matched
+\gls{rrc} systems (\cref{fig:ml_rrc_fc_mse_comparison}), the
+\gls{mse} exhibits a strictly linear descent on a logarithmic scale
+with a slope of exactly $10\text{ dB}$ per decade of \gls{snr}.
+Crucially, because the ideal channel contains no multipath
+reflections or timing offsets, the curves maintain monotonic descent
+down to the highest simulated \gls{snr} without encountering an
+irreducible error floor.
 
-    An important architectural consideration emerges from the GNU Radio implementation: in
-    the absence of explicit digital modulation schemes, strategic downsampling at the
-    transmitter becomes mandatory to enable proper filter operation. Specifically, each
-    individual sensor transmits one symbol while simultaneously discarding sixteen
-    interpolated samples, thereby maintaining compliance with Nyquist sampling criterion
-    while leveraging the spectral efficiency benefits of pulse shaping.
+\begin{figure}[htbp]
+    \centering
+    \animategraphics[autoplay, loop,
+    width=0.88\linewidth]{1.5}{figures/IdealOTA_mse_span_comparison}{}{}
+    \caption{
+        Synchronous 3D surface animation of the Over-The-Air MSE
+        across roll-off factor $\alpha \in [0.0, 1.0]$ and SNR
+        ($-20\text{ dB}$ to $+20\text{ dB}$) under oversampling
+        scaling ($sps \in \{12, 24, 48, 96\}$) for filter span 4
+        (left) versus span 12 (right).
+    }
+    \label{fig:mse_span_comparison}
+\end{figure}
 
-    \begin{figure}[htpb]
-        \centering
-        \includegraphics[width=\linewidth]{flowgraphs/grc_ideal_awgn.pdf}
+Parametric analysis of the 3D surface animation in
+\cref{fig:mse_span_comparison} provides deep insight into the interaction
+between filter span and spectral roll-off:
+\begin{itemize}
+    \item \textbf{Span 4 (Left):} Truncating the \gls{rrc} impulse
+        response to 4 symbol periods cuts off the decaying sidelobes
+        abruptly. This finite-window truncation introduces subtle
+        residual intersymbol ripple, causing the \gls{mse} surface to
+        tilt slightly at low roll-off factors ($\alpha \to 0$).
+    \item \textbf{Span 12 (Right):} Extending the filter memory to 12
+        symbol durations allows the \gls{rrc} tails to decay
+        naturally below $-40\text{ dB}$. Consequently, the resulting
+        \gls{mse} surface is exceptionally flat across all values
+        of $\alpha$, demonstrating that truncation-induced \gls{isi}
+        is completely eliminated.
+    \item \textbf{Oversampling Convergence:} Scaling the oversampling
+        ratio from $\text{sps} = 12$ to $\text{sps} = 96$ yields
+        negligible change in the \gls{mse} surface. This confirms
+        that once the Nyquist sampling criterion is satisfied ($F_s > 2 B$),
+        additional oversampling provides diminishing returns under
+        ideal synchronization.
+\end{itemize}
 
-        \caption{GNU Radio flowgraph for the ideal, Nyquist-compliant scenario.}
-        \label{fig:grc_ideal}
-    \end{figure}
-     
-    The matched filter perfectly recovered the symbol, but the amplitude fell short (26.4 instead of 27.4).
-    The one-unit reduction in amplitude results from a
-    fundamental property of Raised Cosine (RC) filters when calculating \gls{mse}.
-    When a \gls{rrc} filter is generated using MATLAB/Simulink's
-    underlying rcosdesign math, the filter is normalized for Energy, not Peak
-    Amplitude. The algorithm guarantees that the sum of the squares of the filter taps
-    equals $1.0$ ($\sum h[n]^2 = 1$). However, in discrete-time DSP, when a signal passes
-    through an interpolation filter, the energy is spread out across the $SPS$
-    samples. When the signal passes through the Tx \gls{rrc} filter, travels through the air, and
-    passes through the Rx \gls{rrc} matched filter, the continuous-time math is perfect, but the
-    discrete-time convolution sum inherently scales the output by a factor related to the
-    \gls{sps}. 
-    
-    In commercial transceivers, the filters are not expected to perfectly preserve the raw
-    voltage scale. Instead, a static scalar multiplier (Gain block) is applied at the receiver,
-    or an Automatic Gain Control (AGC) loop is used, to rescale the discrete digital values
-    back to physical analogue units (such as Volts or Celsius) before the data reaches the
-    Constellation Diagram or the Fusion Center average calculation.
+\subsection{Constellation Diagnostics and Variance Discrepancy Mechanics}
+\label{subsec:constellation_diagnostics}
+To examine the structural integrity of the recovered signal at the
+symbol decision instant, constellation scatter plots
+are evaluated at a reference \gls{snr} of $20\text{ dB}$.
 
-    \begin{figure}[htpb]
-        \centering
-        \includegraphics[width=\linewidth]{flowgraphs/grc_ideal_rrc.pdf}
+\begin{figure}[htbp]
+    \centering
 
-        \caption{GNU Radio flowgraph for the ideal, Nyquist-compliant scenario.}
-        \label{fig:grc_ideal_rrc}
-    \end{figure}
+    % ==================== LEFT SUBFIGURE: STATIC BASELINE ====================
+    \begin{subfigure}{0.48\linewidth}
+        \tikzsetnextfilename{fig_ml_awgn_fc_const}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    title={\textsf{Unfiltered Baseline ($\text{SNR} =
+                    20\text{ dB}$)}},
+                    xlabel={In-Phase (I)},
+                    ylabel={Quadrature (Q)},
+                    xmin=18, xmax=36,
+                    ymin=-0.5, ymax=0.5,
+                    grid=major,
+                    width=\linewidth,
+                    height=0.82\linewidth,
+                    ticklabel style={font=\tiny},
+                    label style={font=\scriptsize},
+                    title style={font=\small}
+                ]
+                \addplot[
+                    only marks,
+                    mark=*,
+                    mark size=1pt,
+                    color=blue,
+                    opacity=0.35
+                ] table[x=I_Data, y expr=0]
+                {data/ideal/constellation/ml_awgn_am_fc_const.txt};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Unfiltered passband AM baseline.}
+        \label{fig:ml_awgn_fc_const}
+    \end{subfigure}%
+    \hfill
+    % ==================== RIGHT SUBFIGURE: ANIMATED ALPHA ====================
+    \begin{subfigure}{0.48\linewidth}
+        \animategraphics[autoplay, loop,
+        width=\linewidth]{1.5}{figures/IdealOTA_ml_rrc_fc_const}{}{}
+        \caption{Matched RRC response across roll-off $\alpha \in [0.0, 1.0]$.}
+        \label{fig:ml_rrc_fc_const}
+    \end{subfigure}
 
-    Under these constraints, the Eye Diagram remains perfectly "open" at the optimal
-    sampling phase, and the Constellation Diagram exhibits tightly clustered points. The
-    absence of horizontal dispersion in the constellation confirms that, prior to the
-    introduction of timing offsets or Faster-Than-Nyquist signaling, the \gls{mac} superposition
-    principle flawlessly computes the arithmetic average of the agricultural sensors.
+    \caption{Constellation diagram comparison at $\text{SNR} =
+        20\text{ dB}$. Left: Unfiltered AWGN baseline exhibiting wider
+        dispersion ($I \in [22, 32]$). Right: Animated matched RRC filter
+        response exhibiting tight residual clustering ($I \in [-0.8,
+    0.8]$) across roll-off $\alpha$ ($\text{span} = 12$, $sps = 48$).}
+    \label{fig:ml_awgnANDrrc_fc_const}
+\end{figure}
 
-    \begin{figure}[htpb]
-        \centering
+A prominent empirical observation in
+\cref{fig:ml_awgnANDrrc_fc_const} concerns the marked difference in
+constellation dispersion:
+in the unfiltered scenario (\cref{fig:ml_awgn_fc_const}), the
+received values scatter across a broad interval spanning
+$I \in [22.3, 31.9]$ (with extreme samples reaching $17$ to $38$ in
+unmodulated tests). In contrast, under matched \gls{rrc}
+filtering (\cref{fig:ml_rrc_fc_const}), the points are tightly
+clustered within a narrow band of $I \in [-0.73, 0.73]$.
 
-        \includegraphics[width=0.45\linewidth]{img/idealOTA.png}\hfil
-        \includegraphics[width=0.45\linewidth]{img/idealOTA_rrc.png}
+This apparent paradox—wherein an unfiltered channel theoretically
+free of pulse-shaping distortion exhibits \emph{greater}
+variance than a filtered channel—is governed by two distinct physical
+and simulation mechanisms:
 
-        \caption{GNU Radio flowgraph for the ideal, Nyquist-compliant scenario.}
-        \label{fig:grc_ideal_diagram}
-    \end{figure}
+\subsubsection{Physical Mechanism: Matched Filtering and Noise
+Bandwidth Rejection}
+In communication theory, an unfiltered receiver possesses an
+unconstrained noise equivalent bandwidth equal to the entire
+sampling rate ($B_n = F_s / 2$). Consequently, it admits thermal
+noise energy across the entire frequency spectrum.
+By contrast, the Root Raised Cosine matched filter at the receiver
+acts as a strictly bandlimited filter that passes only
+the signal bandwidth $B = \frac{1+\alpha}{2 T_s}$, completely
+rejecting out-of-band noise. By the North-Turin matched filter
+theorem, convolving the received noisy waveform with $p(-t)$ executes
+coherent integration: signal components add constructively,
+while zero-mean noise samples partially cancel, providing an
+effective processing gain proportional to the oversampling factor.
 
-    A critical implementation detail warranting emphasis concerns the optimal sampling phase selection. Empirical 
-    observation from the GNU Radio receiver indicates that maximum data recovery is achieved at a sampling phase 
-    offset of $33$ samples out of the $96$-sample cycle (\footnote{The fundamental cycle spans 16 symbols; with 
-    6 samples per symbol, the total cycle length is $16 \times 6 = 96$ samples.}). This phase offset reflects 
-    the group delay inherent to the polyphase interpolating and decimating \gls{fir} filter implementations, 
-    necessitating careful calibration for optimal demodulation performance.
-    
-    It is also useful to note that the GNU Radio implementation, while functionally equivalent to the MATLAB/Simulink model,
-    introduces additional practical considerations, such as real-time processing constraints and hardware-induced
-    latency. These factors may influence the observed performance metrics, particularly in scenarios where the
-    system is subjected to dynamic channel conditions or when operating near the limits of the hardware's processing
-    capabilities. Therefore, while the idealized models provide a valuable theoretical benchmark, real-world deployments
-    must account for these additional complexities to ensure robust and reliable operation.
+\subsubsection{Simulation Mechanism: Interaction of AWGN with Sensor
+DC Pedestal}
+The numerical discrepancy in MATLAB's \texttt{awgn(..., 'measured')}
+function originates from the non-zero agricultural temperature
+mean ($27^\circ\text{C}$). With $K = 20$ sensors, the instantaneous
+aggregate baseline is:
+\begin{equation}
+    \text{Ideal\_Sum}[n] \approx K \times 27 = 540
+    \label{eq:dc_pedestal}
+\end{equation}
+In the unmodulated script (\cref{lst:ml_awgn_fc}), MATLAB measures
+the total average signal power:
+\begin{equation}
+    P_{\text{signal}} = \frac{1}{N} \sum_{n=1}^N
+    \big(\text{Ideal\_Sum}[n]\big)^2 \approx 540^2 = 291{,}600
+    \label{eq:signal_power}
+\end{equation}
+At $\text{SNR} = 20\text{ dB}$ (a power ratio of $100:1$), MATLAB
+injects noise with variance:
+\begin{equation}
+    \sigma_{\text{noise}}^2 = \frac{P_{\text{signal}}}{100} =
+    \frac{291{,}600}{100} = 2{,}916 \implies \sigma_{\text{noise}} =
+    \sqrt{2{,}916} \approx 54
+    \label{eq:awgn_variance}
+\end{equation}
+The \gls{fc} divides the noisy sum by $K = 20$:
+\begin{equation}
+    \hat{\mu} = \frac{540 + w}{20} = 27 + \frac{w}{20}
+    \label{eq:estimated_average_dc}
+\end{equation}
+The standard deviation of this estimate is:
+\begin{equation}
+    \sigma_{\text{est}} = \frac{\sigma_{\text{noise}}}{K} = \frac{54}{20} = 2.7
+    \label{eq:estimated_average_deviation}
+\end{equation}
+For a Gaussian distribution with $\sigma_{\text{est}} = 2.7$, the
+$3\sigma$ (99.7\%) confidence boundary is:
+\begin{equation}
+    27 \pm 3(2.7) = 27 \pm 8.1 = [18.9, 35.1]
+    \label{eq:confidence_interval_unfiltered}
+\end{equation}
+which precisely accounts for the wide scatter observed in
+\cref{fig:ml_awgn_fc_const}.
 
-    The circuit equivalent of the ideal OTA computation network is depicted in Figure~\ref{fig:idealOTA_circuit}. This representation
-    abstracts the wireless channel into a simplified electrical model, where each sensor's transmission is treated as
-    a voltage source, and the fusion center aggregates these signals through a common load. The circuit
+Conversely, in the multi-rate \gls{rrc} pipeline, the sequence is
+upsampled by \texttt{sps\_val} $= 10$. The impulse train contains
+non-zero values in only 1 out of every 10 samples. Because the
+\gls{rrc} filter is normalized to unit energy ($\sum_n g[n]^2 = 1$),
+the pulse energy is distributed over 10 samples, reducing the
+measured average continuous power by a factor of $\text{sps}$:
+\begin{equation}
+    P_{\text{measured}} \approx \frac{(K \cdot 27)^2}{\text{sps}} =
+    \frac{291{,}600}{10} = 29{,}160
+    \label{eq:filtered_measured_power}
+\end{equation}
+Consequently, MATLAB injects a tenfold smaller noise variance:
+\begin{equation}
+    \sigma_w^2 = \frac{29{,}160}{100} = 291.6
+    \label{eq:filtered_noise_variance}
+\end{equation}
+Passing through the receiver matched filter preserves this unit-energy variance:
+\begin{equation}
+    \sigma_{\text{filtered}}^2 = \sigma_w^2 \sum_{n} g^2[n] = 291.6
+    \times 1 = 291.6
+    \label{eq:matched_filter_noise_out}
+\end{equation}
+Dividing by $K = 20$ yields an estimate standard deviation of:
+\begin{equation}
+    \sigma_{\text{est, RRC}} = \frac{\sqrt{291.6}}{20} \approx 0.85
+    \label{eq:filtered_average_deviation}
+\end{equation}
+The resulting $3\sigma$ interval is $27 \pm 3(0.85) = [24.45,
+29.55]$, yielding an exceptionally tight distribution. Furthermore,
+when zero-mean residual modulation is employed ($\Delta x_k = x_k -
+27$), the DC pedestal is removed entirely, centering the
+constellation at $I = 0$ with $\sigma_{\text{est}} < 0.25$, as shown
+in \cref{fig:ml_rrc_fc_const}.
 
-    \begin{figure}
-        \centering
-        
-        % \usetikzlibrary {arrows.meta}
-        \begin{circuitikz}[line width=0.8pt]
+\subsection{Eye Diagram Diagnostics: MATLAB and Simulink Comparative Analysis}
+\label{subsec:eye_diagram_diagnostics}
+In conventional digital communications (e.g., \gls{bpsk} or
+\gls{qam}), eye diagrams exhibit an open, diamond-shaped central aperture
+delimiting discrete decision thresholds ($\pm 1$). In uncoded analog
+Over-the-Air computation, however, the eye diagram exhibits a
+fundamentally different topology that must be interpreted as an
+analog signal integrity and timing sensitivity diagnostic:
+\begin{enumerate}
+    \item \textbf{Continuous Amplitude Band:} Because sensor readings
+        are continuous random variables ($X_k \sim \mathcal{N}(27, 1)$),
+        the aggregated amplitude occupies a continuum of real values
+        without forbidden intermediate regions, forming a smooth flowing ribbon.
+    \item \textbf{Nyquist Strobe Verification:} In an ideal Nyquist
+        system, the first time derivative of every pulse passes through
+        zero at the nominal sampling instants:
+        \begin{equation}
+            \left. \frac{d p(t)}{dt} \right\vert_{t = 0} = 0
+            \label{eq:nyquist_derivative}
+        \end{equation}
+        At integer symbol strobe instants ($t / T_s \in \{1, 2,
+        \dots\}$), the trajectory curves reach local extrema or
+        inflection points,
+        yielding perfectly horizontal slopes that confirm zero
+        intersymbol leakage.
+    \item \textbf{Jitter and Timing Sensitivity:} Timing margin is
+        quantified by the second derivative (curvature) around the strobe point:
+        \begin{equation}
+            y(T_s + \Delta t) \approx y(T_s) + \frac{1}{2} y''(T_s) \Delta t^2
+            \label{eq:strobe_instant_curvature}
+        \end{equation}
+        A flatter trajectory bundle around the strobe instant
+        guarantees high robustness against transceiver clock jitter.
+\end{enumerate}
 
-            % ==========================================
-            % SENSOR NODE 1
-            % ==========================================
-            % Baseband Voltage Source
-            \draw (0, 6) to[sV, l=$v_1(t)$] (0, 4)
-            % Internal Impedance
-            to[R, l=$R_{S1}$] (2, 4)
-            % Antenna RLC Equivalent
-            to[L, l=$L_{A1}$] (3.5, 4)
-            to[C, l=$C_{A1}$] (5, 4)
-            to[R, l=$R_{rad1}$] (5, 6) -- (0, 6);
-            
-            \node at (2.5, 6.5) {\textbf{Sensor Node 1 (Tx)}};
-            
-            % Wireless Channel 1 (Transmission Line)
-            \draw (5.5, 4.5) node[right] {Channel $h_1$};
-            \draw (5, 5) -- node[above] {$\tau_1 \ \angle\theta_1$} (9, 5);
+\subsubsection{MATLAB Eye Diagram Evaluation}
+\label{subsubsec:matlab_eye_diagrams}
+\Cref{fig:ml_eye_comparison} compares the continuous-time passband
+\gls{am} eye diagram against the multi-rate matched \gls{rrc}
+filter response across oversampling factors $sps \in \{12, 24, 48, 96\}$.
 
-            % ==========================================
-            % SENSOR NODE 2
-            % ==========================================
-            % Baseband Voltage Source
-            \draw (0, 2) to[sV, l=$v_2(t)$] (0, 0)
-            % Internal Impedance
-            to[R, l=$R_{S2}$] (2, 0)
-            % Antenna RLC Equivalent
-            to[L, l=$L_{A2}$] (3.5, 0)
-            to[C, l=$C_{A2}$] (5, 0)
-            to[R, l=$R_{rad2}$] (5, 2) -- (0, 2);
-            
-            \node at (2.5, 2.5) {\textbf{Sensor Node 2 (Tx)}};
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{0.48\linewidth}
+        \animategraphics[autoplay, loop,
+        width=\linewidth]{1.5}{figures/IdealOTA_ml_awgn_am_fc_eye}{}{}
+        \caption{Passband AM eye across $sps \in \{12, 24, 48, 96\}$.}
+        \label{fig:ml_awgn_am_fc_eye}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{0.48\linewidth}
+        \animategraphics[autoplay, loop,
+        width=\linewidth]{1.5}{figures/IdealOTA_ml_rrc_fc_eye_span12}{}{}
+        \caption{Matched RRC eye across $sps \in \{12, 24, 48, 96\}$
+        ($\text{span} = 12$, $\alpha = 0.70$).}
+        \label{fig:ml_rrc_fc_eye_animated}
+    \end{subfigure}
+    \caption{MATLAB eye diagram diagnostics. Left: Demodulated
+        passband AM eye animation across oversampling factor $sps \in
+        \{12, 24, 48, 96\}$, illustrating continuous-time trajectories
+        oscillating about the $27^\circ\text{C}$ mean without intersymbol
+        zero-crossings. Right: Matched RRC filter eye animation
+        ($\text{span} = 12$, roll-off $\alpha = 0.70$) across identical
+        oversampling ratios, exhibiting zero-mean clustering and sharp
+    nodal convergence at integer strobe instants.}
+    \label{fig:ml_eye_comparison}
+\end{figure}
 
-            % Wireless Channel 2 (Transmission Line)
-            \draw (5.5, 0.5) node[right] {Channel $h_2$};
-            \draw (5, 1) -- node[above] {$\tau_2 \ \angle\theta_2$} (9, 1);
+In \cref{fig:ml_awgn_am_fc_eye}, the demodulated passband AM eye
+animation demonstrates how increasing the oversampling
+ratio resolves the continuous-time carrier and pulse transitions with
+progressive fidelity around the nominal mean of
+$27^\circ\text{C}$. Because the unfiltered passband signal lacks
+matched Nyquist pulse shaping, the trajectories flow continuously
+without converging to discrete sampling nodes. In contrast, the
+matched \gls{rrc} eye animation (\cref{fig:ml_rrc_fc_eye_animated})
+with filter span 12 reveals sharply defined nodal convergence points
+at integer symbol strobe instants ($t / T_s \in \{1, 2, \dots\}$),
+completely eliminating intersymbol leakage and maintaining open,
+symmetrical eye apertures across all oversampling factors.
 
+\subsubsection{Simulink Eye Diagram Evaluation}
+\label{subsubsec:simulink_eye_diagrams}
+To examine how discrete-time block-level dynamics affect signal
+integrity, \cref{fig:sl_eye_comparison} presents the eye diagrams
+exported from the Simulink simulation environment.
 
-            % ==========================================
-            % FUSION CENTER (Rx) - THE OTA SUPERPOSITION
-            % ==========================================
-            % The electromagnetic waves combine at the Rx antenna
-            \draw (9, 5) -- (10, 5) -- (10, 4.5);
-            \draw (9, 1) -- (10, 1) -- (10, 1.5);
-            
-            % Rx Antenna RLC Equivalent
-            \draw (10, 4.5) to[R, l=$R_{rad, Rx}$] (10, 3.5)
-                            to[C, l=$C_{Rx}$] (10, 2.5)
-                            to[L, l=$L_{Rx}$] (10, 1.5);
-                            
-            % Rx Load / ADC Input
-            \draw (10, 4.5) -- (12, 4.5)
-                to[R, l=$Z_{load}$] (12, 1.5) -- (10, 1.5);
-                
-            % Label the Superposition Voltage
-            \draw (12.5, 4.5) node[right] {$+$};
-            \draw (12.5, 1.5) node[right] {$-$};
-            \draw (12, 1) node {\textbf{$y(t) = h_1 v_1(t) + h_2 v_2(t)$}};
-            
-            \node at (12, 5.5) {\textbf{Fusion Center (Rx)}};
-            
-            % Draw dashed boxes around the domains
-            \draw[dashed, gray] (-1.5, 3.5) rectangle (5.5, 7);
-            \draw[dashed, gray] (-1.5, -0.5) rectangle (5.5, 3);
-            \draw[dashed, blue] (9.5, -0.5) rectangle (14, 7);
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{0.48\linewidth}
+        \tikzsetnextfilename{fig_sl_awgn_fc_eye}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    title={\textsf{Simulink Unfiltered (AWGN)}},
+                    xlabel={Time ($T_{sym}$)}, ylabel={Amplitude},
+                    xmin=0, xmax=3,
+                    ymin=-2, ymax=34,
+                    grid=major, width=\linewidth, height=0.82\linewidth,
+                    ticklabel style={font=\tiny},
+                    label style={font=\scriptsize},
+                    title style={font=\small},
+                    every axis plot/.append style={
+                        mark=none, color=blue!80!black, line
+                        width=0.3pt, opacity=0.35
+                    }
+                ]
+                \addplot table[x=Time, y=Amplitude]
+                {data/ideal/eye/48sps/sl_awgn_fc_eye_48sps_span12_alpha0.50.txt};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Simulink unfiltered impulse train.}
+        \label{fig:sl_awgn_fc_eye}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{0.48\linewidth}
+        \tikzsetnextfilename{fig_sl_rrc_fc_eye}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    title={\textsf{Simulink Matched RRC Filtered}},
+                    xlabel={Time ($T_{sym}$)}, ylabel={Amplitude},
+                    xmin=0, xmax=3,
+                    ymin=-2, ymax=34,
+                    grid=major, width=\linewidth, height=0.82\linewidth,
+                    ticklabel style={font=\tiny},
+                    label style={font=\scriptsize},
+                    title style={font=\small},
+                    every axis plot/.append style={
+                        mark=none, color=red!80!black, line
+                        width=0.2pt, opacity=0.25
+                    }
+                ]
+                \addplot table[x=Time, y=Amplitude]
+                {data/ideal/eye/48sps/sl_rrc_fc_eye_48sps_span12_alpha0.50.txt};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Simulink matched RRC continuous eye.}
+        \label{fig:sl_rrc_fc_eye}
+    \end{subfigure}
+    \caption{Simulink eye diagram comparison ($sps = 48$,
+        $\text{span} = 12$, $\alpha = 0.50$). Left: Unfiltered upsampled
+        sequence exhibiting zero values between symbol strobes. Right:
+        Smoothly interpolated continuous trajectories following matched
+        RRC filtering, confirming Nyquist zero-derivative plateaus at
+    integer symbol times.}
+    \label{fig:sl_eye_comparison}
+\end{figure}
 
-        \end{circuitikz}
+The comparison in \cref{fig:sl_eye_comparison} highlights the
+fundamental role of pulse-shaping interpolation in discrete-time systems:
+\begin{itemize}
+    \item In the unfiltered upsampled system
+        (\cref{fig:sl_awgn_fc_eye}), the signal consists of raw
+        impulses. Between integer symbol
+        instants, the signal collapses to zero, producing sharp
+        vertical spikes that lack physical continuity.
+    \item In the matched \gls{rrc} system (\cref{fig:sl_rrc_fc_eye}),
+        the interpolation filter smooths the transitions into continuous
+        curvilinear paths. At the strobe instants ($t/T_s \in \{1.0,
+        2.0\}$), the trajectories converge into flat horizontal plateaus,
+        confirming that discrete-time convolution faithfully realizes
+        continuous-time Nyquist filtering.
+\end{itemize}
 
-        \caption{Circuit equivalent of the ideal OTA computation network. Each sensor node is modeled as a voltage source with internal impedance, and the fusion center aggregates the received signals through a common load. The wireless channels are represented as transmission lines with associated delays and phase shifts, capturing the effects of propagation in a simplified manner.}
-        \label{fig:idealOTA_circuit}
-    \end{figure}
+\subsection{MATLAB Simulink Dynamical Block Architecture}
+\label{subsec:simulink_architecture}
+Transitioning from script-based simulation to a block-level dynamical
+system, MATLAB Simulink provides a graphical multi-rate
+framework that models the feedforward signal chain.
 
-    \ifSubfilesClassLoaded{
-        \clearpage
-        \printbibliography
-    }{}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{flowgraphs/sl_awgn.pdf}
+    \caption{Simulink block diagram representing the unmodulated
+    ideal Over-the-Air computation network over an AWGN channel.}
+    \label{fig:idealOTA_simulink}
+\end{figure}
+
+\Cref{fig:idealOTA_simulink} illustrates the basic unmodulated
+feedforward network. Distributed sensor signals are generated as
+stochastic discrete-time sequences, combined via a multi-input
+summation block representing the electromagnetic \gls{mac},
+passed through an \gls{awgn} channel block, scaled by $1/K$, and
+compared against the ideal arithmetic average in an empirical
+running \gls{mse} calculation block.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{flowgraphs/sl_rrc.pdf}
+    \caption{Simulink multi-rate block diagram incorporating matched
+    Root Raised Cosine pulse shaping and delay compensation.}
+    \label{fig:idealOTA_simulink_rrc}
+\end{figure}
+
+To capture physical filtering constraints,
+\cref{fig:idealOTA_simulink_rrc} incorporates multi-rate \gls{fir}
+interpolation and
+decimation blocks. At each transmitter, the symbol stream is
+upsampled by \texttt{sps} and filtered by an \gls{rrc} block.
+At the \gls{fc}, the noisy aggregated signal passes through a matched
+\gls{rrc} filter. To prevent filter group delay from corrupting
+the error calculation, the ideal reference path incorporates an
+identical delay block of $D = \frac{\text{span} \cdot \text{sps}}{2}$
+samples, ensuring flawless sample-by-sample alignment at the subtractor input.
+
+\subsection{Software-Defined Radio Realization in GNU Radio}
+\label{subsec:gnuradio_validation}
+To validate the ideal baseline in a real-time \gls{sdr} environment,
+the Over-the-Air computation system is synthesized using GNU Radio Companion.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{flowgraphs/grc_ideal_awgn.pdf}
+    \caption{GNU Radio flowgraph for the ideal unmodulated baseline
+    Over-the-Air computation aggregation.}
+    \label{fig:grc_ideal_awgn}
+\end{figure}
+
+\Cref{fig:grc_ideal_awgn} depicts the unmodulated baseline flowgraph.
+Independent random temperature sources are summed using an
+Add block to emulate the superposition of the wireless channel,
+corrupted by Gaussian noise, and divided by $K$.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{flowgraphs/grc_ideal_rrc.pdf}
+    \caption{GNU Radio flowgraph for the Nyquist-compliant matched
+    RRC filtered Over-the-Air computation architecture.}
+    \label{fig:grc_ideal_rrc}
+\end{figure}
+
+\Cref{fig:grc_ideal_rrc} implements the full multi-rate pulse-shaping
+architecture. In this flowgraph, the transmitters utilize
+interpolating polyphase \gls{fir} filters with an interpolation
+factor matching the symbol rate ($\text{sps} = 6$). At the receiver,
+a decimating \gls{rrc} filter matched to the transmit pulse executes
+symbol recovery.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.48\linewidth]{img/idealOTA.png}\hfill
+    \includegraphics[width=0.48\linewidth]{img/idealOTA_rrc.png}
+    \caption{GNU Radio runtime display captures. Left: Unmodulated
+        aggregation showing broadband noise fluctuations. Right: Matched
+        RRC filtered aggregation displaying tight symbol clustering and
+    smooth time-domain trajectory recovery.}
+    \label{fig:grc_ideal_diagram}
+\end{figure}
+
+Empirical execution in GNU Radio reveals critical physical
+implementation insights:
+\begin{enumerate}
+    \item \textbf{Filter Normalization and Amplitude Rescaling:} When
+        generating \gls{rrc} taps in GNU Radio (as in MATLAB's
+        \texttt{rcosdesign}),
+        the filter is normalized for unit energy ($\sum h^2[n] = 1$)
+        rather than unity DC gain. Consequently, discrete convolution with
+        an interpolated pulse scales the recovered output amplitude
+        by a factor proportional to $\sqrt{\text{sps}}$. To restore the signal
+        to physical sensory units (e.g., Volts or $^\circ\text{C}$),
+        a calibrated receiver scalar multiplier or \gls{agc} block is applied
+        prior to arithmetic averaging.
+    \item \textbf{Optimal Sampling Phase Calibration:} Because the
+        causal polyphase \gls{fir} filters introduce group delay, the receiver
+        strobe phase must be calibrated. For a design cycle spanning
+        16 symbols with $\text{sps} = 6$ ($16 \times 6 = 96$ samples), maximum
+        signal-to-noise ratio is obtained at an offset of exactly
+        $33$ samples. Proper phase alignment centers the eye opening
+        and eliminates
+        quadrature leakage.
+    \item \textbf{Constellation Integrity:} As shown in
+        \cref{fig:grc_ideal_diagram}, the matched \gls{rrc} GNU Radio
+        receiver displays
+        tightly clustered constellation points and smooth time-domain
+        waveforms, confirming that the over-the-air superposition principle
+        accurately computes the arithmetic average under real-time
+        software-defined radio processing.
+\end{enumerate}
+
+\ifSubfilesClassLoaded{
+    \clearpage
+    \printbibliography
+}{}
+\end{document}
 \end{document}

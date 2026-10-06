@@ -1,0 +1,60 @@
+% IdealOTA_ml_awgn_am_fc_eye.tex
+\documentclass[multi=tikzpicture]{standalone}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\usepackage{luacode}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+\begin{luacode*}
+    local sps_list = {
+        {folder = "12sps", val = "12", label = "12"},
+        {folder = "24sps", val = "24", label = "24"},
+        {folder = "48sps", val = "48", label = "48"},
+        {folder = "96sps", val = "96", label = "96"},
+    }
+
+    local base_path = "../data/ideal/eye/"
+
+    for i, item in ipairs(sps_list) do
+    local file_am = string.format(
+        "%s%s/ml_awgn_am_fc_eye_%ssps.txt",
+        base_path, item.folder, item.val
+    )
+
+    tex.print("\
+    \begin{tikzpicture}")
+        tex.print("\
+            \begin{axis}[")
+                tex.print("    title={\\textsf{Passband AM Eye ($sps
+                = " .. item.label .. "$)}},")
+                tex.print("    xlabel={Time ($T_{sym}$)},")
+                tex.print("    ylabel={Amplitude},")
+                tex.print("    xmin=0, xmax=3,")
+                tex.print("    ymin=20, ymax=34,")
+                tex.print("    grid=major,")
+                tex.print("    width=9cm,")
+                tex.print("    height=7.2cm,")
+                tex.print("    ticklabel style={font=\\tiny},")
+                tex.print("    label style={font=\\scriptsize},")
+                tex.print("    title style={font=\\small},")
+                tex.print("    every axis plot/.append style={")
+                    tex.print("        mark=none,")
+                    tex.print("        color=blue!75!black,")
+                    tex.print("        line width=0.15pt,")
+                    tex.print("        opacity=0.15,")
+                    tex.print("        line cap=round,")
+                    tex.print("        line join=round")
+                tex.print("    }")
+            tex.print("]")
+            tex.print("\\addplot table[x=Time, y=Amplitude] {" ..
+            file_am .. "};")
+            tex.print("\
+        \end{axis}")
+        tex.print("\
+    \end{tikzpicture}")
+    end
+\end{luacode*}
+
+\end{document}

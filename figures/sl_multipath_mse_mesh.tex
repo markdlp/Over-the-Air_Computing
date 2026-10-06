@@ -1,0 +1,28 @@
+% sl_multipath_mse_mesh.tex
+\documentclass{standalone}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[
+        title={\textsf{Simulink AirComp MSE Surface vs. SNR and Echo Gain $g$ ($\text{SPS} = 12$)}},
+        xlabel={SNR (dB)},
+        ylabel={Multipath Gain $g$},
+        zlabel={Computation MSE},
+        zmode=log,
+        view={135}{30},
+        grid=major,
+        colormap name=viridis,
+        colorbar,
+        width=12cm, height=9cm,
+        ticklabel style={font=\footnotesize},
+        label style={font=\small},
+        title style={font=\normalsize\bfseries}
+    ]
+        \addplot3[surf] table[x=Column1, y=Column2, z=mse_results] {../data/isi/multipath/mse/sl_multipath_fc_mse_mesh_sps12.txt};
+    \end{axis}
+\end{tikzpicture}
+\end{document}
+

@@ -1,4 +1,4 @@
-% IdealOTA_mse_span_comparison.tex
+% ml_multipath_rrc_fc_mse_span_comparison.tex
 \documentclass[multi=minipage]{standalone}
 \usepackage{amsmath}
 \usepackage{pgfplots}
@@ -9,27 +9,27 @@
 
     \begin{luacode*}
         local sps_data = {
-            {val = "6", label = "6"},
             {val = "12", label = "12"},
             {val = "24", label = "24"},
             {val = "48", label = "48"},
             {val = "96", label = "96"},
-            {val = "192", label = "192"},
         }
+
+        local base_path = "../data/isi/multipath/mse/"
 
         for i, sps in ipairs(sps_data) do
 
             tex.print("\\begin{minipage}{18cm}")
 
-            -- ==================== LEFT PLOT: SPAN 4 ====================
+            -- LEFT PLOT: SPAN 4
             tex.print("\\begin{tikzpicture}")
             tex.print("\\begin{axis}[")
-            tex.print("    title={Span = 4 ($sps = " .. sps.label .. "$)},")
+            tex.print("    title={\\textsf{Span = 4 ($sps = " .. sps.label .. "$)}},")
             tex.print("    xlabel={SNR (dB)},")
             tex.print("    ylabel={$\\alpha$},")
             tex.print("    zlabel={MSE},")
             tex.print("    zmode=log,")
-            tex.print("    zmin=0.001, zmax=1,") 
+            tex.print("    zmin=0.1, zmax=10,") 
             tex.print("    view={135}{30},")
             tex.print("    grid=major,")
             tex.print("    colormap name=viridis,")
@@ -38,20 +38,20 @@
             tex.print("    label style={font=\\scriptsize},")
             tex.print("    title style={font=\\small}")
             tex.print("]")
-            tex.print("\\addplot3[surf] table[x=SNR_dB, y=alpha_array, z=mse_results] {../data/isi/mse/ml_isi_rrc_fc_mse_" .. sps.val .. "sps_span4.txt};")
+            tex.print("\\addplot3[surf, mesh/rows=21] table[x=SNR_dB, y=alpha_array, z=mse_results] {" .. base_path .. "ml_isi_rrc_fc_mse_" .. sps.val .. "sps_span4.txt};")
             tex.print("\\end{axis}")
             tex.print("\\end{tikzpicture}%")
             tex.print("\\hfill%")
 
-            -- ==================== RIGHT PLOT: SPAN 12 ====================
+            -- RIGHT PLOT: SPAN 12
             tex.print("\\begin{tikzpicture}")
             tex.print("\\begin{axis}[")
-            tex.print("    title={Span = 12 ($sps = " .. sps.label .. "$)},")
+            tex.print("    title={\\textsf{Span = 12 ($sps = " .. sps.label .. "$)}},")
             tex.print("    xlabel={SNR (dB)},")
             tex.print("    ylabel={$\\alpha$},")
             tex.print("    zlabel={MSE},")
             tex.print("    zmode=log,")
-            tex.print("    zmin=0.001, zmax=1,") 
+            tex.print("    zmin=0.1, zmax=10,") 
             tex.print("    view={135}{30},")
             tex.print("    grid=major,")
             tex.print("    colormap name=viridis,")
@@ -60,7 +60,7 @@
             tex.print("    label style={font=\\scriptsize},")
             tex.print("    title style={font=\\small}")
             tex.print("]")
-            tex.print("\\addplot3[surf] table[x=SNR_dB, y=alpha_array, z=mse_results] {../data/isi/mse/ml_isi_rrc_fc_mse_" .. sps.val .. "sps_span12.txt};")
+            tex.print("\\addplot3[surf, mesh/rows=21] table[x=SNR_dB, y=alpha_array, z=mse_results] {" .. base_path .. "ml_isi_rrc_fc_mse_" .. sps.val .. "sps_span12.txt};")
             tex.print("\\end{axis}")
             tex.print("\\end{tikzpicture}")
             

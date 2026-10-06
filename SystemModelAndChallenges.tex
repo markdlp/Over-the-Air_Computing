@@ -1,303 +1,1060 @@
 \documentclass[Markos_Delaportas_1316.tex]{subfiles}
 
-\begin{document}    
-    
-    \section{Intersymbol Interference in \texorpdfstring{\gls{ota}}{ }} A
-        system that utilizes \gls{ota} computing can be modeled in various ways depending
-        on the specific use case and propagation environment. Most architectures involve a
-        set of \gls{ed}s that transmit concurrently to a \gls{fc} or \gls{es}. The
-        communication channel is a critical component of this model, as it introduces
-        physical impairments such as fading, noise, and path loss. In addition to the
-        channel model, practical challenges inherent to wireless communications---such as
-        time sampling errors, multipath propagation, and waveform design---can
-        significantly degrade the computational reliability of \gls{ota} systems. To
-        mitigate these effects, optimization strategies including power management,
-        transceiver design, and equalization must be employed.
+\begin{document}
 
-    \subsection{System Architecture and Channel Model}
-        To mathematically formulate the impact of channel impairments on \gls{ota}
-        computing, we consider a discrete-time network model consisting of multiple
-        \gls{ed}s deployed in an agricultural environment. These devices utilize 
-        \gls{pam} to transmit local temperature readings to a central \gls{fc}. 
+\section{Multipath Propagation, Fractional Delay, and Intersymbol
+Interference in Over-the-Air Computation}
+\label{sec:multipath_isi_chapter}
+While \cref{sec:ideal_ota_baseline,eq:mac_sum} established the
+foundational premise of \gls{ota} computing under
+an idealized, flat-fading \gls{awgn} channel
+\cite{sahin_survey_2023,nazer_reliable_nodate}, practical wireless
+propagation environments diverge substantially
+from this benchmark
+\cite{perez-neira_waveforms_2025,zhu_over--air_2024}. Electromagnetic
+waves emitted simultaneously by
+distributed \gls{ed}s propagate across diverse
+physical paths, undergoing reflection, diffraction, and scattering
+off terrain, obstacles, and structural boundaries.
+This phenomenon introduces multipath dispersion and unresolvable
+fractional time delays across arriving wavefronts.
+In conventional point-to-point digital communications, such
+channel-induced dispersion causes adjacent symbols
+to overlap in time, creating \gls{isi}. In \gls{ota} networks, where
+computation is executed natively through
+analog waveform superposition in the air, the implications of
+\gls{isi} are profoundly more severe: dispersion
+destroys the precise temporal alignment required for nomographic
+multi-access superposition, directly corrupting
+the spatial aggregation arithmetic
+\cite{goldenbaum_robust_2013,goldenbaum_analyzing_2011}.
 
-        Let $x_i[n]$ denote the discrete-time signal transmitted by the $i$-th sensor, as
-        defined in \cref{eq:transmitted_signal}. For
-        an illustrative scenario involving two sensors, the transmitted sequences are
-        defined as:
-    
+This chapter presents a comprehensive theoretical formulation,
+algorithmic discrete-time modeling, block-level
+Simulink architecture, and experimental diagnostic framework for
+analyzing \gls{ota} computation under multipath
+propagation and fractional delay. We derive the closed-form
+mathematical expression for the resulting irreducible
+\gls{mse} error floor, demonstrate how it scales quadratically with
+the multipath echo gain ($g^2$), evaluate the
+sub-sample fidelity of polynomial Farrow fractional delay
+interpolation, and validate the system dynamics across
+multi-rate sample-based Simulink architectures, animated eye
+patterns, and constellation diagrams.
+
+\subsection{Continuous-Time Formulation and Multipath Channel Model}
+\label{subsec:continuous_time_multipath_model}
+Consider an Over-the-Air computation network comprising $K$
+distributed sensor nodes deployed across an environment
+(such as an agricultural sensory grid), concurrently transmitting
+localized scalar measurements to a central \gls{fc}.
+Each sensor node $k \in \{1, \dots, K\}$ generates a discrete
+sequence of zero-mean, uncorrelated information symbols
+$x_k[m]$ with symbol duration $T_s$ and statistical variance:
+\begin{equation}
+    \mathbb{E}[x_k[m]] = 0, \quad \mathbb{E}[x_k[m] x_{k'}[m']] =
+    \sigma_x^2 \, \delta_{k,k'} \, \delta_{m,m'}
+    \label{eq:sensor_symbol_statistics}
+\end{equation}
+where $\delta_{i,j}$ denotes the Kronecker delta function. In uncoded
+analog \gls{pam}, each device directly maps
+its local sensor reading to the amplitude of a transmitted
+continuous-time pulse. Let $p(t)$ denote an identical
+\gls{rrc} pulse-shaping filter implemented at each transmitter,
+possessing roll-off factor $\alpha \in [0, 1]$ and
+unit energy normalization:
+\begin{equation}
+    \int_{-\infty}^{\infty} p^2(t) \, dt = 1
+    \label{eq:rrc_continuous_unit_energy_isi}
+\end{equation}
+The continuous-time baseband waveform radiated by the $k$-th device
+is expressed as:
+\begin{equation}
+    s_k(t) = \sum_{m=-\infty}^{\infty} x_k[m] \, p(t - m T_s)
+    \label{eq:single_node_transmit_signal}
+\end{equation}
+By linear electromagnetic superposition over the shared wireless
+medium, the aggregate transmitted waveform
+arriving over the line-of-sight path is:
+\begin{equation}
+    s(t) = \sum_{k=1}^K s_k(t) = \sum_{k=1}^K
+    \sum_{m=-\infty}^{\infty} x_k[m] \, p(t - m T_s)
+    \label{eq:aggregate_transmit_waveform}
+\end{equation}
+
+\subsubsection{Two-Ray Multipath Channel Profile}
+\label{subsubsec:two_ray_channel_profile}
+To rigorously isolate the fundamental degradation induced by
+multipath dispersion without obscuring the underlying
+mechanics behind complex fading distributions, the propagation medium
+is modeled as a two-ray multipath channel.
+The channel consists of a dominant direct path and an unresolved
+secondary specular reflection (echo) characterized
+by an attenuation gain $g \in [0, 1]$ and a fractional time delay
+$\tau \in \mathbb{R}^+$:
+\begin{equation}
+    h(t) = \delta(t) + g \, \delta(t - \tau)
+    \label{eq:two_ray_impulse_response}
+\end{equation}
+where $\delta(\cdot)$ represents the Dirac delta distribution.
+Expressing the delay relative to the symbol interval
+yields the normalized fractional delay $\tau_{\text{norm}} = \tau /
+T_s$. The continuous-time signal arriving at the
+receive antenna of the \gls{fc} prior to noise corruption is governed
+by the linear continuous convolution:
+\begin{equation}
+    r(t) = (s * h)(t) + w(t) = s(t) + g \, s(t - \tau) + w(t)
+    \label{eq:continuous_received_waveform}
+\end{equation}
+where $w(t)$ denotes additive white Gaussian noise with two-sided
+power spectral density $N_0 / 2$.
+
+\subsubsection{Receiver Matched Filtering and Symbol Strobing}
+\label{subsubsec:matched_filtering_strobing}
+At the \gls{fc}, the received waveform $r(t)$ passes through a
+matched filter identical to the transmitter pulse
+shape, $p^*(-t) = p(t)$. By design, the continuous-time convolution
+of two matched \gls{rrc} filters yields the
+standard Nyquist \gls{rc} pulse $r_c(t) = (p *
+p)(t)$~\cite{gandhi_implementation_2013,perez-neira_waveforms_2025}:
+\begin{equation}
+    r_c(t) = \operatorname{sinc}\left(\frac{t}{T_s}\right)
+    \frac{\cos\left(\frac{\pi \alpha t}{T_s}\right)}{1 -
+    \left(\frac{2\alpha t}{T_s}\right)^2}
+    \label{eq:raised_cosine_analytical_formula}
+\end{equation}
+The output of the matched filter before sampling is given by:
+\begin{equation}
+    y(t) = (r * p)(t) = \sum_{k=1}^K \sum_{m=-\infty}^{\infty} x_k[m]
+    \, r_c(t - m T_s) + g \sum_{k=1}^K \sum_{m=-\infty}^{\infty}
+    x_k[m] \, r_c(t - m T_s - \tau) + \tilde{w}(t)
+    \label{eq:matched_filter_output_continuous_isi}
+\end{equation}
+where $\tilde{w}(t) = (w * p)(t)$ represents the filtered Gaussian
+noise process.
+
+Sampling $y(t)$ at the nominal symbol strobe instants $t = n T_s$
+yields the discrete-time observation sequence:
+\begin{equation}
+    y[n] = \sum_{k=1}^K x_k[n] \, r_c(0) + \sum_{k=1}^K \sum_{m \neq
+    n} x_k[m] \, r_c((n-m)T_s) + g \sum_{k=1}^K
+    \sum_{m=-\infty}^{\infty} x_k[m] \, r_c((n-m)T_s - \tau) + \tilde{w}[n]
+    \label{eq:discrete_sampled_matched_output}
+\end{equation}
+By the first Nyquist criterion for zero \gls{isi}, the direct-path
+\gls{rc} pulse satisfies $r_c(0) = 1$ and
+$r_c(l T_s) = 0$ for all non-zero integers $l \neq 0$. Consequently,
+the direct-path summation collapses cleanly to
+the desired instantaneous sum, whereas the multipath echo introduces
+non-vanishing cross-symbol leakage:
+\begin{equation}
+    y[n] = \underbrace{\sum_{k=1}^K x_k[n]}_{\text{Desired
+    Superposition}} + \underbrace{g \sum_{k=1}^K
+        \sum_{m=-\infty}^{\infty} x_k[m] \, r_c((n-m)T_s -
+    \tau)}_{\text{Multipath-Induced Intersymbol Interference}} + \tilde{w}[n]
+    \label{eq:multipath_sampled_superposition}
+\end{equation}
+
+To estimate the true spatial arithmetic mean of the distributed
+sensors, $\mu[n] = \frac{1}{K}\sum_{k=1}^K x_k[n]$,
+the \gls{fc} applies a standard post-scaling factor of $1/K$:
+\begin{equation}
+    \hat{\mu}[n] = \frac{y[n]}{K} = \mu[n] + g
+    \sum_{m=-\infty}^{\infty} \mu[m] \, r_c((n-m)T_s - \tau) +
+    \frac{\tilde{w}[n]}{K}
+    \label{eq:estimated_spatial_mean}
+\end{equation}
+\cref{eq:estimated_spatial_mean} explicitly demonstrates the
+fundamental failure mode of analog Over-the-Air
+computing in dispersive channels: even when the line-of-sight path is
+perfectly synchronized, the fractional
+multipath echo smears previous and subsequent spatial averages
+$\mu[m]$ into the current estimation strobe $n$.
+
+\subsection{Analytical Derivation of the Multipath Error Floor}
+\label{subsec:analytical_error_floor_derivation}
+To quantify the performance boundary of \gls{ota} computation under
+multipath interference, we examine the instantaneous
+computation error at the \gls{fc}, defined as $e[n] = \hat{\mu}[n] - \mu[n]$:
+\begin{equation}
+    e[n] = g \sum_{m=-\infty}^{\infty} \mu[m] \, r_c((n-m)T_s - \tau)
+    + \frac{\tilde{w}[n]}{K}
+    \label{eq:total_computation_error}
+\end{equation}
+The overall computation \gls{mse} is given by the statistical
+expectation of the squared error:
+\begin{equation}
+    \operatorname{MSE}(g, \tau, \text{SNR}) = \mathbb{E}\left[ e^2[n] \right]
+    \label{eq:mse_definition}
+\end{equation}
+Because the information symbols $x_k[m]$ and the additive channel
+noise $\tilde{w}[n]$ are statistically independent
+and mutually uncorrelated, the cross-terms vanish under expectation,
+yielding a complete decoupling between the
+thermal noise variance and the multipath interference term:
+\begin{equation}
+    \operatorname{MSE}(g, \tau, \text{SNR}) =
+    \operatorname{MSE}_{\text{noise}}(\text{SNR}) +
+    \operatorname{MSE}_{\text{floor}}(g, \tau)
+    \label{eq:mse_decoupling}
+\end{equation}
+
+\subsubsection{Closed-Form Asymptotic Derivation in the High-SNR Regime}
+\label{subsubsec:closed_form_floor}
+In the high-\gls{snr} regime, thermal noise contributions vanish
+($\tilde{w}[n] \to 0$), leaving the residual error
+entirely dictated by the multipath echo:
+\begin{equation}
+    e_{\text{floor}}[n] = g \sum_{m=-\infty}^{\infty} \mu[m] \,
+    r_c((n-m)T_s - \tau)
+    \label{eq:floor_error_definition}
+\end{equation}
+Recalling from \cref{eq:sensor_symbol_statistics} that the spatial
+averages have zero mean and autocovariance:
+\begin{equation}
+    \mathbb{E}[\mu[m]] = 0, \quad \mathbb{E}[\mu[m]\mu[m']] =
+    \frac{\sigma_x^2}{K} \, \delta_{m,m'}
+    \label{eq:spatial_average_covariance}
+\end{equation}
+the expected squared error floor expands into a double summation:
+\begin{equation}
+    \operatorname{MSE}_{\text{floor}}(g, \tau) = g^2
+    \sum_{m=-\infty}^{\infty} \sum_{m'=-\infty}^{\infty}
+    \mathbb{E}[\mu[m]\mu[m']] \, r_c((n-m)T_s - \tau) \, r_c((n-m')T_s - \tau)
+    \label{eq:floor_double_sum}
+\end{equation}
+Substituting \cref{eq:spatial_average_covariance} collapses the inner
+summation across $m' = m$:
+\begin{equation}
+    \operatorname{MSE}_{\text{floor}}(g, \tau) = \frac{g^2
+    \sigma_x^2}{K} \sum_{m=-\infty}^{\infty} r_c^2((n-m)T_s - \tau)
+    \label{eq:floor_single_sum_m}
+\end{equation}
+Applying the change of summation index $l = n - m$ and defining the
+normalized fractional delay $\tau_{\text{norm}} = \tau / T_s$:
+\begin{equation}
+    \operatorname{MSE}_{\text{floor}}(g, \tau) = \frac{g^2
+    \sigma_x^2}{K} \sum_{l=-\infty}^{\infty} r_c^2\big((l -
+    \tau_{\text{norm}}) T_s\big)
+    \label{eq:floor_index_l}
+\end{equation}
+Evaluating the analytical \gls{rc} pulse equation from
+\cref{eq:raised_cosine_analytical_formula} at the shifted instants
+$t = (l - \tau_{\text{norm}}) T_s$ produces the exact closed-form
+expression for the **irreducible multipath error floor**:
+\begin{equation}
+    \boxed{\operatorname{MSE}_{\text{floor}}(g, \tau) = \frac{g^2
+        \sigma_x^2}{K} \sum_{l=-\infty}^{\infty} \left[
+            \operatorname{sinc}(l - \tau_{\text{norm}}) \, \frac{\cos\big(\pi
+            \alpha (l - \tau_{\text{norm}})\big)}{1 - 4 \alpha^2 (l -
+    \tau_{\text{norm}})^2} \right]^2}
+    \label{eq:closed_form_error_floor}
+\end{equation}
+
+\subsubsection{Theoretical Implications and Asymptotic Regimes}
+\label{subsubsec:implications_asymptotic_regimes}
+Inspection of \cref{eq:closed_form_error_floor,eq:mse_decoupling}
+reveals three critical insights regarding Over-the-Air
+computation performance in multipath environments:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Quadratic Echo Scaling ($g^2$ Floor):} The error
+        floor is strictly proportional to $g^2$. Even weak
+        multipath reflections ($g = 0.1$) introduce an asymptotic
+        plateau that prevents the \gls{mse} from decreasing toward zero,
+        regardless of how much transmit power or \gls{snr} is allocated.
+    \item \textbf{Role of Pulse Roll-Off Factor ($\alpha$):} The
+        asymptotic tail decay of a Raised Cosine pulse is
+        governed by $\mathcal{O}(|t|^{-3})$ for $\alpha > 0$,
+        compared to the sluggish $\mathcal{O}(|t|^{-1})$ decay of a pure
+        sinc pulse ($\alpha = 0$). Consequently, increasing the
+        roll-off factor $\alpha \to 1.0$ accelerates the attenuation of
+        adjacent pulse tails, suppressing the magnitude of the
+        summation in \cref{eq:closed_form_error_floor} and lowering the
+        error floor at the expense of excess spectral bandwidth.
+    \item \textbf{Low-SNR vs. High-SNR Convergence:} At low
+        \gls{snr}, the noise variance $\sigma_w^2 / K$ dominates,
+        forcing all curves across arbitrary values of $g$ to converge
+        along the classic $1/\text{SNR}$ slope. As \gls{snr} increases,
+        thermal noise recedes, and the curves diverge toward their
+        respective horizontal plateaus determined exclusively by $g^2$.
+        When $g = 0$, the floor collapses, recovering the ideal
+        single-path bound established in \cref{eq:ideal_mse_scaling}.
+\end{enumerate}
+
+\subsubsection{Nomographic Functions Under Multipath Dispersion}
+\label{subsubsec:nomographic_functions_isi}
+The impact of multipath \gls{isi} extends beyond linear arithmetic
+averaging to general nomographic
+functions~\cite{goldenbaum_nomographic_2015,goldenbaum_analyzing_2011}.
+Consider a
+distributed sensor network estimating the geometric mean of positive
+physical readings $v_k[m] > 0$:
+\begin{equation}
+    f(v_1, \dots, v_K) = \left( \prod_{k=1}^K v_k
+    \right)^{\frac{1}{K}} = \exp\left( \frac{1}{K} \sum_{k=1}^K \ln(v_k) \right)
+    \label{eq:geometric_mean_nomographic}
+\end{equation}
+To evaluate this function over the air, each \gls{ed} executes a
+pre-processing mapping $\phi(v_k) = \ln(v_k)$, while the
+\gls{fc} applies a non-linear post-processing function $\psi(z) =
+\exp(z / K)$. In the presence of the multipath echo
+$g \delta(t - \tau)$, the received argument entering the post-processor becomes:
+\begin{equation}
+    z[n] = \sum_{k=1}^K \ln(v_k[n]) + g \sum_{k=1}^K \sum_{m}
+    \ln(v_k[m]) \, r_c((n-m)T_s - \tau) + \tilde{w}[n]
+    \label{eq:nomographic_argument_corrupted}
+\end{equation}
+Because the post-processing exponential map $\psi(\cdot)$ is convex
+and non-linear, the additive multipath interference
+$e_{\text{isi}}[n]$ does not simply add a bias to the output; rather,
+it enters the exponent:
+\begin{equation}
+    \hat{f}[n] = \exp\left( \frac{z[n]}{K} \right) = f[n] \cdot
+    \exp\left( \frac{e_{\text{isi}}[n] + \tilde{w}[n]}{K} \right)
+    \label{eq:multiplicative_nomographic_distortion}
+\end{equation}
+This demonstrates that for non-linear nomographic AirComp targets,
+multipath \gls{isi} converts into a multiplicative
+distortion factor, underscoring the urgent necessity of rigorous
+channel equalization and pulse-shaping optimization.
+
+\subsection{Discrete-Time MATLAB Simulation and Waveform Diagnostics}
+\label{subsec:matlab_simulation_and_diagnostics}
+To emulate the continuous-time multipath propagation model within a
+discrete-time computational framework, fractional
+sample shifts cannot be implemented using integer array indexing.
+Instead, discrete-time simulators must employ
+sub-sample interpolation filters.
+
+\subsubsection{Farrow Fractional Delay Filter Order Analysis}
+\label{subsubsec:farrow_filter_analysis}
+A critical trap in simulating fractional delays is the use of linear
+interpolation ($y[n] = (1-\mu)x[n] + \mu x[n+1]$).
+In the frequency domain, linear interpolation exhibits a triangular
+impulse response and a $\operatorname{sinc}^2(f)$
+magnitude transfer function. This introduces severe passband droop
+near the spectral edges of the \gls{rrc} pulse,
+producing artificial distortion that confounds channel physics with
+interpolation error.
+
+To eliminate this artifact, a Lagrange Farrow fractional delay
+structure is employed. The $(L+1)$-tap Farrow filter
+approximates an arbitrary sub-sample delay $d = \lfloor L/2 \rfloor +
+\mu$ (where $\mu \in [0, 1)$) via polynomial
+interpolation kernels:
+\begin{equation}
+    h_L[n; \mu] = \prod_{\substack{k=0 \\ k \neq n}}^{L} \frac{d -
+    k}{n - k}, \quad n \in \{0, 1, \dots, L\}
+    \label{eq:farrow_lagrange_kernel}
+\end{equation}
+The discrete-time Fourier transform (DTFT) of the resulting impulse
+response is $H_L(e^{j\omega}; \mu) = \sum_{n=0}^{L} h_L[n; \mu]
+e^{-j\omega n}$.
+The magnitude droop in decibels and the phase delay error $\Delta
+\tau_p$ in samples are defined as:
+\begin{equation}
+    \text{Droop}_{\text{dB}}(\omega) = 20 \log_{10} \left|
+    H_L(e^{j\omega}; \mu) \right|, \quad \Delta \tau_p(\omega) =
+    -\frac{\operatorname{unwrap}(\arg H_L(e^{j\omega}; \mu))}{\omega} - d
+    \label{eq:farrow_droop_and_phase_error}
+\end{equation}
+
+For an \gls{rrc} pulse with $\alpha = 0.5$ sampled at $\text{SPS} =
+12$, the transmission band edge occupies
+$f_{\text{edge}} = \frac{1+\alpha}{2 \cdot \text{SPS}} = 0.0625$
+cycles/sample ($\omega_{\text{edge}} \approx 0.3927$ rad/sample).
+\cref{tab:farrow_order_comparison} evaluates the magnitude droop and
+phase delay error across polynomial orders $L = 1$ to $5$
+at this critical band edge.
+
+\begin{table}[htbp]
+    \centering
+    \ra{1.2}
+    \caption{Quantitative distortion metrics of Lagrange Farrow
+        fractional delay filters at the RRC band edge ($f_{\text{norm}} =
+    0.0625$, $\text{SPS} = 12$, $\mu = 0.75$).}
+    \label{tab:farrow_order_comparison}
+    \begin{tabular}{@{}lcccc@{}}
+        \toprule
+        \textbf{Farrow Order ($L$)} & \textbf{Filter Taps ($L+1$)} &
+        \textbf{Magnitude Droop ($f_{\text{edge}}$)} & \textbf{Phase
+        Delay Error ($\Delta \tau_p$)} & \textbf{Timing Jitter ($\% T_s$)} \\
+        \midrule
+        $L = 1$ (Linear)    & 2 & $-0.1878\text{ dB}$ & $-1.472
+        \times 10^{-2}\text{ samples}$ & $-0.1227\%$ \\
+        $L = 2$ (Parabolic) & 3 & $-0.0384\text{ dB}$ & $+4.218
+        \times 10^{-3}\text{ samples}$ & $+0.0351\%$ \\
+        $L = 3$ (Cubic)     & 4 & $-0.0051\text{ dB}$ & $-8.940
+        \times 10^{-4}\text{ samples}$ & $-0.0075\%$ \\
+        $L = 4$ (Quartic)   & 5 & $\mathbf{-0.0009\text{ dB}}$ &
+        $\mathbf{+1.751 \times 10^{-4}\text{ samples}}$ &
+        $\mathbf{+0.0015\%}$ \\
+        $L = 5$ (Quintic)   & 6 & $-0.0001\text{ dB}$ & $-3.104
+        \times 10^{-5}\text{ samples}$ & $-0.0003\%$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+As evidenced by \cref{tab:farrow_order_comparison}, increasing the
+Farrow polynomial order from $L=1$ to $L=4$ suppresses
+magnitude droop by more than $200\times$ (from $-0.1878\text{ dB}$ to
+$-0.0009\text{ dB}$), and restricts timing jitter to
+$0.0015\%$ of a symbol period. Consequently, $L = 4$ is adopted
+across all subsequent discrete-time simulations to guarantee
+that the observed error floor is strictly a consequence of physical
+multipath dispersion rather than numerical interpolation bias.
+
+\subsubsection{High-Performance MATLAB Simulation Implementation}
+\label{subsubsec:matlab_code_implementation}
+In addition to filter order selection, two structural pitfalls must
+be addressed when simulating multi-sensor Over-the-Air networks:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{State Memory Persistence:} MATLAB system objects
+        (such as \texttt{dsp.VariableFractionalDelay}) retain internal
+        tap registers across consecutive function calls. Invoking the
+        object iteratively across sensors without executing
+        \texttt{reset(fracDelay)} leaks the trailing samples of
+        sensor $k$ into the onset of sensor $k+1$.
+    \item \textbf{Superposition Computational Efficiency:} Because
+        convolution, fractional delay, and summation are linear
+        time-invariant (LTI) operations, the multi-sensor summation
+        can be performed natively prior to applying the channel delay:
         \begin{equation}
-            x_i[n] \text{ denotes the signal transmitted by sensor } i
-            \label{eq:transmitted_signal}
+            \sum_{k=1}^K \big( s_k(t) + g \, s_k(t - \tau) \big) =
+            \left( \sum_{k=1}^K s_k(t) \right) + g \left(
+            \sum_{k=1}^K s_k(t - \tau) \right)
+            \label{eq:lti_superposition_property}
         \end{equation}
+        Exploiting this property reduces the execution complexity
+        from $\mathcal{O}(K)$ fractional delay calls to a single
+        $\mathcal{O}(1)$ invocation.
+\end{itemize}
 
+\cref{lst:matlab_multipath_aircomp} presents the complete,
+high-performance MATLAB script modeling the two-ray multipath AirComp channel.
+
+    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB implementation of Over-the-Air computation under two-ray multipath fading with Farrow fractional delay filtering.}, label={lst:matlab_multipath_aircomp}]
+% Over-the-Air Computation under Two-Ray Multipath Fading
+clc; clear; close all;
+
+%% 1. Simulation Parameters
+K          = 20;                      % Number of participating sensor nodes
+N          = 1000;                    % Symbol sequence length per sensor
+SNR_dB     = -20:2:20;                % Channel SNR sweep (dB)
+alpha_val  = 0.50;                    % RRC roll-off factor
+sps_val    = 12;                      % Samples per symbol (SPS)
+span       = 12;                      % Filter span in symbols
+tau_frac   = 0.3125;                  % Fractional delay (tau / Ts)
+echo_gain  = 0.50;                    % Multipath echo attenuation g
+
+% Sensor data generation (zero-mean normal random readings)
+X = randn(K, N);
+ideal_target = mean(X, 1);            % Ground-truth arithmetic mean
+
+%% 2. Pulse Shaping and Fractional Delay Objects
+rcFilter = rcosdesign(alpha_val, span, sps_val, 'sqrt');
+max_delay_samples = ceil(2.0 * sps_val) + 10;
+
+fracDelay = dsp.VariableFractionalDelay(...
+    'InterpolationMethod', 'Farrow', ...
+    'FilterLength', 4, ...            % Quartic Lagrange Farrow (L = 4)
+    'FarrowSmallDelayAction', 'Use off-centered kernel', ...
+    'MaximumDelay', max_delay_samples);
+
+%% 3. Transmit Processing and Channel Superposition
+tx_upsampled = upsample(X', sps_val);  % Size: (N*sps) x K
+tx_filtered  = conv2(tx_upsampled, rcFilter(:), 'same');
+
+% Exploit LTI superposition: sum in the air first
+direct_path = sum(tx_filtered, 2);
+delay_samples = tau_frac * sps_val;
+reset(fracDelay);
+echo_path   = fracDelay(direct_path, delay_samples);
+
+% Channel output: direct line-of-sight plus delayed echo
+rx_channel  = direct_path + echo_gain * echo_path;
+
+%% 4. Receiver Matched Filtering and Estimation Sweep
+mse_results = zeros(length(SNR_dB), 1);
+valid_start = ceil(span / 2) + 1;
+valid_end   = N - ceil(span / 2);
+target_eval = ideal_target(valid_start:valid_end)';
+
+for snr_idx = 1:length(SNR_dB)
+    rx_noisy   = awgn(rx_channel, SNR_dB(snr_idx), 'measured');
+    rx_matched = conv(rx_noisy, flipud(rcFilter(:)), 'same');
+    rx_sampled = downsample(rx_matched, sps_val);
+
+    % Fusion Center estimate (scaled by K)
+    est_mean = rx_sampled(valid_start:valid_end) / K;
+    mse_results(snr_idx) = immse(est_mean, target_eval);
+end
+    \end{lstlisting}
+
+\subsubsection{2D and 3D MSE Performance Diagnostics}
+\label{subsubsec:2d_3d_mse_diagnostics}
+\cref{fig:ml_mse_comparison} contrasts the 2D \gls{mse} performance
+between the ideal single-path baseline ($g = 0$)
+and the \gls{rrc}-filtered multipath scenario ($g = 0.50$).
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{.48\linewidth}
+        \tikzsetnextfilename{fig_ml_ideal_fc_mse_standalone}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    title={\textsf{Ideal Single-Path Baseline ($g = 0$)}},
+                    xlabel={Channel SNR (dB)}, ylabel={Computation MSE},
+                    ymode=log, grid=major,
+                    ymin=1e-5, ymax=10,
+                    xmin=-20, xmax=20,
+                    legend pos=north east,
+                    width=\linewidth, height=0.75\linewidth,
+                    ticklabel style={font=\tiny},
+                    label style={font=\scriptsize},
+                    title style={font=\small}
+                ]
+                \addplot[
+                    color=blue, mark=square*, thick,
+                    restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51}
+                ] table[x=SNR_dB, y=mse_results]
+                {data/ideal/mse/ml_rrc_fc_mse_12sps_span12.txt};
+                \addlegendentry{Ideal ($g = 0$)}
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Ideal single-path baseline without ISI.}
+        \label{fig:ml_ideal_fc_mse}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{.48\linewidth}
+        \tikzsetnextfilename{fig_ml_isi_rrc_fc_mse_12sps_standalone}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    title={\textsf{Multipath Channel ($g = 0.50$,
+                    $\tau = 0.3125 T_s$)}},
+                    xlabel={Channel SNR (dB)}, ylabel={Computation MSE},
+                    ymode=log, grid=major,
+                    ymin=1e-5, ymax=10,
+                    xmin=-20, xmax=20,
+                    legend pos=north east,
+                    width=\linewidth, height=0.75\linewidth,
+                    ticklabel style={font=\tiny},
+                    label style={font=\scriptsize},
+                    title style={font=\small}
+                ]
+                \addplot[
+                    color=red, mark=*, thick,
+                    restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51}
+                ] table[x=SNR_dB, y=mse_results]
+                {data/isi/multipath/mse/ml_isi_rrc_fc_mse_12sps_span12.txt};
+                \addlegendentry{Multipath ($g = 0.50$)}
+
+                \addplot[
+                    color=blue, mark=square*, thick, dashed,
+                    restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51}
+                ] table[x=SNR_dB, y=mse_results]
+                {data/ideal/mse/ml_rrc_fc_mse_12sps_span12.txt};
+                \addlegendentry{Ideal reference}
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Multipath-corrupted AirComp performance.}
+        \label{fig:ml_isi_rrc_fc_mse_12sps}
+    \end{subfigure}
+    \caption{Comparison of Mean Squared Error performance between the
+        ideal unimpaired baseline ($g = 0$) and the multipath-corrupted
+        Over-the-Air computation channel ($g = 0.50$, $\tau = 0.3125 T_s$,
+        $\alpha = 0.50$, $\text{span} = 12$, $\text{SPS} = 12$). Both subfigures
+        share identical dynamic ranges ($\text{MSE} \in [10^{-5},
+        10^1]$, $\text{SNR} \in [-20, 20]\text{ dB}$).
+        While the ideal curve decays indefinitely with increasing
+        SNR, the multipath
+        channel hits a pronounced, irreducible error floor at $\text{MSE}
+    \approx 0.52$.}
+    \label{fig:ml_mse_comparison}
+\end{figure}
+
+To examine the holistic interaction across parameter spaces,
+\cref{fig:isi_mse_span_comparison} presents an interactive
+synchronous 3D animation comparing the Over-the-Air \gls{mse} surface
+across \gls{snr} and roll-off factor $\alpha$,
+evaluated as the oversampling ratio $\text{SPS} \in \{12, 24, 48,
+96\}$ scales dynamically.
+
+\begin{figure}[htbp]
+    \centering
+    \animategraphics[autoplay, loop,
+    width=0.85\linewidth]{1.5}{figures/ml_multipath_rrc_fc_mse_span_comparison}{}{}
+    \caption{Synchronous 3D animation comparing the Over-the-Air MSE
+        surface across $\text{SPS}$ scaling for filter $\text{span} = 4$
+        (left) versus $\text{span} = 12$ (right) under multipath
+        dispersion. Note the emergence of the persistent high-SNR error
+    floor across all configurations.}
+    \label{fig:isi_mse_span_comparison}
+\end{figure}
+
+Inspection of \cref{fig:isi_mse_span_comparison} reveals that while
+increasing the filter span from $4$ to $12$ eliminates
+truncation ripple and lowers the overall surface, the fundamental
+multipath plateau remains intact. This confirms that
+the error floor is driven by the physical channel echo rather than
+finite filter length truncation.
+
+\subsubsection{Signal Integrity Diagnostics: Eye and Constellation Diagrams}
+\label{subsubsec:eye_and_constellation_diagnostics}
+In analog Over-the-Air computation, sensor signals are continuous
+random variables rather than discrete constellation points.
+Consequently, eye diagrams serve as analog signal integrity and
+timing sensitivity diagnostics rather than digital decision masks:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Loss of the Nyquist Zero-Derivative Plateau:} In
+        the ideal baseline (\cref{fig:ml_rrc_fc_eye_animated}),
+        every trajectory flattened at $t/T_s = 1.0$, satisfying
+        $\left.\frac{dp(t)}{dt}\right|_{t=0} = 0$. Under multipath
+        interference,
+        the secondary echo arrives at a fractional offset $\tau$,
+        superimposing the slanted skirt of the delayed pulse onto the
+        direct peak.
+        As shown in the animated eye comparison of
+        \cref{fig:ml_multipath_eye}, the trajectories at $t/T_s =
+        1.0$ become sharply skewed,
+        eliminating the stationary timing plateau.
+    \item \textbf{Trajectory Shearing and Severe Eye Closure:} The
+        delayed echo forces adjacent symbol tails to cross arbitrarily,
+        shearing the cohesive bundle of curves into dispersed,
+        chaotic trajectories. The timing margin collapses completely,
+        explaining why
+        even minor clock drift induces massive computational degradation.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \animategraphics[autoplay, loop,
+    width=0.85\linewidth]{1.5}{figures/ml_multipath_rrc_fc_eye_span_comparison}{}{}
+    \caption{Eye diagram evolution under two-ray multipath
+        propagation ($\tau = 0.3125 T_s$, $g = 0.50$, $\alpha = 0.70$)
+        across oversampling ratios $\text{SPS} \in \{12, 24, 48, 96\}$
+        for filter $\text{span} = 4$ (left) versus $\text{span} = 12$ (right).
+    Severe trajectory shearing and eye closure are visually evident.}
+    \label{fig:ml_multipath_eye}
+\end{figure}
+
+Similarly, \cref{fig:ml_multipath_const} provides an animated
+constellation diagnostic across roll-off factor
+$\alpha \in [0.00, 1.00]$ at $\text{SNR} = 20\text{ dB}$.
+
+\begin{figure}[htbp]
+    \centering
+    \animategraphics[autoplay, loop,
+    width=0.65\linewidth]{1.5}{figures/ml_multipath_rrc_fc_const}{}{}
+    \caption{Constellation diagram animation under two-ray multipath
+        interference demonstrating the horizontal symbol dispersion as
+        the roll-off factor $\alpha$ scales from $0.00$ to $1.00$
+    ($\text{span} = 12$, $\text{SPS} = 48$, $\text{SNR} = 20\text{ dB}$).}
+    \label{fig:ml_multipath_const}
+\end{figure}
+
+As $\alpha \to 0.00$, the slow $1/t$ tail decay permits extensive
+multi-symbol interference, spreading the received
+constellation broadly along the in-phase axis. As $\alpha \to 1.00$,
+the accelerated $1/t^3$ tail decay confines symbol
+leakage to immediate neighbors, tightening the constellation
+dispersion and confirming the analytical predictions of
+\cref{subsubsec:implications_asymptotic_regimes}.
+
+\subsection{Simulink Block-Level Architecture and Simulation Dynamics}
+\label{subsec:simulink_architecture_and_dynamics}
+Transitioning from MATLAB script emulation to a block-level
+simulation environment, \cref{fig:sl_multipath_rrc_architecture}
+depicts the MATLAB Simulink architecture developed for evaluating
+Over-the-Air computation under multipath interference.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{flowgraphs/sl_multipath_rrc.pdf}
+    \caption{Simulink block diagram representing the Over-the-Air
+        computation network over a two-ray multipath channel with Farrow
+    fractional delay filtering and matched RRC pulse shaping.}
+    \label{fig:sl_multipath_rrc_architecture}
+\end{figure}
+
+The top branch represents the physical multipath transmission chain:
+$K=5$ independent sensor sources generate continuous
+stochastic temperature readings centered at $27^\circ\text{C}$. Each
+stream passes through an interpolating \gls{rrc}
+transmit filter, combines in the air via multi-access superposition,
+traverses a two-ray multipath channel comprising a direct
+path and a Farrow fractional delay block, is corrupted by \gls{awgn},
+and undergoes matched filtering at the receiver.
+The bottom branch serves as an uncorrupted reference chain.
+
+\subsubsection{Discrete-Time Multi-Rate Sample-Based Execution}
+\label{subsubsec:multirate_sample_based_dynamics}
+In discrete-time \gls{dsp} modeling, multi-rate systems present
+intricate architectural subtleties that must be carefully
+governed to prevent spurious simulation artifacts
+(\cref{fig:sl_multipath_rrc_architecture}):
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Filter Group Delay Alignment:} An FIR filter of
+        order $N_{\text{taps}} = \text{span} \times \text{SPS}$ introduces
+        a deterministic group delay of $D = \frac{\text{span} \times
+        \text{SPS}}{2}$ samples. In a cascaded matched filter chain
+        (Tx RRC and Rx RRC), the cumulative group delay is:
         \begin{equation}
-            x_1[n] = [2, -1, 1]
-            \label{eq:transmitted_sequence_one}
+            D_{\text{total}} = 2 \times \left( \frac{\text{span}
+            \times \text{SPS}}{2} \right) = \text{span} \times
+            \text{SPS} \text{ samples} \equiv \text{span} \text{ symbols}
+            \label{eq:filter_group_delay_cascade}
         \end{equation}
-
+        If the reference branch does not incorporate an identical
+        delay block ($z^{-\text{span}}$), the subtractor block compares
+        symbol $n$ against symbol $n - \text{span}$. For signals
+        centered around a common mean ($\mu \approx 27$), subtracting two
+        uncorrelated symbols produces an instantaneous squared error
+        of $(27 - 0)^2 \approx 729$, causing the running \gls{mse}
+        display to report erroneous values ($\approx 659.1$).
+        Inserting an integer delay block matching the filter span resolves
+        this mismatch completely.
+    \item \textbf{Fine Sampling Phase vs. Coarse Symbol Delay:} The
+        total delay equation decomposes into coarse symbol delay
+        and fine sampling strobe phase:
         \begin{equation}
-            x_2[n] = [1, 2, -1]
-            \label{eq:transmitted_sequence_two}
+            D_{\text{total}} = \underbrace{D_{\text{sym}} \times
+            \text{SPS}}_{\text{Coarse Symbol Delay}} +
+            \underbrace{\phi_{\text{sample}}}_{\text{Fine Sampling Phase}}
+            \label{eq:unified_delay_equation}
         \end{equation}
+        Adjusting the \texttt{Sample Offset} parameter inside the
+        \texttt{Downsample} block selects where within the eye opening
+        the receiver takes its decision snapshot. Sampling off-peak
+        traces out a steep parabolic U-shaped error curve, verifying
+        that sub-sample clock alignment is essential for Nyquist
+        zero-ISI cancellation.
+    \item \textbf{Transient Accumulator Warm-Up:} The cumulative
+        running mean block executes $\bar{e}^2[n] =
+        \frac{1}{n}\sum_{k=1}^n e^2[k]$.
+        Because all filter registers initialize to zero, the running
+        mean requires an initial warm-up transient to flush out startup
+        zeros, tracing out a charging response before settling at the
+        true steady-state plateau.
+\end{enumerate}
 
-    \subsubsection{The Ideal Target Function}
-        The primary objective of \gls{ota} computing is to leverage the multiple access
-        channel (MAC) superposition property to aggregate data natively in the air.
-        Assuming a flat-fading, noise-free, and perfectly synchronized channel, the ideal
-        target function received at the \gls{fc}, denoted as $s[n]$, is the direct sum of
-        the transmitted signals:
+\subsubsection{Empirical Verification of the Multipath Gain Sweep}
+\label{subsubsec:empirical_gain_sweep_verification}
+To empirically validate the closed-form error floor derived in
+\cref{eq:closed_form_error_floor}, a comprehensive parametric sweep
+was executed across multipath echo gains $g \in \{0.00, 0.05, 0.10,
+0.20, 0.30, 0.50\}$ for $\text{SPS} = 12$, $\tau = 0.3125 T_s$,
+and $\alpha = 0.50$. \cref{fig:sl_multipath_fc_mse_gains} illustrates
+the resulting computation \gls{mse} curves plotted against channel \gls{snr}.
+
+\begin{figure}[htbp]
+    \centering
+    \tikzsetnextfilename{fig_sl_multipath_fc_mse_gains}
+    \begin{tikzpicture}
+        \begin{axis}[
+                title={\textsf{Simulink Over-the-Air Computation MSE
+                vs. Multipath Gain $g$}},
+                xlabel={Channel SNR (dB)}, ylabel={Computation MSE},
+                ymode=log, grid=major,
+                ymin=5e-4, ymax=300,
+                xmin=-20, xmax=20,
+                legend pos=south west,
+                legend columns=2,
+                legend style={font=\tiny},
+                ticklabel style={font=\footnotesize},
+                label style={font=\small},
+                width=0.88\linewidth, height=0.55\linewidth
+            ]
+            \addplot[color=blue, mark=square*, thick]
+            table[x=Column1, y=Column2]
+            {data/isi/multipath/mse/sl_multipath_fc_mse_gain0.00_sps12.txt};
+            \addlegendentry{$g = 0.00$ (Ideal)}
+
+            \addplot[color=teal, mark=o, thick] table[x=Column1,
+            y=Column2]
+            {data/isi/multipath/mse/sl_multipath_fc_mse_gain0.05_sps12.txt};
+            \addlegendentry{$g = 0.05$}
+
+            \addplot[color=orange, mark=triangle*, thick]
+            table[x=Column1, y=Column2]
+            {data/isi/multipath/mse/sl_multipath_fc_mse_gain0.10_sps12.txt};
+            \addlegendentry{$g = 0.10$}
+
+            \addplot[color=purple, mark=diamond*, thick]
+            table[x=Column1, y=Column2]
+            {data/isi/multipath/mse/sl_multipath_fc_mse_gain0.20_sps12.txt};
+            \addlegendentry{$g = 0.20$}
+
+            \addplot[color=brown, mark=pentagon*, thick]
+            table[x=Column1, y=Column2]
+            {data/isi/multipath/mse/sl_multipath_fc_mse_gain0.30_sps12.txt};
+            \addlegendentry{$g = 0.30$}
+
+            \addplot[color=red, mark=*, thick] table[x=Column1,
+            y=Column2]
+            {data/isi/multipath/mse/sl_multipath_fc_mse_gain0.50_sps12.txt};
+            \addlegendentry{$g = 0.50$}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Empirical Simulink AirComp MSE performance across
+        multipath echo gains $g \in [0.00, 0.50]$ ($\text{SPS} = 12$,
+        $\tau = 0.3125 T_s$, $\alpha = 0.50$, $\text{span} = 12$). In
+        perfect agreement with the analytical derivation in
+        \cref{eq:closed_form_error_floor}, the asymptotic error floors
+    scale exactly quadratically with $g^2$.}
+    \label{fig:sl_multipath_fc_mse_gains}
+\end{figure}
+
+The numerical results in \cref{fig:sl_multipath_fc_mse_gains} provide
+striking verification of the analytical model:
+\begin{itemize}[leftmargin=*]
+    \item At $g = 0.00$, the error floor collapses, and the \gls{mse}
+        decays monotonically with \gls{snr}, reaching $7.8 \times
+        10^{-4}$ at $20\text{ dB}$.
+    \item For non-zero gains, each curve flattens into a rigid
+        horizontal plateau at high \gls{snr}.
+    \item Comparing the plateau levels across gains confirms the
+        exact $g^2$ proportionality:
         \begin{equation}
-            s[n] = \sum_{i=1}^{K} x_i[n]
-            \label{eq:ideal_aggregate}
-        \end{equation}
-        where $K$ is the total number of transmitting devices. For the given sensor data,
-        the ideal aggregated sequence is evaluated as \cref{eq:ideal_aggregate_sequence}.
-
-        \begin{equation}
-            s[n] = [3, 1, 0]
-            \label{eq:ideal_aggregate_sequence}
-        \end{equation}
-
-    \subsubsection{Multipath Channel Distortion}
-        In practical agricultural deployments, the physical environment exhibits multipath
-        characteristics (e.g., reflections from terrain or machinery). This is modeled as
-        a Finite Impulse Response (FIR) filter. Assuming the three-tap channel response in
-        \cref{eq:channel_impulse_response}, the actual
-        received signal $y[n]$ is the convolution of the ideal aggregated signal with the
-        channel response:
-        \begin{equation}
-            h[n] = [1.0, 0.5, -0.2]
-            \label{eq:channel_impulse_response}
-        \end{equation}
-
-        \begin{equation}
-            y[n] = s[n] * h[n] = \sum_{k=0}^{n} s[k] h[n-k]
-            \label{eq:multipath_convolution}
-        \end{equation}
-        Evaluating this convolution yields the distorted sequence in
-        \cref{eq:distorted_sequence}. The extension of the sequence length from three to five symbols
-        mathematically illustrates the presence of \gls{isi},
-        wherein previous and future symbols bleed into the current sampling instance.
-
-        \begin{equation}
-            y[n] = [3.0, 2.5, -0.1, -0.2, 0.0]
-            \label{eq:distorted_sequence}
-        \end{equation}
-
-    \subsubsection{Mean Squared Error (MSE) Evaluation}
-        To quantify the degradation caused by the multipath channel, the \gls{mse} is calculated between the ideal target function $s[n]$ and the
-        actual received signal $y[n]$. The error at each discrete time step is given by
-        \cref{eq:discrete_error}. For a
-        sequence of length $N$, the overall \gls{mse} is defined as:
-        \begin{equation}
-            e[n] = y[n] - s[n]
-            \label{eq:discrete_error}
+            \frac{\operatorname{MSE}_{\text{floor}}(0.50)}{\operatorname{MSE}_{\text{floor}}(0.20)}
+            \approx \frac{188.0}{31.6} \approx 5.95 \approx
+            \left(\frac{0.50}{0.20}\right)^2 = 6.25
+            \label{eq:gain_ratio_verification}
         \end{equation}
         \begin{equation}
-            \operatorname{MSE} = \frac{1}{N} \sum_{n=0}^{N-1} (y[n] - s[n])^2
-            \label{eq:multipath_mse}
+            \frac{\operatorname{MSE}_{\text{floor}}(0.50)}{\operatorname{MSE}_{\text{floor}}(0.10)}
+            \approx \frac{188.0}{7.6} \approx 24.7 \approx
+            \left(\frac{0.50}{0.10}\right)^2 = 25.0
+            \label{eq:gain_ratio_verification_10}
         \end{equation}
-        For the evaluated sequences, the discrepancy between the ideal sum and the
-        ISI-corrupted signal results in an $\text{MSE} = 0.46$. This theoretical error
-        establishes the baseline challenge that must be addressed through waveform design
-        or digital equalization techniques at the \gls{fc}.
+\end{itemize}
 
-        % ------------------------- Matlab Code Section -------------------------
-    \subsubsection{Matlab Simulation of Multipath Effects}
-        The following Matlab code snippet simulates the multipath channel effects on the
-        transmitted signals and computes the resulting \gls{mse}. The code defines the
-        transmitted sequences, the channel impulse response, and performs the convolution to
-        obtain the received signal. Finally, it calculates the \gls{mse} between the ideal and received signals.
-        
-        \begin{lstlisting}[language=Matlab, caption={Matlab Simulation of Multipath Channel Effects and MSE Calculation}, label={lst:matlab_multipath_simulation}]
-        
-            ...
+\cref{fig:sl_multipath_mse_mesh_3d} displays the complete 3D surface
+mesh generated from the Simulink parameter sweep,
+illustrating the dual-regime landscape across channel \gls{snr} and
+multipath gain $g$.
 
-            % Fractional Delay System Object
-            fracDelay = dsp.VariableFractionalDelay('MaximumDelay', 100);
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.82\linewidth]{figures/sl_multipath_mse_mesh.pdf}
+    \caption{3D surface plot of the Simulink Over-the-Air computation
+        MSE across channel SNR and multipath gain $g$ ($\text{SPS} = 12$,
+        $\tau = 0.3125 T_s$, $\alpha = 0.50$, $\text{span} = 12$). The
+        sharp transition from the noise-dominated slope to the $g^2$
+    plateau is clearly visible.}
+    \label{fig:sl_multipath_mse_mesh_3d}
+\end{figure}
 
-            % Raised Cosine Filter
-            rcFilter = rcosdesign(aleph, span, sps_val, "sqrt");
+\subsubsection{Simulink Constellation Diagram Analysis}
+\label{subsubsec:simulink_constellation_analysis}
+\cref{fig:sl_multipath_const_comparison} compares the received
+steady-state constellation at the \gls{fc} for the single-path
+channel ($g = 0.00$) against the multipath channel ($g = 0.50$).
 
-            % Aggregate noiseless transmitted signal
-            % Initialized as a column vector to prevent MATLAB matrix expansion bugs
-            rx_agg_signal = zeros(N * sps_val + length(rcFilter) - 1, 1);
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{.48\linewidth}
+        \tikzsetnextfilename{fig_sl_multipath_const_g0}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    title={\textsf{Single-Path ($g = 0.00$)}},
+                    xlabel={In-Phase (I)}, ylabel={Quadrature (Q)},
+                    xmin=20, xmax=50,
+                    ymin=-1, ymax=1,
+                    grid=major, width=\linewidth, height=0.75\linewidth,
+                    ticklabel style={font=\tiny}, label
+                    style={font=\scriptsize}, title style={font=\small}
+                ]
+                \addplot[only marks, mark=*, mark size=1pt,
+                color=blue, opacity=0.35]
+                table[x=const_multipath, y expr=0]
+                {data/isi/multipath/constellation/sl_multipath_fc_const_gain0.00.txt};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Unimpaired channel ($g = 0.00$, $\mu \approx 27.5$).}
+        \label{fig:sl_const_g0}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{.48\linewidth}
+        \tikzsetnextfilename{fig_sl_multipath_const_g50}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    title={\textsf{Multipath Channel ($g = 0.50$)}},
+                    xlabel={In-Phase (I)}, ylabel={Quadrature (Q)},
+                    xmin=20, xmax=50,
+                    ymin=-1, ymax=1,
+                    grid=major, width=\linewidth, height=0.75\linewidth,
+                    ticklabel style={font=\tiny}, label
+                    style={font=\scriptsize}, title style={font=\small}
+                ]
+                \addplot[only marks, mark=*, mark size=1pt,
+                color=red!80!black, opacity=0.35]
+                table[x=const_multipath, y expr=0]
+                {data/isi/multipath/constellation/sl_multipath_fc_const_gain0.50.txt};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Multipath corrupted ($g = 0.50$, $\mu \approx 41.25$).}
+        \label{fig:sl_const_g50}
+    \end{subfigure}
+    \caption{Simulink constellation scatter plots at the Fusion
+        Center ($\text{SNR} = 20\text{ dB}$, $\text{SPS} = 12$). In (a),
+        the symbols cluster tightly around the true mean of $27.5\text{
+        V}$. In (b), the multipath echo introduces a DC channel gain of
+        $1 + g = 1.50$, shifting the center of mass to $41.25\text{ V}$
+    while significantly expanding symbol dispersion.}
+    \label{fig:sl_multipath_const_comparison}
+\end{figure}
 
-            for k = 1:K
-                % The Air acts as an ideal adder (MAC Superposition)
-                tx_sig = conv(txUpSamped(:,k), rcFilter(:)) ;
-
-                % Channel: Multipath fractional delay
-                % h(t) = d(t) + 0.5*d(t - 0.25Ts)
-                % channel_out = conv(tx_sig, h_channel, "same");
-
-                delayed_sig = fracDelay(tx_sig, delay_frac * sps_val);
-                
-                % Force rcFilter to column vector '(:)' for safe 1D convolution
-                rx_agg_signal = rx_agg_signal + tx_sig + 0.5 * delayed_sig ;% eyediagram(node_1_tx, sps_val)
-            end
-
-            ...
-
-        \end{lstlisting}
-
-        In the above code, the `dsp.VariableFractionalDelay` object is used to introduce a fractional delay to simulate multipath effects. The `rcosdesign` function generates a square-root raised cosine filter to shape the transmitted signals. The received signal is computed by convolving the transmitted signals with the channel response, and the \gls{mse} is calculated to quantify the distortion introduced by the multipath channel.
-
-        The \gls{mse} value differes significantly from the ideal case, highlighting the importance of addressing multipath effects in practical \gls{ota} computing systems.
-
-        \begin{figure}[htbp]
-            \centering
-            \begin{subfigure}{.45\linewidth}
-                \includegraphics[width=\linewidth]{figures-cache/fig_ml_awgn_fc_mse.pdf}
-                \caption{\textsf{Ideal}}
-                \label{fig:ml_ideal_fc_mse}
-            \end{subfigure}%
-            \hfill
-            \begin{subfigure}{.45\linewidth}
-                \tikzsetnextfilename{fig_ml_isi_rrc_fc_mse_12sps}
-                \begin{tikzpicture}
-                    \begin{axis}[
-                        title={\textsf{RC-Filtered}},
-                        xlabel={SNR (dB)}, ylabel={MSE},
-                        ymode=log, grid=major,
-                        legend pos=north east,
-                    ]
-                        \addplot[
-                            color=red,
-                            mark=*,
-                            thick,
-                            restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51} 
-                        ] table[x=SNR_dB, y=mse_results] {data/isi/multipath/mse/ml_isi_rrc_fc_mse_12sps_span12.txt};
-
-                        \addlegendentry{sps=$10^1$, $\alpha=0.5$}
-
-                    \end{axis}
-                \end{tikzpicture}
-                \caption{\textsf{RC-Filtered}}
-                \label{fig:ml_isi_rrc_fc_mse_12sps}
-            \end{subfigure}
-            \caption{
-                Comparison of MSE performance between the ideal baseline and the Raised
-                Cosine filtered scenario with multipath ISI.
-            }
-            \label{fig:mse_comparison}
-        \end{figure}
-
-        As in the previous chapter the \ref{fig:ml_ideal_fc_mse} shows the ideal \gls{mse}
-        performance, while \ref{fig:ml_isi_rrc_fc_mse_12sps} illustrates the degradation
-        due to multipath effects and raised cosine filtering. It is evident that the
-        presence of \gls{isi} significantly increases the \gls{mse}, especially at lower
-        SNR levels. The results emphasize the need for advanced signal processing
-        techniques to mitigate ISI and improve overall system performance in practical
-        \gls{ota} computing scenarios.
-
-        \begin{figure}[htbp]
-            \centering
-            \animategraphics[autoplay, loop, width=0.85\linewidth]{1.5}
-            {figures/ml_multipath_rrc_fc_mse_span_comparison}{}{}
-            \caption{
-                Synchronous 3D animation comparing the Over-The-Air MSE surface across $sps$
-                scaling for filter span 4 (left) versus span 12 (right).
-            }
-            \label{fig:isi_mse_span_comparison}
-        \end{figure}
-
-        In an ideal over-the-air computation (AirComp) network with $K$ sensors, the
-        receiver estimates the arithmetic mean $\mu[n] = \frac{1}{K}\sum_{k=1}^K x_k[n]$.
-        When a multipath component with fractional delay $\tau$ and gain $g$ is
-        introduced, the received symbol-sampled signal after matched filtering is:
-
+Two distinct physical phenomena are evident from
+\cref{fig:sl_multipath_const_comparison}:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{DC Channel Gain Shift:} In an analog \gls{ota}
+        system transmitting uncentered sensor readings ($X \approx 27$),
+        the zero-frequency (DC) transfer function of the two-ray channel is:
         \begin{equation}
-            y[n] = \sum_{k=1}^K x_k[n] + g \sum_{k=1}^K \sum_{m} x_k[m] \, r_{pp}((n-m)T_s -
-        \tau) + \tilde{w}[n]
-            \label{eq:multipath_received_signal}    
+            H(0) = 1 + g = 1 + 0.50 = 1.50
+            \label{eq:channel_dc_gain}
         \end{equation}
-        
-        where $r_{pp}(t)$ is the raised cosine pulse autocorrelation (the cascade of both
-        RRC filters) and $\tilde{w}[n]$ is the filtered AWGN with variance $\sigma_w^2$.
+        Consequently, the received mean shifts from $27.5\text{ V}$
+        to $27.5 \times 1.5 = 41.25\text{ V}$. Without explicit channel-gain
+        rescaling at the \gls{fc}, this induces a severe systematic
+        computation bias.
+    \item \textbf{Dispersion Expansion:} The spread of the
+        constellation points widens dramatically from $[24.6, 30.8]$ in (a)
+        to $[37.2, 46.1]$ in (b), directly reflecting the added
+        variance of the intersymbol interference tail energy.
+\end{enumerate}
 
-        Normalizing by $K$ at the fusion center yields the computation error $e[n] =
-        \frac{y[n]}{K} - \mu[n]$:
+\subsection{Transceiver Impairments, Synchronization, and Equalization}
+\label{subsec:impairments_and_equalization}
+To complete the physical characterization of Over-the-Air computing,
+the challenges of phase misalignment, carrier frequency
+offsets, and hardware implementation are
+addressed~\cite{sahin_survey_2023,evgenidis_waveform_2025,xiao_heterogeneous_2025}.
 
-        \begin{equation}
-            e[n] = g \sum_{m} \mu[m] \, r_{pp}((n-m)T_s - \tau) + \frac{\tilde{w}[n]}{K}
-            \label{eq:multipath_computation_error}    
-        \end{equation}
-        
-        Assuming the transmit data across symbols are zero-mean with variance $\sigma_x^2
-        = 1$ and uncorrelated over time, the total mean squared error decomposes into two
-        decoupled terms:
+\subsubsection{Transmitter Pre-Equalization and Phase Misalignment}
+\label{subsubsec:preequalization_phase_error}
+In physical wireless channels, attenuation and phase rotation are
+modeled as complex fading coefficients $h_k = \alpha_k e^{j\theta_k}$.
+To achieve constructive in-phase superposition, each sensor node
+applies zero-forcing transmitter pre-equalization:
+\begin{equation}
+    w_k = \frac{1}{\hat{h}_k} = \frac{1}{\hat{\alpha}_k e^{j\hat{\theta}_k}}
+    \label{eq:preequalization_weight}
+\end{equation}
+In practical deployments, sensors possess imperfect channel state
+information (\gls{csi}). Assuming perfect amplitude estimation
+($\hat{\alpha}_k = \alpha_k$) but a residual phase estimation error
+$\Delta\theta_k = \hat{\theta}_k - \theta_k$, the received
+signal at the \gls{fc} prior to noise is:
+\begin{equation}
+    y = \sum_{k=1}^K x_k \, w_k \, h_k = \sum_{k=1}^K x_k \left(
+    \frac{1}{\alpha_k} e^{-j(\theta_k + \Delta\theta_k)} \right)
+    \left( \alpha_k e^{j\theta_k} \right) = \sum_{k=1}^K x_k
+    e^{-j\Delta\theta_k}
+    \label{eq:phase_misalignment_superposition}
+\end{equation}
+Applying Euler's identity and the small-angle Taylor expansion
+($\cos(\Delta\theta) \approx 1$, $\sin(\Delta\theta) \approx \Delta\theta$):
+\begin{equation}
+    y \approx \underbrace{\sum_{k=1}^K x_k}_{\text{Ideal Computation
+    (In-Phase)}} \quad - \quad j \underbrace{\sum_{k=1}^K x_k
+    \Delta\theta_k}_{\text{Phase Error Residual (Quadrature)}}
+    \label{eq:phase_error_isolation}
+\end{equation}
+\cref{eq:phase_error_isolation} yields a vital theoretical conclusion
+for Over-the-Air computing architectures: because the
+cosine function possesses zero first derivative around zero
+($\cos(\Delta\theta) \approx 1 - \frac{1}{2}\Delta\theta^2$), minor
+phase synchronization errors do not severely corrupt the real
+(In-Phase) computation. Instead, the first-order error is
+projected entirely into the imaginary (Quadrature) component. By
+detecting strictly along the in-phase axis, the \gls{fc}
+inherently suppresses first-order phase jitter.
 
-        \begin{equation}
-            \text{MSE}(g, \text{SNR}) =
-            \underbrace{\frac{10^{-\text{SNR}_{\text{dB}}/10}}{K}}_{\text{AWGN Noise
-            Component}} + \underbrace{\frac{g^2}{K} \sum_{l=-\infty}^{\infty} r_{pp}^2(l T_s -
-            \tau)}_{\text{Irreducible Multipath ISI Floor}}
-            \label{eq:multipath_mse_decomposition}
-        \end{equation}
+\subsubsection{Carrier Frequency Offset (CFO) and Constellation Rotation}
+\label{subsubsec:cfo_effects}
+While phase errors project into the quadrature dimension, local
+oscillator frequency mismatch between transmitters and the
+\gls{fc} introduces a \gls{cfo} $\Delta f = f_{\text{rx}} -
+f_{\text{tx}}$. In complex baseband representation, \gls{cfo} imparts a
+continuous, time-varying phase rotation:
+\begin{equation}
+    r(t) = s(t) \, e^{j 2\pi \Delta f t}
+    \label{eq:cfo_continuous_rotation}
+\end{equation}
+At discrete symbol intervals $n$, the phase advances progressively by
+$\theta_n = 2\pi \Delta f n T_s$. Consequently, the
+one-dimensional real PAM constellation rotates continuously around
+the origin, expanding into a circular disk or ring in the
+complex $(I, Q)$ plane. Furthermore, the computation error becomes:
+\begin{equation}
+    |e[n]|^2 = \left| r[n] e^{j 2\pi \Delta f n T_s} - s[n] \right|^2
+    = 2 s^2[n] \Big( 1 - \cos(2\pi \Delta f n T_s) \Big)
+    \label{eq:cfo_mse_expansion}
+\end{equation}
+Averaged over time, $\frac{1}{N}\sum \cos(2\pi \Delta f n T_s) \to
+0$, causing the \gls{mse} floor to collapse catastrophically
+to $\approx 2 \sigma_s^2$. This wipes out the deep notch of the
+symbol timing S-curve, demonstrating that frequency synchronization
+loops (such as Costas loops or carrier recovery algorithms) are
+mandatory prerequisites for analog \gls{ota}
+computing~\cite{sahin_survey_2023,perez-neira_waveforms_2025}.
 
-        \begin{itemize}
-            \item \textbf{At low SNR:} The noise term $\frac{\sigma_w^2}{K}$ dominates, causing all
-        curves across different values of $g$ to converge to the standard $1/\text{SNR}$
-        slope.
-            \item \textbf{At high SNR:} The noise vanishes ($\sigma_w^2 \to 0$), causing the MSE to hit
-        a plateau determined strictly by $g^2$ and the energy of the sampled pulse tails
-        at offset $\tau$.
-            \item \textbf{At $g = 0$:} The ISI floor collapses, recovering the ideal single-path
-        AirComp bound.
-        \end{itemize}
+\subsubsection{Software-Defined Radio (GNU Radio) Validation}
+\label{subsubsec:gnu_radio_isi_validation}
+To validate the physical realizability of these phenomena on
+reconfigurable hardware, \cref{fig:grc_isi_rrc} illustrates the
+GNU Radio Companion flowgraph modeling the multipath \gls{isi} channel.
 
-        In simulink, the multipath channel is modeled as a two-tap FIR filter with a fractional delay of
-        $\tau = 0.25 T_s$ and a gain of $g = 0.5$. The raised cosine filter is designed with
-        a roll-off factor of $\alpha = 0.5$ and a span of 12 symbols. The simulation results
-        are consistent with the theoretical analysis, demonstrating the impact of multipath
-        propagation on the MSE performance of over-the-air computation systems. The presence
-        of multipath components introduces an irreducible error floor, which can be mitigated
-        through advanced signal processing techniques, such as equalization or adaptive filtering.
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{flowgraphs/grc_isi_rrc.pdf}
+    \caption{GNU Radio flowgraph implementing the Over-the-Air
+        computation network over a multipath channel with controlled FIR
+    delay taps and Root Raised Cosine pulse shaping.}
+    \label{fig:grc_isi_rrc}
+\end{figure}
 
-        
+In the GNU Radio architecture, the physical channel is instantiated
+via the \texttt{Channel Model} block, parameterized with a
+multi-tap delay profile matching \cref{eq:two_ray_impulse_response}.
+Pulse shaping is realized using \texttt{Root Raised Cosine Filter}
+blocks with interpolation and decimation factors matched to
+\texttt{sps\_actual = 6}. Real-time inspection via the \texttt{QT GUI Eye Sink}
+and \texttt{QT GUI Constellation Sink} confirms the identical signal
+integrity phenomena observed in MATLAB and Simulink: the
+multipath tap induces severe eye closure, eliminating the optimal
+decision strobe and dispersing constellation energy across the
+decision boundary.
 
+\subsection{Summary of Chapter Findings}
+\label{subsec:summary_chapter_findings}
+This chapter demonstrated that multipath propagation and unresolvable
+fractional delays constitute fundamental physical bottlenecks
+for Over-the-Air computation:
+\begin{itemize}[leftmargin=*]
+    \item The closed-form analytical derivation proved that multipath
+        dispersion imposes an irreducible \gls{mse} error floor
+        scaling strictly with the square of the echo attenuation ($g^2$).
+    \item Farrow filter analysis established that quartic ($L=4$)
+        Lagrange interpolation eliminates synthetic simulation droop,
+        guaranteeing high-fidelity discrete modeling.
+    \item Multi-rate sample-based Simulink simulations corroborated
+        the analytical $g^2$ scaling law and revealed critical
+        implementation requirements regarding filter group delay
+        compensation and downsampler phase alignment.
+    \item Eye and constellation diagnostics provided intuitive visual
+        confirmation of trajectory shearing, loss of zero-derivative
+        strobe plateaus, and DC gain elevation.
+\end{itemize}
+These conclusions motivate the development of advanced equalization
+strategies, adaptive waveform designs, and robust precoding
+frameworks to safeguard analog computation over dispersive wireless channels.
 
-
-    \subsection{Practical Challenges}
-        \subsubsection{Channel State Information (CSI) Imperfection}
-        The theoretical model assumes perfect knowledge of the channel impulse response.
-        In practice, the need for accurate and fresh \gls{csi} at transmitters or
-        receivers is critical for precoding and equalization techniques
-        \cite{sahin_survey_2023,yang_federated_2020,evgenidis_waveform_2025}. Obsolete or
-        noisy CSI severely limits the ability to pre-distort signals, exacerbating the
-        \gls{mse}.
-
-
-
-        \subsubsection{Waveform and Filter Design}
-        As demonstrated by the sequence expansion in the multipath model, standard digital
-        communication transceivers suffer from time sampling errors and \gls{isi}.
-        Designing custom pulse shapes, such as optimized Root Raised Cosine (RRC) filters
-        or DNN-generated waveforms, is essential to force zero-crossings at the exact
-        sampling instances, thereby suppressing ISI natively over the air
-        \cite{evgenidis_waveform_2025}.
-
-    \subsection{Optimization Strategies to Enhance OAC Performance}
-        To mitigate the aforementioned challenges, several optimization frameworks have
-        been proposed in the literature:
-        \begin{itemize}
-            \item \textbf{Power Management}: Strategies to mitigate aggregation errors
-            involve optimizing power control policies at the \gls{ed}s to align received
-            signal amplitudes, thereby minimizing the overall \gls{mse} or maximizing the
-            convergence speed of federated learning algorithms
-            \cite{sahin_survey_2023,cao_optimized_2022,evgenidis_waveform_2025}.
-            \item \textbf{Transceiver Design}: The joint design of pre-processing
-            functions at the transmitter and post-processing equalizers at the receiver
-            allows the system to match the channel characteristics to the desired
-            nomographic function, effectively canceling multipath echoes and minimizing
-            computational distortion
-            \cite{goldenbaum_robust_2013,hellstrom_optimal_2023,sahin_survey_2023,yang_federated_2020}.
-        \end{itemize}
-
-    \ifSubfilesClassLoaded{
-        \clearpage
-        \printbibliography
-    }{}
+\ifSubfilesClassLoaded{
+    \clearpage
+    \printbibliography
+}{}
 
 \end{document}
