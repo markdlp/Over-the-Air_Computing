@@ -972,34 +972,274 @@ projected entirely into the imaginary (Quadrature) component. By
 detecting strictly along the in-phase axis, the \gls{fc}
 inherently suppresses first-order phase jitter.
 
-\subsubsection{Carrier Frequency Offset (CFO) and Constellation Rotation}
-\label{subsubsec:cfo_effects}
-While phase errors project into the quadrature dimension, local
-oscillator frequency mismatch between transmitters and the
-\gls{fc} introduces a \gls{cfo} $\Delta f = f_{\text{rx}} -
-f_{\text{tx}}$. In complex baseband representation, \gls{cfo} imparts a
-continuous, time-varying phase rotation:
+\subsubsection{Asynchronous Multi-Sensor Transmission and Carrier
+Frequency Offset (CFO)}
+\label{subsubsec:async_cfo_effects}
+While static phase errors project into the quadrature dimension, practical
+distributed wireless sensor networks suffer from local oscillator frequency
+drifts and independent clock jitter. In physical transceivers, no two crystal
+oscillators resonate at identical frequencies. When $K$ distributed sensor
+nodes transmit simultaneously to the \gls{fc}, each sensor $k$ operates with
+an individual carrier frequency $f_k = f_c + \Delta f_k$, where $f_c$ is the
+nominal center frequency and $\Delta f_k$ denotes the sensor-specific \gls{cfo}.
+Furthermore, spatial distribution and clock inaccuracies induce an independent
+arrival timing offset $\tau_k \in [-\tau_{\max}, \tau_{\max}]$, modeled via
+the Farrow fractional delay filter.
+
+The passband waveform emitted by sensor $k$ is given by:
 \begin{equation}
-    r(t) = s(t) \, e^{j 2\pi \Delta f t}
-    \label{eq:cfo_continuous_rotation}
+    s_k(t) = m_k(t - \tau_k) \cos\Big(2\pi (f_c + \Delta f_k) t + \theta_k\Big)
+    \label{eq:async_sensor_passband_tx}
 \end{equation}
-At discrete symbol intervals $n$, the phase advances progressively by
-$\theta_n = 2\pi \Delta f n T_s$. Consequently, the
-one-dimensional real PAM constellation rotates continuously around
-the origin, expanding into a circular disk or ring in the
-complex $(I, Q)$ plane. Furthermore, the computation error becomes:
+where $m_k(t) = \sum_n x_k[n] \, p(t - n T_s)$ represents the
+\gls{rrc} pulse-shaped
+baseband signal and $\theta_k \sim \mathcal{U}[0, 2\pi)$ denotes the
+initial carrier phase.
+The composite signal arriving at the \gls{fc} antenna is the
+over-the-air superposition:
 \begin{equation}
-    |e[n]|^2 = \left| r[n] e^{j 2\pi \Delta f n T_s} - s[n] \right|^2
-    = 2 s^2[n] \Big( 1 - \cos(2\pi \Delta f n T_s) \Big)
-    \label{eq:cfo_mse_expansion}
+    r(t) = \sum_{k=1}^K s_k(t) + w(t)
+    \label{eq:async_ota_superposition}
 \end{equation}
-Averaged over time, $\frac{1}{N}\sum \cos(2\pi \Delta f n T_s) \to
-0$, causing the \gls{mse} floor to collapse catastrophically
-to $\approx 2 \sigma_s^2$. This wipes out the deep notch of the
-symbol timing S-curve, demonstrating that frequency synchronization
-loops (such as Costas loops or carrier recovery algorithms) are
-mandatory prerequisites for analog \gls{ota}
-computing~\cite{sahin_survey_2023,perez-neira_waveforms_2025}.
+where $w(t)$ is additive white Gaussian noise.
+
+At the \gls{fc}, the receiver mixes the incoming signal with its
+nominal quadrature
+local oscillator $c_{\text{rx}}(t) = 2 \cos(2\pi f_c t +
+\theta_{\text{rx}}) - 2j \sin(2\pi f_c t + \theta_{\text{rx}}) = 2
+e^{-j(2\pi f_c t + \theta_{\text{rx}})}$.
+Passing the mixer products through the receiver matched filter $p^*(-t) = p(t)$
+eliminates double-frequency images at $2f_c$, yielding the complex
+baseband output:
+\begin{equation}
+    y(t) = \frac{1}{K}\sum_{k=1}^K m_k(t - \tau_k) \, e^{j(2\pi
+    \Delta f_k t + \Delta \theta_k)} + \tilde{w}(t)
+    \label{eq:async_downconverted_complex_sum}
+\end{equation}
+where $\Delta \theta_k = \theta_k - \theta_{\text{rx}}$ is the
+residual phase offset
+and $\tilde{w}(t)$ is filtered noise.
+
+\Cref{eq:async_downconverted_complex_sum} uncovers two fundamental
+physical obstacles:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Beat Frequency Translation and Zero-Crossing Inversions:}
+        Because the transmitter oscillators do not match the receiver
+        ($\Delta f_k \neq 0$),
+        the downconversion process does not translate the incoming
+        carriers to baseband DC ($0\text{ Hz}$).
+        Instead, each sensor's contribution is translated to its
+        respective beat frequency $\Delta f_k$.
+        The real (In-Phase) projection demodulated by the coherent
+        receiver becomes:
+        \begin{equation}
+            I(t) = \frac{1}{K}\sum_{k=1}^K m_k(t - \tau_k) \cos(2\pi
+            \Delta f_k t + \Delta \theta_k)
+            \label{eq:async_inphase_beating}
+        \end{equation}
+        Because $\cos(2\pi \Delta f_k t + \Delta \theta_k)$ cycles
+        symmetrically between $+1$ and $-1$,
+        the demodulated signal oscillates between $[-m_k(t),
+        +m_k(t)]$. Consequently, its time-average
+        mean collapses toward zero, causing the recovered values to
+        swing continuously between positive
+        and negative amplitudes rather than preserving the true
+        aggregated baseline.
+    \item \textbf{Multi-Sensor Beating and Envelope Fading:}
+        As the independent frequencies $\Delta f_k$ drift apart, the
+        vector phase angles
+        $2\pi \Delta f_k t + \Delta \theta_k$ intermittently align in
+        phase (inducing constructive crests)
+        and point in opposing directions (causing destructive troughs
+        and zero crossings). This creates
+        a pronounced beating envelope across the multi-sensor superposition.
+    \item \textbf{Breakdown of Conventional Receiver Synchronization:}
+        In point-to-point wireless communications, a receiver employs
+        a \gls{pll} or Costas loop to lock
+        its \gls{lo} to the incoming carrier ($\Delta f \to 0, \Delta
+        \theta \to 0$). In Over-the-Air Computing,
+        however, signal superposition occurs natively \emph{in the
+        physical propagation medium} before reaching
+        the receiver front-end. A single receiver \gls{lo} cannot
+        simultaneously synchronize with $K$ independent,
+        drifting crystal oscillators.
+\end{enumerate}
+
+To evaluate these impairments, \cref{fig:ml_channel_regimes_mse}
+compares the empirical \gls{mse}
+performance across all three channel regimes investigated in this
+thesis: the ideal synchronous baseline,
+the two-ray multipath channel ($g = 0.50$, $\tau = 0.3125 T_s$), and
+the asynchronous \gls{cfo} channel
+($|\tau_k| \le 0.25 T_s$, $|\Delta f_k| \le 5\text{ Hz}$, $K = 22$,
+$\text{SPS} = 12$, $\alpha = 0.50$).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{figures/ml_channel_regimes_mse_comparison.pdf}
+    \caption{Comparative Mean Squared Error performance across
+        channel impairment regimes
+        ($\text{SPS} = 12$, $\alpha = 0.50$): ideal synchronous
+        baseline ($g = 0$, zero CFO),
+        two-ray multipath channel ($g = 0.50$, $\tau = 0.3125 T_s$),
+        and the asynchronous
+        channel with independent clock jitter ($|\tau_k| \le 0.25
+        T_s$) and carrier frequency
+        offsets ($|\Delta f_k| \le 5\text{ Hz}$, $K = 22$). Both
+        impaired regimes exhibit rigid
+        asymptotic error floors, with the asynchronous CFO plateau
+    settling at $\text{MSE} \approx 0.067$.}
+    \label{fig:ml_channel_regimes_mse}
+\end{figure}
+
+As shown in \cref{fig:ml_channel_regimes_mse}, while the ideal curve
+decays monotonically toward
+$10^{-5}$ at $20\text{ dB}$, the asynchronous \gls{cfo} channel hits
+an irreducible error floor
+at $\text{MSE} \approx 0.067$. To examine how this plateau behaves
+across oversampling rates
+and pulse shape parameters, \cref{fig:ml_async_rrc_fc_mse}
+illustrates the 3D \gls{mse} surface
+evolution across $\text{SPS} \in \{12, 24, 48, 96\}$.
+
+\begin{figure}[htbp]
+    \centering
+    \animategraphics[autoplay, loop,
+    width=0.85\linewidth]{1.5}{figures/ml_async_rrc_fc_mse}{}{}
+    \caption{Synchronous 3D animation of the Over-the-Air MSE surface
+        under asynchronous
+        clock jitter ($|\tau_k| \le 0.25 T_s$) and Carrier Frequency
+        Offset ($|\Delta f_k| \le 5\text{ Hz}$)
+        across oversampling ratios $\text{SPS} \in \{12, 24, 48,
+        96\}$. Note the persistent high-SNR
+    error floor across all roll-off factors $\alpha$.}
+    \label{fig:ml_async_rrc_fc_mse}
+\end{figure}
+
+Signal integrity diagnostics reveal the physical manifestation of \gls{cfo}:
+\begin{itemize}[leftmargin=*]
+    \item \textbf{Eye Diagram Distortion and Negative Swings:} As
+        shown in the animated eye diagram
+        of \cref{fig:ml_async_rrc_fc_eye}, the carrier beat
+        frequencies and independent arrival delays
+        completely destroy the zero-derivative timing plateau. The
+        trajectories sheared into dispersed,
+        chaotic paths spanning both positive and negative amplitudes
+        ($[-7.2, +8.5]\text{ V}$), confirming
+        the loss of any viable coherent decision strobe.
+    \item \textbf{Constellation Ring Expansion:} In
+        \cref{fig:ml_async_rrc_fc_const}, the progressive
+        phase rotation $\theta_n = 2\pi \Delta f n T_s$ continuously
+        spins the constellation vector
+        around the origin, expanding the nominal one-dimensional
+        \gls{pam} line into a circular cloud
+        in the complex $(I, Q)$ plane.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}{.48\linewidth}
+        \animategraphics[autoplay, loop,
+        width=\linewidth]{1.5}{figures/ml_async_rrc_fc_eye}{}{}
+        \caption{Eye diagram evolution across $\text{SPS} \in \{12,
+        24, 48, 96\}$.}
+        \label{fig:ml_async_rrc_fc_eye}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{.48\linewidth}
+        \animategraphics[autoplay, loop,
+        width=\linewidth]{1.5}{figures/ml_async_rrc_fc_const}{}{}
+        \caption{Constellation scatter across roll-off $\alpha \in
+        [0.00, 1.00]$.}
+        \label{fig:ml_async_rrc_fc_const}
+    \end{subfigure}
+    \caption{Signal integrity diagnostics of the Over-the-Air
+        computation channel under
+        asynchronous arrival jitter ($|\tau_k| \le 0.25 T_s$) and
+        carrier frequency offsets
+    ($|\Delta f_k| \le 5\text{ Hz}$).}
+    \label{fig:async_diagnostics_combined}
+\end{figure}
+
+\subsubsection{Simulink Multi-Carrier Architecture and Non-Coherent Detection}
+\label{subsubsec:simulink_async_pipeline}
+To validate these multi-carrier dynamics within a hardware-accurate
+discrete-time framework,
+\cref{fig:sl_async_rrc_architecture} illustrates the block-level
+Simulink architecture modeling
+asynchronous \gls{ota} computation.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{flowgraphs/sl_async_rrc.pdf}
+    \caption{Simulink block-level implementation of Over-the-Air
+        computation under asynchronous
+        multi-sensor carrier frequency offsets, independent Farrow
+        fractional delays, quadrature
+    downconversion, and non-coherent envelope detection.}
+    \label{fig:sl_async_rrc_architecture}
+\end{figure}
+
+The architecture incorporates several key subsystems:
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Independent Multi-Carrier Transmitter Branches:}
+        Each participating sensor node generates its baseband signal,
+        applies pulse shaping,
+        and injects an individual arrival delay $\tau_k$ via a
+        dedicated Farrow fractional delay block.
+        The delayed baseband signals are upconverted by independent
+        carrier oscillator blocks running
+        at $f_k \approx 20\text{ Hz}$ with random initial phases $\theta_k$.
+    \item \textbf{Quadrature Downconversion and Filtering:}
+        The summed RF passband signal traverses the multi-sensor
+        channel model and enters the \gls{fc}.
+        The \gls{fc} multiplies the received waveform by a complex
+        exponential oscillator (\texttt{nominal\_carrier},
+            configured with \texttt{Output complexity: Complex} at $f_c =
+        20\text{ Hz}$ and phase $\pi/2$).
+        Filtering through \texttt{RC\_Rx\_async} strips the $40\text{
+        Hz}$ image while passing the complex analytic
+        baseband $z(t) = I(t) + j Q(t)$.
+    \item \textbf{Non-Coherent Envelope Detection via Absolute Value
+        Rectification:}
+        Because coherent detection results in severe zero-crossing
+        inversions ($I(t)$ swinging negative),
+        an \texttt{Abs} block is inserted prior to symbol strobing to
+        compute the Euclidean magnitude:
+        \begin{equation}
+            |z(t)| = \sqrt{I^2(t) + Q^2(t)} = \frac{1}{K}\left|
+            \sum_{k=1}^K m_k(t - \tau_k) \, e^{j(2\pi \Delta f_k t +
+            \Delta \theta_k)} \right|
+            \label{eq:noncoherent_envelope_abs}
+        \end{equation}
+        Because $|z(t)| \ge 0$, this operation guarantees
+        non-negative output values, eliminating
+        negative zero crossings and recovering the aggregated message
+        envelope non-coherently.
+        However, because the $K = 5$ sensors maintain independent
+        phase trajectories, residual
+        vector envelope fading persists: when the five complex
+        vectors align constructively,
+        $|z(t)| \approx \frac{1}{5}(5 \times 27.55) = 27.55\text{
+        V}$; when they oppose destructively,
+        the envelope dips toward zero.
+\end{enumerate}
+
+\cref{fig:sl_async_diagnostics} depicts the empirical eye and
+constellation diagrams captured
+from the Simulink model under asynchronous \gls{cfo} operation.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/sl_async_diagnostics.pdf}
+    \caption{Simulink empirical diagnostics for the asynchronous
+        AirComp channel ($g = 0.50$, $\text{SPS} = 12$):
+        (a) Eye diagram illustrating envelope distortion and non-zero
+        DC baseline tracking under carrier beating;
+        (b) Constellation scatter demonstrating significant dispersion
+    expansion across the decision plane.}
+    \label{fig:sl_async_diagnostics}
+\end{figure}
 
 \subsubsection{Software-Defined Radio (GNU Radio) Validation}
 \label{subsubsec:gnu_radio_isi_validation}
@@ -1047,6 +1287,14 @@ for Over-the-Air computation:
     \item Eye and constellation diagnostics provided intuitive visual
         confirmation of trajectory shearing, loss of zero-derivative
         strobe plateaus, and DC gain elevation.
+    \item Multi-carrier asynchronous modeling demonstrated that independent
+        \glspl{cfo} translate baseband DC components into
+        beat-frequency sinusoids
+        oscillating symmetrically around zero, producing envelope beating and
+        destroying the coherent timing margin, which can be addressed via
+        non-coherent Euclidean magnitude rectification ($|z(t)| =
+        \sqrt{I^2 + Q^2}$)
+        at the expense of multi-sensor envelope fading.
 \end{itemize}
 These conclusions motivate the development of advanced equalization
 strategies, adaptive waveform designs, and robust precoding

@@ -1,0 +1,49 @@
+% figures/ml_async_rrc_fc_mse.tex
+\documentclass[multi=minipage]{standalone}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\usepackage{luacode}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+    \begin{luacode*}
+        local sps_data = {
+            {val = "12", label = "12"},
+            {val = "24", label = "24"},
+            {val = "48", label = "48"},
+            {val = "96", label = "96"},
+        }
+
+        local base_path = "../data/isi/async/mse/"
+
+        for i, sps in ipairs(sps_data) do
+
+            tex.print("\\begin{minipage}{12cm}")
+            tex.print("\\begin{tikzpicture}")
+            tex.print("\\begin{axis}[")
+            tex.print("    title={\\textsf{Asynchronous AirComp with CFO ($sps = " .. sps.label .. "$)}},")
+            tex.print("    xlabel={SNR (dB)},")
+            tex.print("    ylabel={$\\alpha$},")
+            tex.print("    zlabel={Computation MSE},")
+            tex.print("    zmode=log,")
+            tex.print("    zmin=0.01, zmax=1.0,") 
+            tex.print("    view={135}{30},")
+            tex.print("    grid=major,")
+            tex.print("    colormap name=viridis,")
+            tex.print("    colorbar,")
+            tex.print("    colorbar style={font=\\tiny},")
+            tex.print("    width=\\linewidth,")
+            tex.print("    height=0.75\\linewidth,")
+            tex.print("    ticklabel style={font=\\tiny},")
+            tex.print("    label style={font=\\scriptsize},")
+            tex.print("    title style={font=\\small}")
+            tex.print("]")
+            tex.print("\\addplot3[surf, mesh/rows=21] table[x=SNR_dB, y=alpha_array, z=mse_results] {" .. base_path .. "ml_isi_rrc_fc_mse_" .. sps.val .. "sps.txt};")
+            tex.print("\\end{axis}")
+            tex.print("\\end{tikzpicture}")
+            tex.print("\\end{minipage}")
+        end
+    \end{luacode*}
+    
+\end{document}

@@ -1,0 +1,49 @@
+% figures/ml_channel_regimes_mse_comparison.tex
+\documentclass{standalone}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{axis}[
+        title={\textsf{AirComp MSE across Channel Impairment Regimes ($\text{SPS} = 12$, $\alpha = 0.50$)}},
+        xlabel={Channel SNR (dB)},
+        ylabel={Computation MSE},
+        ymode=log,
+        grid=major,
+        ymin=1e-5, ymax=10,
+        xmin=-20, xmax=20,
+        legend pos=south west,
+        legend style={font=\footnotesize},
+        ticklabel style={font=\footnotesize},
+        label style={font=\small},
+        title style={font=\normalsize\bfseries},
+        width=12cm, height=8cm
+    ]
+        % 1. Ideal Baseline
+        \addplot[
+            color=blue, mark=square*, thick,
+            restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51}
+        ] table[x=SNR_dB, y=mse_results]
+        {../data/ideal/mse/ml_rrc_fc_mse_12sps_span12.txt};
+        \addlegendentry{Ideal Baseline ($g = 0$, Synchronous)}
+
+        % 2. Multipath ISI
+        \addplot[
+            color=red, mark=*, thick,
+            restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51}
+        ] table[x=SNR_dB, y=mse_results]
+        {../data/isi/multipath/mse/ml_isi_rrc_fc_mse_12sps_span12.txt};
+        \addlegendentry{Multipath Echo ($g = 0.50$, $\tau = 0.3125 T_s$)}
+
+        % 3. Asynchronous CFO
+        \addplot[
+            color=teal, mark=triangle*, thick,
+            restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51}
+        ] table[x=SNR_dB, y=mse_results]
+        {../data/isi/async/mse/ml_isi_rrc_fc_mse_12sps.txt};
+        \addlegendentry{Asynchronous CFO ($|\tau_k| \le 0.25 T_s$, $|\Delta f_k| \le 5\text{ Hz}$)}
+    \end{axis}
+\end{tikzpicture}
+\end{document}

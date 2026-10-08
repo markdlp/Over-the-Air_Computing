@@ -1,0 +1,56 @@
+% figures/ml_async_rrc_fc_eye.tex
+\documentclass[multi=tikzpicture]{standalone}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\usepackage{luacode}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+\begin{luacode*}
+    local sps_list = {
+        {folder = "12sps", val = "12", label = "12"},
+        {folder = "24sps", val = "24", label = "24"},
+        {folder = "48sps", val = "48", label = "48"},
+        {folder = "96sps", val = "96", label = "96"},
+    }
+
+    local alpha_str = "0.50"
+    local span_str  = "12"
+    local base_path = "../data/isi/async/eye/"
+
+    for i, item in ipairs(sps_list) do
+        local file_eye = string.format(
+            "%s%s/ml_isi_rrc_fc_eye_%ssps_span%s_alpha%s.txt",
+            base_path, item.folder, item.val, span_str, alpha_str
+        )
+
+        tex.print("\\begin{tikzpicture}")
+        tex.print("\\begin{axis}[")
+        tex.print("    title={\\textsf{Asynchronous AirComp Eye ($\\alpha = " .. alpha_str .. "$, $sps = " .. item.label .. "$)}},")
+        tex.print("    xlabel={Time ($t / T_s$)},")
+        tex.print("    ylabel={Amplitude},")
+        tex.print("    xmin=0, xmax=3,")
+        tex.print("    ymin=-10, ymax=10,")
+        tex.print("    grid=major,")
+        tex.print("    width=9cm,")
+        tex.print("    height=7.2cm,")
+        tex.print("    ticklabel style={font=\\tiny},")
+        tex.print("    label style={font=\\scriptsize},")
+        tex.print("    title style={font=\\small},")
+        tex.print("    every axis plot/.append style={")
+        tex.print("        mark=none,")
+        tex.print("        color=red!75!black,")
+        tex.print("        line width=0.25pt,")
+        tex.print("        opacity=0.35,")
+        tex.print("        line cap=round,")
+        tex.print("        line join=round")
+        tex.print("    }")
+        tex.print("]")
+        tex.print("\\addplot table[x=Time, y=Amplitude] {" .. file_eye .. "};")
+        tex.print("\\end{axis}")
+        tex.print("\\end{tikzpicture}")
+    end
+\end{luacode*}
+
+\end{document}

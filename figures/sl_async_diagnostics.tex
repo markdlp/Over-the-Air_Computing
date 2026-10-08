@@ -1,0 +1,55 @@
+% figures/sl_async_diagnostics.tex
+\documentclass[multi=minipage]{standalone}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+\begin{minipage}{18cm}
+    \begin{tikzpicture}
+        \begin{axis}[
+            title={\textsf{(a) Simulink Asynchronous Eye Diagram with CFO ($g = 0.50$, $\text{SPS} = 12$)}},
+            xlabel={Time ($t / T_s$)},
+            ylabel={Amplitude (V)},
+            xmin=0, xmax=6,
+            ymin=-3, ymax=10,
+            grid=major,
+            width=8.8cm, height=6.6cm,
+            ticklabel style={font=\tiny},
+            label style={font=\scriptsize},
+            title style={font=\small\bfseries},
+            every axis plot/.append style={
+                mark=none,
+                color=red!75!black,
+                line width=0.25pt,
+                opacity=0.35
+            }
+        ]
+            \addplot table[x=Time, y=Amplitude] {../data/isi/async/eye/sl_async_fc_eye_gain0.50_sps12.txt};
+        \end{axis}
+    \end{tikzpicture}%
+    \hfill%
+    \begin{tikzpicture}
+        \begin{axis}[
+            title={\textsf{(b) Simulink Constellation Scatter with CFO ($g = 0.50$, $\text{SNR} = 20\text{ dB}$)}},
+            xlabel={In-Phase (I)},
+            ylabel={Quadrature (Q)},
+            xmin=-3, xmax=10,
+            ymin=-1, ymax=1,
+            grid=major,
+            width=8.8cm, height=6.6cm,
+            ticklabel style={font=\tiny},
+            label style={font=\scriptsize},
+            title style={font=\small\bfseries}
+        ]
+            \addplot[
+                only marks,
+                mark=*,
+                mark size=1pt,
+                color=red!80!black,
+                opacity=0.35
+            ] table[x=const_async, y expr=0] {../data/isi/async/constellation/sl_async_fc_const_gain0.50_sps12.txt};
+        \end{axis}
+    \end{tikzpicture}
+\end{minipage}
+\end{document}
