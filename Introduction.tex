@@ -4,47 +4,108 @@
 
 \section*{Introduction}
 \addcontentsline{toc}{section}{\protect\numberline{}Introduction}
-Over the Air Computing offers a paradigm shift in how distributed 
-computations are performed in wireless networks. By exploiting the 
-inherent properties of the wireless medium, \gls{ota} enables simultaneous 
-transmissions from multiple devices to be combined in a way that directly 
-computes a desired function of the transmitted data. This technique has 
-garnered significant attention due to its potential to enhance efficiency 
-and reduce latency in applications such as federated learning, distributed 
-sensing, and real-time analytics. The motivation behind this thesis is to 
-explore the practical implementation of \gls{ota} using Software Defined 
-Radios \gls{sdr} and MATLAB, addressing the challenges associated with 
-synchronization, channel impairments, and waveform design. The research 
-objectives include designing a prototype \gls{ota} network, validating its 
-performance, and analyzing the impact of various impairments on computation 
-accuracy.
+
+Over-the-Air (OTA) Computing represents a paradigm shift in how distributed
+computations are executed across wireless networks. By exploiting the
+superposition property of the wireless Multiple-Access Channel (MAC),
+\gls{ota} allows
+simultaneous transmissions from multiple sensing nodes to be
+aggregated in the air,
+directly yielding a desired nomographic function of the distributed data. This
+approach inherently couples communication and computation, breaking
+the separation
+principle to achieve unprecedented spectral efficiency and reduced
+latency. These
+properties are increasingly critical for rapidly scaling applications such as
+Federated Learning (FL), distributed consensus, and real-time sensor analytics.
+
 \subsection{Background and Motivation}
-The increasing need for efficiency in computation-oriented applications
-where the interest lies in a function of local information, rather than
-the information itself \cite{sahin_survey_2023}. The conventional
-approach of separating communication and computation often proves
-suboptimal \cite{sahin_survey_2023,goldenbaum_analyzing_2011,
-goldenbaum_robust_2013}. The potential of \gls{ota} Computation
-is to achieve significantly higher computation rates by harnessing
-interference through signal superposition in a wireless Multiple Access
-Channel (MAC) \cite{sahin_survey_2023}.
+Traditional orthogonal access schemes, such as Time-Division Multiple
+Access (\gls{tdma}),
+suffer from severe scalability bottlenecks because their resource
+requirements scale
+linearly with the number of transmitting nodes
+\cite{sahin_survey_2023}. In computation-oriented
+networks where the receiver is interested only in a function of the
+data (e.g., the arithmetic
+mean) rather than the individual messages themselves, orthogonal
+separation proves highly
+suboptimal \cite{nazer_reliable_nodate, goldenbaum_robust_2013}.
+\gls{ota} computation leverages
+analog signal superposition to compute these functions directly at
+the physical layer,
+achieving a computation rate that is theoretically independent of the
+network size \cite{goldenbaum_nomographic_2015}.
+However, achieving this theoretical efficiency in practice requires
+precise control over the
+transmitted waveforms and rigorous synchronization across spatially
+distributed transmitters.
+
 \subsection{Problem Statement and Research Objectives}
-Focusing on designing and validating a practical \gls{ota} network layout
-suitable for implementation in a controllable
-environment\cite{sahin_survey_2023}. The specific role of Software
-Defined Radios (SDRs) and MATLAB/simulation tools for prototype
-validation and addressing practical limitations such as synchronization
-and channel impairments \cite{sahin_survey_2023,xiao_heterogeneous_2025,
-evgenidis_waveform_2025}.
+While the theoretical foundations of computation over MAC are well-established
+\cite{nazer_reliable_nodate, goldenbaum_analyzing_2011}, translating
+these scaling
+laws into practical realizations remains a formidable challenge. The
+primary focus of this
+thesis is to bridge the gap between idealized \gls{ota} theory and
+physical deployment. By
+systematically implementing \gls{ota} architectures across multiple
+abstraction layers---ranging
+from mathematical formulations and discrete-time MATLAB simulations
+to dynamical Simulink
+models and ultimately Software-Defined Radio (SDR) platforms---this
+work aims to quantify
+how different modeling fidelities capture the impact of physical
+channel impairments.
+Specifically, the objectives are to:
+\begin{itemize}
+    \item Establish a rigorous ideal \gls{ota} baseline and validate
+        its underlying physics.
+    \item Systematically model and quantify the degradation caused by
+        severe channel impairments, particularly multipath fractional
+        delay and asynchronous Carrier Frequency Offsets (CFO).
+    \item Evaluate established filtering and equalization techniques
+        (such as squaring loops, Costas loops, and non-coherent
+        envelope detection) to combat these uncoordinated impairments.
+    \item Lay the groundwork for a robust \gls{sdr} implementation
+        using GNU Radio that addresses hardware-level synchronization limits.
+\end{itemize}
+
 \subsection{Thesis Contributions and Organization}
-The aim of this thesis is to contribute to the research objectives\dots
-as a student member of the university of western macedonia, department of 
-electrical and computer engineering, under the supervision of professor \dots.
+This thesis contributes a comprehensive, cross-platform methodology
+for evaluating \gls{ota}
+computation under non-ideal physical conditions. The structure of the
+thesis is organized
+as follows:
+\begin{itemize}
+    \item \textbf{Ideal Over-the-Air Computation Baseline:}
+        Establishes the fundamental physical and mathematical models,
+        exploring Double-Sideband Amplitude Modulation, matched
+        filtering, and the theoretical Mean Squared Error (MSE)
+        scaling under pure Additive White Gaussian Noise (AWGN).
+    \item \textbf{Multipath Propagation, Fractional Delay, and
+        Intersymbol Interference:} Dissects the vulnerability of
+        \gls{ota} computation to multipath propagation and
+        asynchronous CFO, providing detailed mathematical
+        derivations, discrete-time simulations, and continuous-time
+        Simulink block-level architectures that expose the mechanics
+        of intersymbol interference and phase misalignment.
+    \item \textbf{Experimental Implementation} (forthcoming):
+        Transitions the modeled architectures into hardware,
+        detailing the GNU Radio flowgraphs and the practical hurdles
+        of \gls{sdr} deployment.
+    \item \textbf{Experimental Results and Discussion:} Provides a
+        comparative analysis of the simulation models and
+        equalization strategies, alongside an evaluation framework
+        for the experimental \gls{sdr} findings.
+    \item \textbf{Conclusion and Future Work:} Synthesizes the
+        findings and proposes advanced adaptive equalization schemes,
+        such as Unscented Kalman Filtering, for future exploration.
+\end{itemize}
 
-
-    \ifSubfilesClassLoaded{
-        \clearpage
-        \printbibliography
-    }{}
+\ifSubfilesClassLoaded{
+    \clearpage
+    \printbibliography
+}{}
 
 \end{document}

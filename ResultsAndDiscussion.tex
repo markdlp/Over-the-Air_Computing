@@ -1,28 +1,89 @@
 \documentclass[Markos_Delaportas_1316.tex]{subfiles}
 
-\begin{document}    
-    
-    \section{Experimental Results and Discussion}
-    \subsection{Validation of the Implemented OAC Network}
-    Demonstration of successful signal superposition and computation via the
-    SDR platform\cite{sahin_survey_2023,goldenbaum_analyzing_2011}.
-    Comparison of achieved computation result against the ideal theoretical
-    value\cite{sahin_survey_2023,zhu_one-bit_2021}.
-    \subsection{Performance Evaluation under Impairments}
-    Quantifying the performance metrics, such as Mean Squared Error (MSE) or
-    Computation Error Rate (CER), of the implemented
-    scheme\cite{sahin_survey_2023,evgenidis_waveform_2025}. Analysis of the
-    impact of deliberately introduced synchronization errors or varying
-    channel noise (SNR) on the computation
-    accuracy\cite{sahin_survey_2023,evgenidis_waveform_2025}. Comparison
-    with Separation Schemes (Simulated Baseline); Illustrating the resource
-    savings and computation rate achieved by the OAC approach relative to
-    traditional orthogonal access (e.g.,
-    \gls{tdma})\cite{goldenbaum_robust_2013,sahin_survey_2023,goldenbaum_analyzing_2011}.
+\begin{document}
 
-    \ifSubfilesClassLoaded{
-        \clearpage
-        \printbibliography
-    }{}
+\section{Experimental Results and Discussion}
+This section consolidates the empirical and simulated findings of the
+thesis, structured
+to provide a comparative analysis of the Over-the-Air (OTA)
+computation performance across
+different modeling layers. The discussion first examines the
+degradation mechanics revealed
+by MATLAB and Simulink simulations, evaluating the efficacy of
+applied equalization techniques.
+It then outlines the evaluation framework for the physical
+Software-Defined Radio (SDR)
+deployments.
+
+\subsection{Comparative Analysis of Channel Impairments (MATLAB vs.\ Simulink)}
+The rigorous simulation of \gls{ota} architectures across
+discrete-time algorithmic environments
+(MATLAB) and continuous-time dynamical environments (Simulink)
+provided deep insights into
+the physical limitations of signal superposition.
+
+Under ideal \gls{awgn} conditions, both simulation environments
+confirmed the theoretical Mean
+Squared Error (MSE) scaling laws, demonstrating that computation
+variance is strictly bounded
+by the channel noise \cite{sahin_survey_2023}. However, the
+introduction of uncoordinated
+physical impairments revealed significant divergence from the idealized theory:
+\begin{itemize}
+    \item \textbf{Multipath and Fractional Delay:} The high-fidelity
+        simulations demonstrated that even sub-symbol fractional
+        delays (modeled via Farrow filters) induce severe Intersymbol
+        Interference (ISI). The 2D and 3D MSE surface scans revealed
+        an irreducible error floor that scales with the multipath
+        gain, fundamentally bottlenecking the computation accuracy
+        regardless of the transmission power.
+    \item \textbf{Asynchronous Carrier Frequency Offset (CFO):}
+        Independent local oscillator offsets among distributed
+        transmitters were shown to convert stationary baseband values
+        into beat-frequency harmonics. Simulink evaluations
+        demonstrated that traditional coherent detection fails
+        catastrophically under these conditions. The application of
+        non-coherent Euclidean magnitude detection mitigated the
+        zero-crossing signal collapse but introduced a multi-user
+        vector fading penalty.
+\end{itemize}
+
+\subsection{Evaluation of Equalization and Recovery Strategies}
+The simulations also served to benchmark classical equalization and
+synchronization recovery
+schemes. The divergence between algorithmic MATLAB models (which
+    assume perfect block-level
+knowledge) and Simulink models (which emulate real-time causal
+processing) highlighted the
+difficulty of correcting asynchronous CFO post-superposition. While
+techniques such as
+squaring loops and Costas loops are standard for point-to-point
+links, their application to
+aggregated \gls{ota} signals proved inadequate when phase offsets are
+uncorrelated across
+multiple transmitters. This finding justifies the ongoing
+investigation into more robust,
+adaptive filtering mechanisms.
+
+\subsection{Framework for SDR Experimental Validation}
+Building upon the simulation baseline, the physical deployment
+utilizing GNU Radio and \gls{sdr}
+hardware aims to validate the theoretical error floors in a
+real-world electromagnetic environment.
+The planned experimental results will be benchmarked against the
+Simulink diagnostics to quantify
+hardware-specific non-linearities, such as amplifier saturation and
+discrete sampling jitter.
+Ultimately, the experimental framework will demonstrate the practical
+computation rate achieved
+by the \gls{ota} approach relative to traditional orthogonal access
+schemes (e.g., \gls{tdma}),
+illustrating the critical balance between resource savings and analog
+computation error.
+
+\ifSubfilesClassLoaded{
+    \clearpage
+    \printbibliography
+}{}
 
 \end{document}

@@ -1,22 +1,75 @@
 \documentclass[Markos_Delaportas_1316.tex]{subfiles}
 
 \begin{document}
-    
-    \section{Conclusion and Future Work}
-    \subsection{Summary of Thesis Findings}
-    Recap of the feasibility and performance demonstrated by the SDR-based
-    OAC network.
-    \subsection{Future Research Directions}
-    Exploring more complex OAC architectures, such as multi-antenna systems
-    \gls{mimo} or using Reconfigurable Intelligent Surfaces
-    (RIS)\cite{evgenidis_waveform_2025,zhu_over--air_2024}. Further
-    investigation into standardized OAC protocols for compatibility with
-    modern wireless networks (e.g., LTE/5G
-    protocols)\cite{zhu_one-bit_2021,sahin_survey_2023}.
 
-    \ifSubfilesClassLoaded{
-        \clearpage
-        \printbibliography
-    }{}
+\section{Conclusion and Future Work}
+
+\subsection{Summary of Thesis Findings}
+This thesis has systematically investigated the feasibility,
+theoretical scaling, and physical
+limitations of Over-the-Air (OTA) computation. By developing a
+comprehensive cross-platform
+modeling methodology---spanning mathematical derivation,
+discrete-time MATLAB simulation,
+continuous-time Simulink architectures, and Software-Defined Radio
+(SDR) realization---the
+research bridged the significant gap between idealized analog
+computation theory and practical
+deployment.
+
+The fundamental analysis confirmed that under ideal conditions,
+\gls{ota} computation achieves
+unprecedented spectral efficiency by exploiting the superposition
+property of the wireless
+Multiple-Access Channel. However, the rigorous evaluation of channel
+impairments demonstrated
+that the system's performance is severely bottlenecked by
+uncoordinated transmitter dynamics.
+Specifically, multipath propagation and fractional timing delays
+induce Intersymbol Interference
+(ISI) that manifests as an irreducible error floor. Furthermore,
+asynchronous Carrier Frequency
+Offsets (CFO) cause catastrophic coherent demodulation failure due to
+beat-frequency oscillations.
+While non-coherent envelope detection provides a robust fallback, it
+suffers from vector magnitude
+fading. The findings conclusively show that traditional
+point-to-point equalization schemes (e.g.,
+standard Costas loops) are insufficient for multi-user aggregated
+signals, necessitating paradigm
+shifts in how synchronization and filtering are handled for \gls{ota} networks.
+
+\subsection{Future Research Directions}
+The insights gained from the physical degradation models open several
+critical pathways for
+future research in \gls{ota} computation and federated edge learning
+\cite{xiao_heterogeneous_2025, zhu_over--air_2024}:
+\begin{itemize}
+    \item \textbf{Adaptive and Non-Linear Equalization:}
+        Transitioning from static recovery loops to dynamic, adaptive
+        algorithms is paramount. Future work will explore the
+        deployment of Unscented Kalman Filters (UKF) and Extended
+        Kalman Filters (EKF) for the real-time tracking and
+        compensation of non-linear impairments directly from the
+        aggregated waveform.
+    \item \textbf{Multi-Antenna and MIMO Systems:} Expanding the
+        single-antenna architecture to Multiple-Input Multiple-Output
+        (MIMO) systems offers spatial degrees of freedom to combat
+        fading. Implementing spatial equalization and receive
+        beamforming \cite{sahin_survey_2023} could significantly
+        mitigate the destructive interference caused by asynchronous
+        phase offsets.
+    \item \textbf{Large-Scale Federated Learning Deployments:} As
+        \gls{ota} computation proves to be a natural fit for the
+        aggregation step in Federated Learning, future physical
+        deployments should evaluate the impact of the quantified
+        \gls{ota} error floors on the convergence rates of
+        distributed neural network training.
+\end{itemize}
+
+\ifSubfilesClassLoaded{
+    \clearpage
+    \printbibliography
+}{}
 
 \end{document}
