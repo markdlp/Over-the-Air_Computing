@@ -1,0 +1,65 @@
+% ml_multipath_waveform.tex
+\documentclass{standalone}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+\begin{tikzpicture}
+\begin{axis}[
+    title={\textsf{Baseband Received Waveform \& Symbol Strobe Diagnostics ($5$ Symbols)}},
+    xlabel={Normalized Time ($t / T_{\text{sym}}$)},
+    ylabel={Normalized Amplitude},
+    grid=major,
+    xmin=0, xmax=5,
+    ymin=-2.0, ymax=0.6,
+    legend pos=south east,
+    legend style={font=\footnotesize},
+    ticklabel style={font=\footnotesize},
+    label style={font=\small},
+    title style={font=\normalsize\bfseries},
+    width=11.5cm, height=7.2cm
+]
+    % 1. Unequalized continuous waveform
+    \addplot[
+        color=red!80!black,
+        line width=1.1pt
+    ] table[x=Time, y=Waveform_Uneq]
+    {../data/isi/multipath/waveform/ml_isi_rrc_fc_waveform_tau1.26_echo0.17_12sps_span12.txt};
+    \addlegendentry{Un-equalized Waveform}
+
+    % 2. Equalized continuous waveform
+    \addplot[
+        color=blue!80!black,
+        line width=1.3pt
+    ] table[x=Time, y=Waveform_Eq]
+    {../data/isi/multipath/waveform/ml_isi_rrc_fc_waveform_tau1.26_echo0.17_12sps_span12.txt};
+    \addlegendentry{Neumann Eq. Waveform ($N=3$)}
+
+    % 3. Unequalized Strobe Samples
+    \addplot[
+        only marks,
+        mark=triangle*,
+        mark size=3pt,
+        color=red!90!black
+    ] table[x=Time, y=Strobe_Uneq]
+    {../data/isi/multipath/waveform/ml_isi_rrc_fc_strobes_tau1.26_echo0.17_12sps_span12.txt};
+    \addlegendentry{Un-equalized Strobes}
+
+    % 4. Equalized Strobe Samples
+    \addplot[
+        only marks,
+        mark=triangle*,
+        mark options={rotate=180},
+        mark size=3pt,
+        color=blue!90!black
+    ] table[x=Time, y=Strobe_Eq]
+    {../data/isi/multipath/waveform/ml_isi_rrc_fc_strobes_tau1.26_echo0.17_12sps_span12.txt};
+    \addlegendentry{Neumann Eq. Strobes}
+
+\end{axis}
+\end{tikzpicture}
+
+\end{document}
+

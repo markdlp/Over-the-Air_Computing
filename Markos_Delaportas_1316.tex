@@ -65,6 +65,7 @@
 % magenta, black, white
 
 \usepackage{graphicx, animate}
+\usepackage{pdfpages}
 
 %\def\pdfpageref{\pdffeedback pageref}
 %\def\pdfximage{\pdfextension ximage}
@@ -198,16 +199,99 @@ translate=false]{glossaries-extra}
     % like math too
 }
 
-\title{ \textsf{Over The Air Computing}\\
-    \textsf{Master Thesis}\\
-    \textsf{\Large Department of Electrical \& Computer Engineering}\\
-    \textsf{\large University of Western Macedonia}
-} \author{\textsf{Markos Delaportas} \footnote{E-mail: ece01316@uowm.gr}}
-\date{\textsf{April 2026}}
+\title{\textsf{Over-the-Air Computing}}
+\author{\textsf{Markos Delaportas}}
+\date{\textsf{October 2026}}
 
 \begin{document}
 
-\maketitle
+% ==================== COVER PAGE ====================
+\begin{titlepage}
+    \thispagestyle{empty}
+    \centering
+    \vspace*{0.2cm}
+
+    % Institution Logos
+    \noindent
+    \begin{minipage}[c]{0.48\textwidth}
+        \includegraphics[height=2.2cm]{uowm.png}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[c]{0.48\textwidth}
+        \raggedleft
+        \includegraphics[height=2.2cm]{ece.png}
+    \end{minipage}
+
+    \vspace{1.8cm}
+
+    {\Large \textbf{\textsf{UNIVERSITY OF WESTERN MACEDONIA}}}\\[0.4em]
+    {\large \textbf{\textsf{SCHOOL OF ENGINEERING}}}\\[0.4em]
+    {\large \textbf{\textsf{DEPARTMENT OF ELECTRICAL AND COMPUTER ENGINEERING}}}
+
+    \vspace{3.5cm}
+
+    {\Huge \textbf{\textsf{Over-the-Air Computing}}}\\[1.5em]
+    {\Large \textbf{\textsf{Master's Thesis}}}
+
+    \vfill
+
+    \noindent
+    \begin{minipage}[t]{0.48\textwidth}
+        \raggedright
+        \textbf{\textsf{\large Author:}}\\[0.5em]
+        {\large \textsf{Markos Delaportas}}\\[0.3em]
+        \textsf{Student ID: 1316}\\[0.3em]
+        \texttt{\small ece01316@uowm.gr}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \raggedleft
+        \textbf{\textsf{\large Supervisor:}}\\[0.5em]
+        {\large \textsf{Panagiotis Sarigiannidis}}\\[0.3em]
+        \textsf{Professor, Department of ECE}
+    \end{minipage}
+
+    \vspace{2.5cm}
+
+    {\large \textsf{Kozani, October 2026}}
+\end{titlepage}
+
+% ==================== BLANK PAGE ====================
+\newpage
+\thispagestyle{empty}
+\null
+\newpage
+
+% ==================== DECLARATION OF PROPERTY RIGHTS ====================
+\thispagestyle{empty}
+\vspace*{1.5cm}
+\begin{center}
+    {\large \textbf{\textsf{∆ΗΛΩΣΗ ΜΗ ΛΟΓΟΚΛΟΠΗΣ ΚΑΙ ΑΝΑΛΗΨΗΣ ΠΡΟΣΩΠΙΚΗΣ ΕΥΘΥΝΗΣ}}}\\[1.8em]
+\end{center}
+
+Δηλώνω ρητά ότι η παρούσα Διπλωματική Εργασία με τίτλο: “Over-the-Air Computing” καθώς και
+τα ηλεκτρονικά αρχεία και πηγαίοι κώδικες που αναπτύχθηκαν ή τροποποιήθηκαν στο πλαίσιο
+αυτής της εργασίας και αναφέρονται ρητώς μέσα στο κείμενο που συνοδεύουν και η οποία έχει
+εκπονηθεί στο Τμήμα Ηλεκτρολόγων Μηχανικών και Μηχανικών Υπολογιστών του Πανεπιστημίου
+Δυτικής Μακεδονίας, υπό την επίβλεψη του κ. Παναγιώτη Σαρηγιαννίδη, αποτελεί αποκλειστικά
+προϊόν προσωπικής εργασίας και δεν προσβάλλει κάθε μορφής πνευματικά δικαιώματα τρίτων και
+δεν είναι προϊόν μερικής ή ολικής αντιγραφής, οι πηγές δε που χρησιμοποιήθηκαν
+περιορίζονται στις βιβλιογραφικές αναφορές και μόνον. Τα σημεία όπου έχω χρησιμοποιήσει
+ιδέες, κείμενο, αρχεία ή / και πηγές άλλων συγγραφέων, αναφέρονται ευδιάκριτα στο κείμενο
+με την κατάλληλη παραπομπή και η σχετική αναφορά περιλαμβάνεται στο τμήμα των
+βιβλιογραφικών αναφορών με πλήρη περιγραφή. Απαγορεύεται η αντιγραφή, αποθήκευση και
+διανομή της παρούσας εργασίας, εξ ολοκλήρου ή τμήματος αυτής, για εμπορικό σκοπό.
+Επιτρέπεται η ανατύπωση, αποθήκευση και διανομή για σκοπό μη κερδοσκοπικό, εκπαιδευτικής ή
+ερευνητικής φύσης, υπό την προϋπόθεση να αναφέρεται η πηγή προέλευσης. Ερωτήματα που
+αφορούν τη χρήση της εργασίας για κερδοσκοπικό σκοπό πρέπει να απευθύνονται προς τον
+συγγραφέα. Οι απόψεις και τα συμπεράσματα που περιέχονται σε αυτό το έγγραφο εκφράζουν τον
+συγγραφέα και μόνο.
+
+\vspace{1.8em}
+\noindent Copyright \copyright\ Μάρκος Δελαπόρτας, Σαρηγιαννίδης
+Παναγιώτης, 09/10/2026, Κοζάνη
+
+\clearpage
 
 \textbf{
     \textit{Abstract} -- \gls{ota} is an emerging technique that leverages the
@@ -236,7 +320,6 @@ translate=false]{glossaries-extra}
 Abbreviations}]
 %\printglossary[type=\acronymtype, title=List of Abbreviations]
 \clearpage
-
 
 \IfFileExists{Introduction.tex}{\subfile{Introduction}}{}
 \IfFileExists{IdealOTA.tex}{\subfile{IdealOTA}}{}

@@ -1,62 +1,63 @@
 % ml_multipath_rrc_fc_const.tex
-\documentclass[multi=tikzpicture]{standalone}
+\documentclass[multi=minipage]{standalone}
 \usepackage{amsmath}
 \usepackage{pgfplots}
-\usepackage{luacode}
 \pgfplotsset{compat=1.18}
 
 \begin{document}
 
-    \begin{luacode*}
-        local alpha_list = {
-            {val = "0.00", label = "0.00"},
-            {val = "0.10", label = "0.10"},
-            {val = "0.20", label = "0.20"},
-            {val = "0.30", label = "0.30"},
-            {val = "0.40", label = "0.40"},
-            {val = "0.50", label = "0.50"},
-            {val = "0.60", label = "0.60"},
-            {val = "0.70", label = "0.70"},
-            {val = "0.80", label = "0.80"},
-            {val = "0.90", label = "0.90"},
-            {val = "1.00", label = "1.00"}
-        }
+\begin{minipage}{18cm}
 
-        local sps_val  = 48
-        local span_val = 12
-        local base_dir = "../data/isi/multipath/constellation/"
+    % LEFT PLOT: UNEQUALIZED BASELINE
+    \begin{tikzpicture}
+    \begin{axis}[
+        title={\textsf{Unequalized Baseline ($\bar{\tau} = 1.26\,T_{\text{sym}}$, $\bar{\alpha} = 0.17$, $K = 23$)}},
+        xlabel={In-Phase (I) [$^\circ\text{C}$]},
+        ylabel={Quadrature (Q)},
+        xmin=24.5, xmax=29.5,
+        ymin=-0.5, ymax=0.5,
+        grid=major,
+        width=0.49\linewidth,
+        height=0.42\linewidth,
+        ticklabel style={font=\tiny},
+        label style={font=\scriptsize},
+        title style={font=\small}
+    ]
+    \addplot[
+        only marks,
+        mark=*,
+        mark size=1pt,
+        color=red!80!black,
+        opacity=0.35
+    ] table[x=Est_Avg_Uneq, y expr=0] {../data/isi/multipath/constellation/ml_isi_rrc_fc_const_uneq_tau1.26_echo0.17_12sps_span12_alpha0.50.txt};
+    \end{axis}
+    \end{tikzpicture}%
+    \hfill%
+    % RIGHT PLOT: NEUMANN EQUALIZED (N = 3)
+    \begin{tikzpicture}
+    \begin{axis}[
+        title={\textsf{Neumann Equalized ($N = 3$, $\bar{\tau} = 1.26\,T_{\text{sym}}$, $\bar{\alpha} = 0.17$, $K = 23$)}},
+        xlabel={In-Phase (I) [$^\circ\text{C}$]},
+        ylabel={Quadrature (Q)},
+        xmin=24.5, xmax=29.5,
+        ymin=-0.5, ymax=0.5,
+        grid=major,
+        width=0.49\linewidth,
+        height=0.42\linewidth,
+        ticklabel style={font=\tiny},
+        label style={font=\scriptsize},
+        title style={font=\small}
+    ]
+    \addplot[
+        only marks,
+        mark=*,
+        mark size=1pt,
+        color=blue!80!black,
+        opacity=0.35
+    ] table[x=Est_Avg_Eq, y expr=0] {../data/isi/multipath/constellation/ml_isi_rrc_fc_const_tau1.26_echo0.17_12sps_span12_alpha0.50.txt};
+    \end{axis}
+    \end{tikzpicture}
 
-        for i, item in ipairs(alpha_list) do
-            local file_path = string.format(
-                "%sml_isi_rrc_fc_const_%dsps_span%d_alpha%s.txt",
-                base_dir, sps_val, span_val, item.val
-            )
+\end{minipage}
 
-            tex.print("\\begin{tikzpicture}")
-            tex.print("\\begin{axis}[")
-            tex.print("    title={\\textsf{Multipath RRC ($\\alpha = " .. item.label .. "$, $\\text{SNR} = 20\\text{ dB}$)}},")
-            tex.print("    xlabel={In-Phase (I)},")
-            tex.print("    ylabel={Quadrature (Q)},")
-            tex.print("    xmin=-1.0, xmax=1.0,")
-            tex.print("    ymin=-1, ymax=1,")
-            tex.print("    grid=major,")
-            tex.print("    width=\\linewidth,")
-            tex.print("    height=0.8\\linewidth,")
-            tex.print("    ticklabel style={font=\\tiny},")
-            tex.print("    label style={font=\\scriptsize},")
-            tex.print("    title style={font=\\small}")
-            tex.print("]")
-            tex.print("\\addplot[")
-            tex.print("    only marks,")
-            tex.print("    mark=*,")
-            tex.print("    mark size=1pt,")
-            tex.print("    color=red!80!black,")
-            tex.print("    opacity=0.35")
-            tex.print("] table[x=I_Data, y expr=0] {" .. file_path .. "};")
-            tex.print("\\end{axis}")
-            tex.print("\\end{tikzpicture}")
-        end
-    \end{luacode*}
-    
 \end{document}
-

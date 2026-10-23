@@ -1,0 +1,60 @@
+% ml_multipath_parity_scatter.tex
+\documentclass{standalone}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+\begin{tikzpicture}
+\begin{axis}[
+    title={\textsf{AirComp Parity Scatter: Estimated Average vs Ideal Target ($K = 23$)}},
+    xlabel={Ideal Target Mean ($^\circ\text{C}$)},
+    ylabel={Estimated Spatial Average ($^\circ\text{C}$)},
+    grid=major,
+    xmin=24.5, xmax=29.5,
+    ymin=24.5, ymax=29.5,
+    axis equal image,
+    legend pos=south east,
+    legend style={font=\footnotesize},
+    ticklabel style={font=\footnotesize},
+    label style={font=\small},
+    title style={font=\normalsize\bfseries},
+    width=9.5cm, height=9.5cm
+]
+    % 1. Unequalized scatter
+    \addplot[
+        only marks,
+        mark=*,
+        mark size=1.3pt,
+        color=red!80!black,
+        opacity=0.3
+    ] table[x=Target_Slice, y=Est_Avg_Uneq]
+    {../data/isi/multipath/constellation/ml_isi_rrc_fc_parity_tau1.26_echo0.17_12sps_span12.txt};
+    \addlegendentry{Un-equalized Baseline}
+
+    % 2. Equalized scatter
+    \addplot[
+        only marks,
+        mark=*,
+        mark size=1.3pt,
+        color=blue!80!black,
+        opacity=0.45
+    ] table[x=Target_Slice, y=Est_Avg_Eq]
+    {../data/isi/multipath/constellation/ml_isi_rrc_fc_parity_tau1.26_echo0.17_12sps_span12.txt};
+    \addlegendentry{Neumann Eq. ($N=3$)}
+
+    % 3. Ideal diagonal y = x
+    \addplot[
+        color=black,
+        dashed,
+        line width=1.1pt,
+        domain=24.5:29.5
+    ] {x};
+    \addlegendentry{Ideal Reference ($y = x$)}
+
+\end{axis}
+\end{tikzpicture}
+
+\end{document}
+

@@ -1,0 +1,59 @@
+% ml_multipath_rrc_fc_mse.tex
+\documentclass{standalone}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+\begin{tikzpicture}
+\begin{axis}[
+    title={\textsf{AirComp Computation MSE vs Channel SNR ($K=23$ Sensors, Dispersive Channel)}},
+    xlabel={Channel SNR (dB)},
+    ylabel={Computation MSE},
+    ymode=log,
+    grid=major,
+    ymin=0.15, ymax=6,
+    xmin=-20, xmax=20,
+    legend pos=north east,
+    legend style={font=\footnotesize},
+    ticklabel style={font=\footnotesize},
+    label style={font=\small},
+    title style={font=\normalsize\bfseries},
+    width=11.5cm, height=7.2cm
+]
+    % 1. Unequalized Baseline (ISI)
+    \addplot[
+        color=red!85!black,
+        mark=square*,
+        mark size=2pt,
+        thick,
+        dashed
+    ] table[x=SNR_dB, y=mse_results_uneq]
+    {../data/isi/multipath/mse/ml_isi_rrc_fc_mse_uneq_tau1.26_echo0.17_12sps_span12.txt};
+    \addlegendentry{Un-equalized Baseline (ISI)}
+
+    % 2. Neumann Equalized (N = 3)
+    \addplot[
+        color=blue!85!black,
+        mark=*,
+        mark size=2pt,
+        thick
+    ] table[x=SNR_dB, y=mse_results_eq]
+    {../data/isi/multipath/mse/ml_isi_rrc_fc_mse_tau1.26_echo0.17_12sps_span12.txt};
+    \addlegendentry{$N=3$ Neumann Series FIR Eq.}
+
+    % 3. Irreducible Error Floor asymptote
+    \addplot[
+        color=magenta!85!black,
+        line width=1.1pt,
+        dashdotted,
+        domain=-20:20
+    ] {0.23296};
+    \addlegendentry{Irreducible Error Floor ($\approx 0.233$)}
+
+\end{axis}
+\end{tikzpicture}
+
+\end{document}
+

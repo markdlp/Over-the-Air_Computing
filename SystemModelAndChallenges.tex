@@ -431,63 +431,86 @@ be addressed when simulating multi-sensor Over-the-Air networks:
 \end{itemize}
 
 \cref{lst:matlab_multipath_aircomp} presents the complete,
-high-performance MATLAB script modeling the two-ray multipath AirComp channel.
+high-performance MATLAB script modeling the two-ray multipath AirComp channel
+with Farrow fractional delay filtering and Neumann series FIR equalization.
 
-    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB implementation of Over-the-Air computation under two-ray multipath fading with Farrow fractional delay filtering.}, label={lst:matlab_multipath_aircomp}]
-% Over-the-Air Computation under Two-Ray Multipath Fading
+    \begin{lstlisting}[style=Matlab-editor, caption={MATLAB implementation of Over-the-Air computation under two-ray multipath fading with Farrow ($P=4$) fractional delay and $N=3$ Neumann series equalization.}, label={lst:matlab_multipath_aircomp}]
+% Over-the-Air Computation with Farrow (P=4) Multipath Delay & N=3 Neumann Equalizer
 clc; clear; close all;
 
-%% 1. Simulation Parameters
-K          = 20;                      % Number of participating sensor nodes
-N          = 1000;                    % Symbol sequence length per sensor
-SNR_dB     = -20:2:20;                % Channel SNR sweep (dB)
-alpha_val  = 0.50;                    % RRC roll-off factor
+%% 1. System & Channel Parameters
+K          = 22;                      % Number of participating sensor nodes
+N          = 3000;                    % Symbol sequence length per sensor
+Rs         = 10;                      % Symbol rate (symbols/sec)
 sps_val    = 12;                      % Samples per symbol (SPS)
-span       = 12;                      % Filter span in symbols
-tau_frac   = 0.3125;                  % Fractional delay (tau / Ts)
-echo_gain  = 0.50;                    % Multipath echo attenuation g
+span       = 12;                      % RRC filter span in symbols
+alpha_val  = 0.50;                    % RRC roll-off factor
+tau_frac   = 0.50;                    % Fractional multipath delay (tau / Ts)
+alpha_echo = 0.50;                    % Multipath echo attenuation (-6 dB)
+N_order_eq = 3;                       % Neumann Series FIR Equalizer order (N = 3)
 
-% Sensor data generation (zero-mean normal random readings)
-X = randn(K, N);
+% Sensor data generation (mean = 27)
+rng(42);
+X = 27 + randn(K, N);
 ideal_target = mean(X, 1);            % Ground-truth arithmetic mean
 
-%% 2. Pulse Shaping and Fractional Delay Objects
-rcFilter = rcosdesign(alpha_val, span, sps_val, 'sqrt');
-max_delay_samples = ceil(2.0 * sps_val) + 10;
+Fs = sps_val * Rs;                    % Sampling frequency
+Fc = Fs / 4;                          % Carrier frequency
+delay_samples = tau_frac * sps_val;   % Fractional delay in samples
 
-fracDelay = dsp.VariableFractionalDelay(...
+%% 2. Farrow Fractional Delay & Neumann Equalizer Synthesis
+max_delay = ceil((N_order_eq + 1) * delay_samples) + 20;
+fracDelay = dsp.VariableFractionalDelay( ...
     'InterpolationMethod', 'Farrow', ...
-    'FilterLength', 4, ...            % Quartic Lagrange Farrow (L = 4)
+    'FilterLength', 5, ...            % Quartic Lagrange Farrow (P = 4)
     'FarrowSmallDelayAction', 'Use off-centered kernel', ...
-    'MaximumDelay', max_delay_samples);
+    'MaximumDelay', max_delay);
 
-%% 3. Transmit Processing and Channel Superposition
-tx_upsampled = upsample(X', sps_val);  % Size: (N*sps) x K
-tx_filtered  = conv2(tx_upsampled, rcFilter(:), 'same');
+% Effective RF echo gain and DC scaling
+phi_rf           = 2 * pi * Fc * (delay_samples / Fs);
+eff_echo_gain    = alpha_echo * cos(phi_rf);
+coherent_dc_gain = 1 + eff_echo_gain;
+eq_dc_gain       = 1 - (-eff_echo_gain)^(N_order_eq + 1);
 
-% Exploit LTI superposition: sum in the air first
-direct_path = sum(tx_filtered, 2);
-delay_samples = tau_frac * sps_val;
+% Synthesize N = 3 Neumann Series FIR Equalizer taps
+[w_eq, gamma_n]  = designNeumannEqualizer(N_order_eq, delay_samples, eff_echo_gain, fracDelay);
+
+%% 3. Transmit Processing and Two-Ray Channel Superposition
+rcFilter       = rcosdesign(alpha_val, span, sps_val, 'sqrt');
+tx_upsampled   = upsample(X', sps_val);
+rx_sum_bb      = sum(tx_upsampled, 2);
+tx_filtered_bb = conv(rx_sum_bb, rcFilter(:), 'same');
+
+% Direct path AM modulation and Farrow fractional delay echo
+direct_wave = ammod(tx_filtered_bb, Fc, Fs);
 reset(fracDelay);
-echo_path   = fracDelay(direct_path, delay_samples);
+echo_wave   = fracDelay(direct_wave, delay_samples);
+rx_channel  = direct_wave + alpha_echo * echo_wave;
 
-% Channel output: direct line-of-sight plus delayed echo
-rx_channel  = direct_path + echo_gain * echo_path;
-
-%% 4. Receiver Matched Filtering and Estimation Sweep
-mse_results = zeros(length(SNR_dB), 1);
-valid_start = ceil(span / 2) + 1;
-valid_end   = N - ceil(span / 2);
+%% 4. Receiver Matched Filtering, Equalization & Estimation
+SNR_dB = -20:2:20;
+D = span * sps_val / 2;
+valid_start = floor(span / 2) + 1;
+valid_end   = N - (floor(span / 2) + mod(span, 2));
 target_eval = ideal_target(valid_start:valid_end)';
+
+mse_uneq = zeros(length(SNR_dB), 1);
+mse_eq   = zeros(length(SNR_dB), 1);
 
 for snr_idx = 1:length(SNR_dB)
     rx_noisy   = awgn(rx_channel, SNR_dB(snr_idx), 'measured');
-    rx_matched = conv(rx_noisy, flipud(rcFilter(:)), 'same');
-    rx_sampled = downsample(rx_matched, sps_val);
+    demod_raw  = amdemod([rx_noisy; zeros(D, 1)], Fc, Fs, 0, 0, rcFilter(:), 1);
+    matched_uneq = demod_raw(D + 1 : end);
+    matched_eq   = filter(w_eq, 1, matched_uneq);
 
-    % Fusion Center estimate (scaled by K)
-    est_mean = rx_sampled(valid_start:valid_end) / K;
-    mse_results(snr_idx) = immse(est_mean, target_eval);
+    % Optimal symbol strobing and gain normalization
+    est_uneq = downsample(matched_uneq, sps_val);
+    est_eq   = downsample(matched_eq, sps_val);
+    avg_uneq = est_uneq(valid_start:valid_end) / (coherent_dc_gain * K);
+    avg_eq   = est_eq(valid_start:valid_end)   / (eq_dc_gain * K);
+
+    mse_uneq(snr_idx) = immse(avg_uneq, target_eval);
+    mse_eq(snr_idx)   = immse(avg_eq, target_eval);
 end
     \end{lstlisting}
 
@@ -495,7 +518,8 @@ end
 \label{subsubsec:2d_3d_mse_diagnostics}
 \cref{fig:ml_mse_comparison} contrasts the 2D \gls{mse} performance
 between the ideal single-path baseline ($g = 0$)
-and the \gls{rrc}-filtered multipath scenario ($g = 0.50$).
+and the \gls{rrc}-filtered multipath scenario under both uncompensated
+reception and active Neumann series equalization ($g = 0.50$, $\tau = 0.50 T_s$).
 
 \begin{figure}[htbp]
     \centering
@@ -506,7 +530,7 @@ and the \gls{rrc}-filtered multipath scenario ($g = 0.50$).
                     title={\textsf{Ideal Single-Path Baseline ($g = 0$)}},
                     xlabel={Channel SNR (dB)}, ylabel={Computation MSE},
                     ymode=log, grid=major,
-                    ymin=1e-5, ymax=10,
+                    ymin=1e-1, ymax=2e5,
                     xmin=-20, xmax=20,
                     legend pos=north east,
                     width=\linewidth, height=0.75\linewidth,
@@ -518,7 +542,7 @@ and the \gls{rrc}-filtered multipath scenario ($g = 0.50$).
                     color=blue, mark=square*, thick,
                     restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51}
                 ] table[x=SNR_dB, y=mse_results]
-                {data/ideal/mse/ml_rrc_fc_mse_12sps_span12.txt};
+                {data/ideal/rrc/mse/ml_rrc_fc_mse_12sps_span12.txt};
                 \addlegendentry{Ideal ($g = 0$)}
             \end{axis}
         \end{tikzpicture}
@@ -530,11 +554,10 @@ and the \gls{rrc}-filtered multipath scenario ($g = 0.50$).
         \tikzsetnextfilename{fig_ml_isi_rrc_fc_mse_12sps_standalone}
         \begin{tikzpicture}
             \begin{axis}[
-                    title={\textsf{Multipath Channel ($g = 0.50$,
-                    $\tau = 0.3125 T_s$)}},
+                    title={\textsf{Multipath Channel ($g = 0.50$, $\tau = 0.50 T_s$)}},
                     xlabel={Channel SNR (dB)}, ylabel={Computation MSE},
                     ymode=log, grid=major,
-                    ymin=1e-5, ymax=10,
+                    ymin=1e-1, ymax=2e5,
                     xmin=-20, xmax=20,
                     legend pos=north east,
                     width=\linewidth, height=0.75\linewidth,
@@ -545,15 +568,22 @@ and the \gls{rrc}-filtered multipath scenario ($g = 0.50$).
                 \addplot[
                     color=red, mark=*, thick,
                     restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51}
-                ] table[x=SNR_dB, y=mse_results]
-                {data/isi/multipath/mse/ml_isi_rrc_fc_mse_12sps_span12.txt};
-                \addlegendentry{Multipath ($g = 0.50$)}
+                ] table[x=SNR_dB, y=mse_results_uneq]
+                {data/isi/multipath/mse/ml_isi_rrc_fc_mse_uneq_tau0.50_echo0.50_12sps_span12.txt};
+                \addlegendentry{Unequalized ($g = 0.50$)}
+
+                \addplot[
+                    color=teal!80!black, mark=triangle*, thick,
+                    restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51}
+                ] table[x=SNR_dB, y=mse_results_eq]
+                {data/isi/multipath/mse/ml_isi_rrc_fc_mse_tau0.50_echo0.50_12sps_span12.txt};
+                \addlegendentry{Neumann Eq. ($N=3$)}
 
                 \addplot[
                     color=blue, mark=square*, thick, dashed,
                     restrict expr to domain={\thisrow{alpha_array}}{0.49:0.51}
                 ] table[x=SNR_dB, y=mse_results]
-                {data/ideal/mse/ml_rrc_fc_mse_12sps_span12.txt};
+                {data/ideal/rrc/mse/ml_rrc_fc_mse_12sps_span12.txt};
                 \addlegendentry{Ideal reference}
             \end{axis}
         \end{tikzpicture}
@@ -562,14 +592,14 @@ and the \gls{rrc}-filtered multipath scenario ($g = 0.50$).
     \end{subfigure}
     \caption{Comparison of Mean Squared Error performance between the
         ideal unimpaired baseline ($g = 0$) and the multipath-corrupted
-        Over-the-Air computation channel ($g = 0.50$, $\tau = 0.3125 T_s$,
+        Over-the-Air computation channel ($g = 0.50$, $\tau = 0.50 T_s$,
         $\alpha = 0.50$, $\text{span} = 12$, $\text{SPS} = 12$). Both subfigures
-        share identical dynamic ranges ($\text{MSE} \in [10^{-5},
-        10^1]$, $\text{SNR} \in [-20, 20]\text{ dB}$).
+        share identical dynamic ranges ($\text{MSE} \in [10^{-1},
+        2\times 10^5]$, $\text{SNR} \in [-20, 20]\text{ dB}$).
         While the ideal curve decays indefinitely with increasing
-        SNR, the multipath
-        channel hits a pronounced, irreducible error floor at $\text{MSE}
-    \approx 0.52$.}
+        SNR, the uncompensated multipath channel hits a pronounced,
+        irreducible error floor, which the $N=3$ Neumann series FIR
+    equalizer systematically suppresses.}
     \label{fig:ml_mse_comparison}
 \end{figure}
 
@@ -578,26 +608,31 @@ To examine the holistic interaction across parameter spaces,
 synchronous 3D animation comparing the Over-the-Air \gls{mse} surface
 across \gls{snr} and roll-off factor $\alpha$,
 evaluated as the oversampling ratio $\text{SPS} \in \{12, 24, 48,
-96\}$ scales dynamically.
+96\}$ scales dynamically for the uncompensated baseline versus
+active $N=3$ Neumann series FIR equalization.
 
 \begin{figure}[htbp]
     \centering
     \animategraphics[autoplay, loop,
     width=0.85\linewidth]{1.5}{figures/ml_multipath_rrc_fc_mse_span_comparison}{}{}
     \caption{Synchronous 3D animation comparing the Over-the-Air MSE
-        surface across $\text{SPS}$ scaling for filter $\text{span} = 4$
-        (left) versus $\text{span} = 12$ (right) under multipath
-        dispersion. Note the emergence of the persistent high-SNR error
-    floor across all configurations.}
+        surface across $\text{SPS} \in \{12, 24, 48, 96\}$ scaling for the
+        unequalized baseline (left) versus the $N=3$ Neumann series FIR
+        equalizer (right) under two-ray multipath propagation
+        ($\tau = 0.50 T_s$, $g = 0.50$, $\text{span} = 12$). Notice how the
+        persistent high-SNR error floor dominating the unequalized
+    channel is systematically suppressed across all oversampling ratios.}
     \label{fig:isi_mse_span_comparison}
 \end{figure}
 
-Inspection of \cref{fig:isi_mse_span_comparison} reveals that while
-increasing the filter span from $4$ to $12$ eliminates
-truncation ripple and lowers the overall surface, the fundamental
-multipath plateau remains intact. This confirms that
-the error floor is driven by the physical channel echo rather than
-finite filter length truncation.
+Inspection of \cref{fig:isi_mse_span_comparison} confirms that while
+the uncompensated channel suffers from a rigid, irreducible error floor
+at high SNR across all roll-off factors $\alpha$, the synthesis of the
+$N=3$ Neumann series FIR inverter restores monotonic MSE decay.
+Furthermore, scaling SPS provides finer discrete-time resolution for the
+underlying Farrow delay interpolation ($P = 4$), stabilizing the
+equalizer coefficients and ensuring robust cancellation of the secondary
+multipath ray.
 
 \subsubsection{Signal Integrity Diagnostics: Eye and Constellation Diagrams}
 \label{subsubsec:eye_and_constellation_diagnostics}
@@ -608,22 +643,19 @@ timing sensitivity diagnostics rather than digital decision masks:
 \begin{itemize}[leftmargin=*]
     \item \textbf{Loss of the Nyquist Zero-Derivative Plateau:} In
         the ideal baseline (\cref{fig:ml_rrc_fc_eye_animated}),
-        every trajectory flattened at $t/T_s = 1.0$, satisfying
+        every trajectory flattened at the optimal sampling strobe, satisfying
         $\left.\frac{dp(t)}{dt}\right|_{t=0} = 0$. Under multipath
-        interference,
-        the secondary echo arrives at a fractional offset $\tau$,
+        interference, the secondary echo arrives at a fractional offset $\tau$,
         superimposing the slanted skirt of the delayed pulse onto the
-        direct peak.
-        As shown in the animated eye comparison of
-        \cref{fig:ml_multipath_eye}, the trajectories at $t/T_s =
-        1.0$ become sharply skewed,
-        eliminating the stationary timing plateau.
-    \item \textbf{Trajectory Shearing and Severe Eye Closure:} The
-        delayed echo forces adjacent symbol tails to cross arbitrarily,
-        shearing the cohesive bundle of curves into dispersed,
-        chaotic trajectories. The timing margin collapses completely,
-        explaining why
-        even minor clock drift induces massive computational degradation.
+        direct peak. As shown on the left of \cref{fig:ml_multipath_eye},
+        the uncompensated trajectories become sharply skewed, eliminating
+        the stationary timing plateau.
+    \item \textbf{Restoration via Neumann Equalization:} As depicted
+        on the right of \cref{fig:ml_multipath_eye}, the $N=3$ Neumann
+        series equalizer actively subtracts the delayed multipath replicas.
+        This restores the open eye aperture, realigns the trajectory crossings,
+        and re-establishes the horizontal zero-derivative Nyquist plateaus
+        around the optimal strobe instant across all SPS values.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -631,34 +663,41 @@ timing sensitivity diagnostics rather than digital decision masks:
     \animategraphics[autoplay, loop,
     width=0.85\linewidth]{1.5}{figures/ml_multipath_rrc_fc_eye_span_comparison}{}{}
     \caption{Eye diagram evolution under two-ray multipath
-        propagation ($\tau = 0.3125 T_s$, $g = 0.50$, $\alpha = 0.70$)
+        propagation ($\tau = 0.50 T_s$, $g = 0.50$, $\alpha = 0.70$)
         across oversampling ratios $\text{SPS} \in \{12, 24, 48, 96\}$
-        for filter $\text{span} = 4$ (left) versus $\text{span} = 12$ (right).
-    Severe trajectory shearing and eye closure are visually evident.}
+        comparing the unequalized baseline (left) against the $N=3$
+        Neumann equalized receiver (right). The severe trajectory shearing
+        and aperture collapse of the uncompensated channel are completely
+    rectified by the equalizer.}
     \label{fig:ml_multipath_eye}
 \end{figure}
 
 Similarly, \cref{fig:ml_multipath_const} provides an animated
 constellation diagnostic across roll-off factor
-$\alpha \in [0.00, 1.00]$ at $\text{SNR} = 20\text{ dB}$.
+$\alpha \in [0.00, 1.00]$ at $\text{SNR} = 20\text{ dB}$,
+contrasting the unequalized baseline with the Neumann equalized output.
 
 \begin{figure}[htbp]
     \centering
     \animategraphics[autoplay, loop,
-    width=0.65\linewidth]{1.5}{figures/ml_multipath_rrc_fc_const}{}{}
+    width=0.85\linewidth]{1.5}{figures/ml_multipath_rrc_fc_const}{}{}
     \caption{Constellation diagram animation under two-ray multipath
-        interference demonstrating the horizontal symbol dispersion as
-        the roll-off factor $\alpha$ scales from $0.00$ to $1.00$
-    ($\text{span} = 12$, $\text{SPS} = 48$, $\text{SNR} = 20\text{ dB}$).}
+        interference comparing the unequalized baseline (left) against
+        the $N=3$ Neumann equalized receiver (right) as the roll-off
+        factor $\alpha$ scales from $0.00$ to $1.00$
+        ($\text{span} = 12$, $\text{SPS} = 48$, $\text{SNR} = 20\text{ dB}$,
+        $\tau = 0.50 T_s$, $g = 0.50$). Active equalization tightly confines
+    the symbol estimates around the true arithmetic mean.}
     \label{fig:ml_multipath_const}
 \end{figure}
 
 As $\alpha \to 0.00$, the slow $1/t$ tail decay permits extensive
-multi-symbol interference, spreading the received
-constellation broadly along the in-phase axis. As $\alpha \to 1.00$,
-the accelerated $1/t^3$ tail decay confines symbol
-leakage to immediate neighbors, tightening the constellation
-dispersion and confirming the analytical predictions of
+multi-symbol interference, spreading the received unequalized
+constellation broadly along the in-phase axis. In contrast, the Neumann
+equalized constellation maintains tight clustering throughout the entire
+sweep. As $\alpha \to 1.00$, the accelerated $1/t^3$ tail decay confines
+symbol leakage to immediate neighbors, tightening both distributions
+and confirming the analytical predictions of
 \cref{subsubsec:implications_asymptotic_regimes}.
 
 \subsection{Simulink Block-Level Architecture and Simulation Dynamics}
@@ -670,7 +709,7 @@ Over-the-Air computation under multipath interference.
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=\linewidth]{flowgraphs/sl_multipath_rrc.pdf}
+    \includegraphics[width=\linewidth]{flowgraphs/sl_multipath_vs_rrc.pdf}
     \caption{Simulink block diagram representing the Over-the-Air
         computation network over a two-ray multipath channel with Farrow
     fractional delay filtering and matched RRC pulse shaping.}
@@ -1171,7 +1210,7 @@ asynchronous \gls{ota} computation.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{flowgraphs/sl_async_rrc.pdf}
+    \includegraphics[width=\linewidth]{flowgraphs/sl_async_vs_multipath.pdf}
     \caption{Simulink block-level implementation of Over-the-Air
         computation under asynchronous
         multi-sensor carrier frequency offsets, independent Farrow
@@ -1249,7 +1288,7 @@ GNU Radio Companion flowgraph modeling the multipath \gls{isi} channel.
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=\linewidth]{flowgraphs/grc_isi_rrc.pdf}
+    \includegraphics[width=\linewidth]{flowgraphs/gr_multipath_am_rrc.pdf}
     \caption{GNU Radio flowgraph implementing the Over-the-Air
         computation network over a multipath channel with controlled FIR
     delay taps and Root Raised Cosine pulse shaping.}

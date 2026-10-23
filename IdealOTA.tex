@@ -916,7 +916,7 @@ running \gls{mse} calculation block.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.92\linewidth]{flowgraphs/sl_rrc.pdf}
+    \includegraphics[width=0.92\linewidth]{flowgraphs/sl_rrc_vs_unfiltered.pdf}
     \caption{Simulink multi-rate block diagram incorporating matched
     Root Raised Cosine pulse shaping and delay compensation.}
     \label{fig:idealOTA_simulink_rrc}
@@ -940,7 +940,7 @@ the Over-the-Air computation system is synthesized using GNU Radio Companion.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.92\linewidth]{flowgraphs/grc_ideal_awgn.pdf}
+    \includegraphics[width=0.92\linewidth]{flowgraphs/gr_unfiltered_awgn.pdf}
     \caption{GNU Radio flowgraph for the ideal unmodulated baseline
     Over-the-Air computation aggregation.}
     \label{fig:grc_ideal_awgn}
@@ -953,63 +953,103 @@ corrupted by Gaussian noise, and divided by $K$.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.92\linewidth]{flowgraphs/grc_ideal_rrc.pdf}
-    \caption{GNU Radio flowgraph for the Nyquist-compliant matched
-    RRC filtered Over-the-Air computation architecture.}
+    \includegraphics[width=0.98\linewidth]{flowgraphs/gr_awgn_am_rrc.pdf}
+    \caption{GNU Radio flowgraph for the passband Amplitude Modulated
+        (\gls{am}) and Nyquist-compliant matched \gls{rrc} filtered
+    Over-the-Air computation architecture.}
     \label{fig:grc_ideal_rrc}
 \end{figure}
 
-\Cref{fig:grc_ideal_rrc} implements the full multi-rate pulse-shaping
-architecture. In this flowgraph, the transmitters utilize
-interpolating polyphase \gls{fir} filters with an interpolation
-factor matching the symbol rate ($\text{sps} = 6$). At the receiver,
-a decimating \gls{rrc} filter matched to the transmit pulse executes
-symbol recovery.
+\Cref{fig:grc_ideal_rrc} implements the complete multi-rate passband
+\gls{am} and pulse-shaping architecture across $K = 5$ concurrent sensor
+transmitters with nominal temperature offsets $\{27.5, 27.1, 27.4,
+27.8, 27.3\}^\circ\text{C}$ ($\mu = 27.42^\circ\text{C}$). Each
+transmitter interpolates its symbol stream ($R_s = 1\text{ kHz}$) by
+$\text{sps} = 12$ ($F_s = 12\text{ kHz}$) using an \texttt{Interpolating
+FIR Filter} configured with \gls{rrc} taps ($\text{span} = 12$, roll-off
+    $\alpha = 0.70$, $N_{\text{taps}} = 145$, and passband gain
+$\sqrt{\text{sps}} \approx 3.4641$). A shared \texttt{Signal Source}
+generates a real sinusoidal carrier at $f_c = 2\text{ kHz}$ with
+amplitude $\sqrt{2} \approx 1.41421$ to upconvert each branch via
+Double-Sideband
+\gls{am} prior to Over-the-Air summation and \gls{awgn} injection. At the
+\gls{fc}, coherent demodulation is performed by mixing the received
+passband waveform with a delay-aligned local carrier (\texttt{Delay} $= 3$
+samples), filtering through a matched \gls{rrc} filter, scaling by
+$1/K = 0.2$, and discarding the initial $2 \cdot \text{span} \cdot
+\text{sps} + 4 = 292$ transient samples via a \texttt{Skip Head} block
+before exporting the steady-state trajectories through a custom
+\texttt{Data Exporter} Python block.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.48\linewidth]{img/idealOTA.png}\hfill
-    \includegraphics[width=0.48\linewidth]{img/idealOTA_rrc.png}
-    \caption{GNU Radio runtime display captures. Left: Unmodulated
-        aggregation showing broadband noise fluctuations. Right: Matched
-        RRC filtered aggregation displaying tight symbol clustering and
-    smooth time-domain trajectory recovery.}
-    \label{fig:grc_ideal_diagram}
+    \begin{subfigure}{0.48\linewidth}
+        \animategraphics[autoplay, loop,
+        width=\linewidth]{1.5}{figures/IdealOTA_gr_rrc_fc_const}{}{}
+        \caption{Exported constellation scatter across $\text{SNR}
+        \in \{0, 5, 10, 15, 20\}\text{ dB}$.}
+        \label{fig:gr_rrc_fc_const}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{0.48\linewidth}
+        \animategraphics[autoplay, loop,
+        width=\linewidth]{1.5}{figures/IdealOTA_gr_rrc_fc_eye}{}{}
+        \caption{Exported 3-symbol eye diagram across $\text{SNR} \in
+        \{0, 5, 10, 15, 20\}\text{ dB}$.}
+        \label{fig:gr_rrc_fc_eye}
+    \end{subfigure}
+    \caption{GNU Radio empirical signal integrity diagnostics
+        animated across channel $\text{SNR} \in \{0, 5, 10, 15,
+        20\}\text{ dB}$ ($\text{sps} = 12$, $\text{span} = 12$, $\alpha =
+        0.70$). Left: Strobed constellation scatter collapsing from a
+        wide distribution ($I \in [10, 45]$ at $0\text{ dB}$) into a
+        sharp focal cluster ($I \in [25.5, 29.5]$ at $20\text{ dB}$)
+        centered at the true 5-sensor arithmetic mean ($\mu =
+        27.42^\circ\text{C}$). Right: Continuous 3-symbol eye diagram
+        trajectories demonstrating progressive noise clearing and
+    sharpening of Nyquist strobe nodes.}
+    \label{fig:gr_rrc_fc_diagnostics}
 \end{figure}
 
 Empirical execution in GNU Radio reveals critical physical
 implementation insights:
 \begin{enumerate}
-    \item \textbf{Filter Normalization and Amplitude Rescaling:} When
-        generating \gls{rrc} taps in GNU Radio (as in MATLAB's
-        \texttt{rcosdesign}),
-        the filter is normalized for unit energy ($\sum h^2[n] = 1$)
-        rather than unity DC gain. Consequently, discrete convolution with
-        an interpolated pulse scales the recovered output amplitude
-        by a factor proportional to $\sqrt{\text{sps}}$. To restore the signal
-        to physical sensory units (e.g., Volts or $^\circ\text{C}$),
-        a calibrated receiver scalar multiplier or \gls{agc} block is applied
-        prior to arithmetic averaging.
-    \item \textbf{Optimal Sampling Phase Calibration:} Because the
-        causal polyphase \gls{fir} filters introduce group delay, the receiver
-        strobe phase must be calibrated. For a design cycle spanning
-        16 symbols with $\text{sps} = 6$ ($16 \times 6 = 96$ samples), maximum
-        signal-to-noise ratio is obtained at an offset of exactly
-        $33$ samples. Proper phase alignment centers the eye opening
-        and eliminates
-        quadrature leakage.
-    \item \textbf{Constellation Integrity:} As shown in
-        \cref{fig:grc_ideal_diagram}, the matched \gls{rrc} GNU Radio
-        receiver displays
-        tightly clustered constellation points and smooth time-domain
-        waveforms, confirming that the over-the-air superposition principle
-        accurately computes the arithmetic average under real-time
-        software-defined radio processing.
+    \item \textbf{Filter Normalization and Passband Gain Calibration:}
+        When generating \gls{rrc} taps in GNU Radio via
+        \texttt{firdes.\allowbreak root\_\allowbreak
+        raised\_\allowbreak cosine}, interpolation by
+        $\text{sps} = 12$ distributes symbol energy across $12$
+        samples. Setting the filter gain of both the transmit
+        interpolating \gls{fir} filters and the receive matched
+        \gls{rrc} filter to $\sqrt{\text{sps}} = \sqrt{12} \approx
+        3.4641$, combined with a carrier amplitude of $\sqrt{2}$ at the
+        transmit and receive mixers ($\sqrt{2} \times \sqrt{2} = 2$ coherent
+        demodulation gain), preserves unity end-to-end baseband scaling
+        prior to the $1/K = 0.2$ averaging multiplier.
+    \item \textbf{Carrier Phase and Strobe Alignment:} Because the
+        causal \gls{fir} filters introduce deterministic group delay, both
+        the coherent local oscillator and the symbol decision strobe must
+        be synchronized. A $3$-sample \texttt{Delay} block aligns the
+        receiver carrier phase with the incoming passband waveform, while
+        the \texttt{Skip Head} block discards $2 \cdot \text{span} \cdot
+        \text{sps} + 4 = 292$ samples to strip filter startup transients
+        and align the \texttt{Keep 1 in N} ($N = 12$) symbol decimation
+        at the exact Nyquist peak.
+    \item \textbf{Constellation and Eye Integrity:} As shown in
+        \cref{fig:gr_rrc_fc_diagnostics}, the
+        matched \gls{rrc} GNU Radio receiver recovers a tightly
+        clustered in-phase constellation centered at $\hat{\mu} \approx
+        27.42^\circ\text{C}$ with zero quadrature leakage. As the channel
+        SNR scales from $0\text{ dB}$ to $20\text{ dB}$, the empirical
+        estimation variance contracts from $\text{MSE} \approx 32.8$ to
+        $\text{MSE} \approx 0.46$, closely tracking theoretical
+        AWGN prediction ($\sigma_w^2 / K^2$) and confirming that the
+        Over-the-Air superposition principle accurately computes the
+        arithmetic average under passband software-defined radio processing.
 \end{enumerate}
 
 \ifSubfilesClassLoaded{
     \clearpage
     \printbibliography
 }{}
-\end{document}
 \end{document}

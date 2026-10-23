@@ -6,6 +6,7 @@ figures/tmp/
 font/
 data/
 src/
+*_backup/
 
 ### LaTeX ###
 ## Core latex/pdflatex auxiliary files:

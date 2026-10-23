@@ -1,0 +1,54 @@
+% IdealOTA_gr_rrc_fc_const.tex
+\documentclass[multi=tikzpicture]{standalone}
+\usepackage{amsmath}
+\usepackage{pgfplots}
+\usepackage{luacode}
+\pgfplotsset{compat=1.18}
+
+\begin{document}
+
+    \begin{luacode*}
+        local snr_list = {
+            {val = "00", label = "0"},
+            {val = "05", label = "5"},
+            {val = "10", label = "10"},
+            {val = "15", label = "15"},
+            {val = "20", label = "20"}
+        }
+
+        local base_dir = "../data/ideal/rrc/constellation/"
+
+        for i, item in ipairs(snr_list) do
+            local file_path = string.format(
+                "%sgr_rrc_fc_const_12sps_span12_alpha0.70_snr%sdB.dat",
+                base_dir, item.val
+            )
+
+            tex.print("\\begin{tikzpicture}")
+            tex.print("\\begin{axis}[")
+            tex.print("    title={\\textsf{GNU Radio Matched RRC ($\\text{SNR} = " .. item.label .. "\\text{ dB}$)}},")
+            tex.print("    xlabel={In-Phase (I)},")
+            tex.print("    ylabel={Quadrature (Q)},")
+            tex.print("    xmin=10, xmax=45,")
+            tex.print("    ymin=-0.5, ymax=0.5,")
+            tex.print("    grid=major,")
+            tex.print("    width=9cm,")
+            tex.print("    height=7.2cm,")
+            tex.print("    ticklabel style={font=\\tiny},")
+            tex.print("    label style={font=\\scriptsize},")
+            tex.print("    title style={font=\\small}")
+            tex.print("]")
+            tex.print("\\addplot[")
+            tex.print("    only marks,")
+            tex.print("    mark=*,")
+            tex.print("    mark size=1pt,")
+            tex.print("    color=blue!80!black,")
+            tex.print("    opacity=0.35")
+            tex.print("] table[x=I, y=Q] {" .. file_path .. "};")
+            tex.print("\\end{axis}")
+            tex.print("\\end{tikzpicture}")
+        end
+    \end{luacode*}
+
+\end{document}
+

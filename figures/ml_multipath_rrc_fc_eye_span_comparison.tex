@@ -2,93 +2,66 @@
 \documentclass[multi=minipage]{standalone}
 \usepackage{amsmath}
 \usepackage{pgfplots}
-\usepackage{luacode}
 \pgfplotsset{compat=1.18}
 
 \begin{document}
 
-    \begin{luacode*}
-        local sps_list = {
-            {folder = "12sps", val = "12", label = "12"},
-            {folder = "24sps", val = "24", label = "24"},
-            {folder = "48sps", val = "48", label = "48"},
-            {folder = "96sps", val = "96", label = "96"},
+\begin{minipage}{18cm}
+
+    % LEFT PLOT: UNEQUALIZED BASELINE
+    \begin{tikzpicture}
+    \begin{axis}[
+        title={\textsf{Unequalized Eye Diagram ($\bar{\tau} = 1.26\,T_{\text{sym}}$, $\bar{\alpha} = 0.17$, $K = 23$)}},
+        xlabel={Time ($T_{\text{sym}}$)},
+        ylabel={Normalized Amplitude},
+        xmin=0, xmax=3,
+        ymin=-2.0, ymax=2.5,
+        grid=major,
+        width=0.49\linewidth,
+        height=0.42\linewidth,
+        ticklabel style={font=\tiny},
+        label style={font=\scriptsize},
+        title style={font=\small},
+        every axis plot/.append style={
+            mark=none,
+            color=red!75!black,
+            line width=0.2pt,
+            opacity=0.3,
+            line cap=round,
+            line join=round
         }
+    ]
+    \addplot table[x=Time, y=Amplitude] {../data/isi/multipath/eye/ml_isi_rrc_fc_eye_uneq_tau1.26_echo0.17_12sps_span12_alpha0.50.txt};
+    \end{axis}
+    \end{tikzpicture}%
+    \hfill%
+    % RIGHT PLOT: NEUMANN EQUALIZED (N = 3)
+    \begin{tikzpicture}
+    \begin{axis}[
+        title={\textsf{Neumann Equalized ($N = 3$, $\bar{\tau} = 1.26\,T_{\text{sym}}$, $\bar{\alpha} = 0.17$, $K = 23$)}},
+        xlabel={Time ($T_{\text{sym}}$)},
+        ylabel={Normalized Amplitude},
+        xmin=0, xmax=3,
+        ymin=-2.0, ymax=2.5,
+        grid=major,
+        width=0.49\linewidth,
+        height=0.42\linewidth,
+        ticklabel style={font=\tiny},
+        label style={font=\scriptsize},
+        title style={font=\small},
+        every axis plot/.append style={
+            mark=none,
+            color=blue!75!black,
+            line width=0.2pt,
+            opacity=0.3,
+            line cap=round,
+            line join=round
+        }
+    ]
+    \addplot table[x=Time, y=Amplitude] {../data/isi/multipath/eye/ml_isi_rrc_fc_eye_tau1.26_echo0.17_12sps_span12_alpha0.50.txt};
+    \end{axis}
+    \end{tikzpicture}
 
-        local alpha_str = "0.70" 
-        local base_path = "../data/isi/multipath/eye/"
+\end{minipage}
 
-        for i, item in ipairs(sps_list) do
-
-            local file_span4 = string.format(
-                "%s%s/ml_isi_rrc_fc_eye_%ssps_span4_alpha%s.txt", 
-                base_path, item.folder, item.val, alpha_str
-            )
-            local file_span12 = string.format(
-                "%s%s/ml_isi_rrc_fc_eye_%ssps_span12_alpha%s.txt", 
-                base_path, item.folder, item.val, alpha_str
-            )
-
-            tex.print("\\begin{minipage}{18cm}")
-
-            -- LEFT PLOT: SPAN 4
-            tex.print("\\begin{tikzpicture}")
-            tex.print("\\begin{axis}[")
-            tex.print("    title={\\textsf{Span = 4 ($sps = " .. item.label .. "$)}},")
-            tex.print("    xlabel={Time ($T_{sym}$)},")
-            tex.print("    ylabel={Amplitude},")
-            tex.print("    xmin=0, xmax=3,")
-            tex.print("    ymin=-25, ymax=25,")
-            tex.print("    grid=major,")
-            tex.print("    width=0.49\\linewidth,")
-            tex.print("    height=0.42\\linewidth,")
-            tex.print("    ticklabel style={font=\\tiny},")
-            tex.print("    label style={font=\\scriptsize},")
-            tex.print("    title style={font=\\small},")
-            tex.print("    every axis plot/.append style={")
-            tex.print("        mark=none,")
-            tex.print("        color=red!75!black,")
-            tex.print("        line width=0.1pt,")
-            tex.print("        opacity=0.08,")
-            tex.print("        line cap=round,")
-            tex.print("        line join=round")
-            tex.print("    }")
-            tex.print("]")
-            tex.print("\\addplot table[x=Time, y=Amplitude] {" .. file_span4 .. "};")
-            tex.print("\\end{axis}")
-            tex.print("\\end{tikzpicture}%")
-            tex.print("\\hfill%")
-
-            -- RIGHT PLOT: SPAN 12
-            tex.print("\\begin{tikzpicture}")
-            tex.print("\\begin{axis}[")
-            tex.print("    title={\\textsf{Span = 12 ($sps = " .. item.label .. "$)}},")
-            tex.print("    xlabel={Time ($T_{sym}$)},")
-            tex.print("    ylabel={Amplitude},")
-            tex.print("    xmin=0, xmax=3,")
-            tex.print("    ymin=-25, ymax=25,")
-            tex.print("    grid=major,")
-            tex.print("    width=0.49\\linewidth,")
-            tex.print("    height=0.42\\linewidth,")
-            tex.print("    ticklabel style={font=\\tiny},")
-            tex.print("    label style={font=\\scriptsize},")
-            tex.print("    title style={font=\\small},")
-            tex.print("    every axis plot/.append style={")
-            tex.print("        mark=none,")
-            tex.print("        color=red!75!black,")
-            tex.print("        line width=0.1pt,")
-            tex.print("        opacity=0.08,")
-            tex.print("        line cap=round,")
-            tex.print("        line join=round")
-            tex.print("    }")
-            tex.print("]")
-            tex.print("\\addplot table[x=Time, y=Amplitude] {" .. file_span12 .. "};")
-            tex.print("\\end{axis}")
-            tex.print("\\end{tikzpicture}")
-
-            tex.print("\\end{minipage}")
-        end
-
-    \end{luacode*}
-    
 \end{document}

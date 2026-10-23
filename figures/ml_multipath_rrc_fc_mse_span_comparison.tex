@@ -21,15 +21,15 @@
 
             tex.print("\\begin{minipage}{18cm}")
 
-            -- LEFT PLOT: SPAN 4
+            -- LEFT PLOT: UNEQUALIZED BASELINE
             tex.print("\\begin{tikzpicture}")
             tex.print("\\begin{axis}[")
-            tex.print("    title={\\textsf{Span = 4 ($sps = " .. sps.label .. "$)}},")
+            tex.print("    title={\\textsf{Unequalized Baseline ($sps = " .. sps.label .. "$)}},")
             tex.print("    xlabel={SNR (dB)},")
             tex.print("    ylabel={$\\alpha$},")
             tex.print("    zlabel={MSE},")
             tex.print("    zmode=log,")
-            tex.print("    zmin=0.1, zmax=10,") 
+            tex.print("    zmin=1e3, zmax=3e5,") 
             tex.print("    view={135}{30},")
             tex.print("    grid=major,")
             tex.print("    colormap name=viridis,")
@@ -38,20 +38,20 @@
             tex.print("    label style={font=\\scriptsize},")
             tex.print("    title style={font=\\small}")
             tex.print("]")
-            tex.print("\\addplot3[surf, mesh/rows=21] table[x=SNR_dB, y=alpha_array, z=mse_results] {" .. base_path .. "ml_isi_rrc_fc_mse_" .. sps.val .. "sps_span4.txt};")
+            tex.print("\\addplot3[surf, mesh/rows=21] table[x=SNR_dB, y=alpha_array, z=mse_results_uneq] {" .. base_path .. "ml_isi_rrc_fc_mse_uneq_tau0.50_echo0.50_" .. sps.val .. "sps_span12.txt};")
             tex.print("\\end{axis}")
             tex.print("\\end{tikzpicture}%")
             tex.print("\\hfill%")
 
-            -- RIGHT PLOT: SPAN 12
+            -- RIGHT PLOT: NEUMANN EQUALIZED (N = 3)
             tex.print("\\begin{tikzpicture}")
             tex.print("\\begin{axis}[")
-            tex.print("    title={\\textsf{Span = 12 ($sps = " .. sps.label .. "$)}},")
+            tex.print("    title={\\textsf{Neumann Equalized ($N=3$, $sps = " .. sps.label .. "$)}},")
             tex.print("    xlabel={SNR (dB)},")
             tex.print("    ylabel={$\\alpha$},")
             tex.print("    zlabel={MSE},")
             tex.print("    zmode=log,")
-            tex.print("    zmin=0.1, zmax=10,") 
+            tex.print("    zmin=1e3, zmax=3e5,") 
             tex.print("    view={135}{30},")
             tex.print("    grid=major,")
             tex.print("    colormap name=viridis,")
@@ -60,7 +60,7 @@
             tex.print("    label style={font=\\scriptsize},")
             tex.print("    title style={font=\\small}")
             tex.print("]")
-            tex.print("\\addplot3[surf, mesh/rows=21] table[x=SNR_dB, y=alpha_array, z=mse_results] {" .. base_path .. "ml_isi_rrc_fc_mse_" .. sps.val .. "sps_span12.txt};")
+            tex.print("\\addplot3[surf, mesh/rows=21] table[x=SNR_dB, y=alpha_array, z=mse_results_eq] {" .. base_path .. "ml_isi_rrc_fc_mse_tau0.50_echo0.50_" .. sps.val .. "sps_span12.txt};")
             tex.print("\\end{axis}")
             tex.print("\\end{tikzpicture}")
             
