@@ -186,12 +186,22 @@
         "statusBar.background": "#450d9e",
         "statusBar.foreground": "#e7e7e7",
         "statusBarItem.hoverBackground": "#5a11cd",
-        "statusBarItem.remoteBackground": "#450d9e",
+        "statusBarItem.remoteBackground": "#b14d0f",
         "statusBarItem.remoteForeground": "#e7e7e7",
         "titleBar.activeBackground": "#450d9e",
         "titleBar.activeForeground": "#e7e7e7",
         "titleBar.inactiveBackground": "#450d9e99",
-        "titleBar.inactiveForeground": "#e7e7e799"
+        "titleBar.inactiveForeground": "#e7e7e799",
+        "activityBar.activeBorder": "#e7e7e7",
+        "activityBarTop.activeBackground": "#5a11cd",
+        "activityBarTop.activeBorder": "#e7e7e7",
+        "activityBarTop.background": "#5a11cd",
+        "activityBarTop.foreground": "#e7e7e7",
+        "activityBarTop.inactiveForeground": "#e7e7e799",
+        "commandCenter.foreground": "#e7e7e7",
+        "statusBar.debuggingBackground": "#450d9e",
+        "statusBar.debuggingForeground": "#e7e7e7",
+        "statusBar.inactiveBackground": "#450d9e"
     },
     "MATLAB.installPath": "\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\MATLAB R2026a\\MATLAB R2026a.lnk\""
 }
